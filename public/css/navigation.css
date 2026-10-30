@@ -1,0 +1,276 @@
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px clamp(14px, 3vw, 28px);
+  background: #102a43;
+  color: #fff;
+  border-bottom: 1px solid #274c6b;
+  box-shadow: 0 2px 12px #0b1f3326;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.app-nav__brand {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.app-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.app-nav__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 7px 13px;
+  border: 1px solid #55758f;
+  border-radius: 8px;
+  color: #eaf4fb;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.app-nav__link:hover {
+  background: #1e4868;
+  border-color: #8bb7d4;
+}
+.app-nav__link[aria-current="page"] {
+  background: #fff;
+  border-color: #fff;
+  color: #173b59;
+}
+.app-nav__link:focus-visible,
+.app-nav__brand:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 2px;
+}
+@media (max-width: 620px) {
+  .app-nav {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .app-nav__links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .app-nav__link {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* Barra lateral */
+:root {
+  --sidebar-width: 252px;
+  --sidebar-compact-width: 72px;
+}
+body {
+  padding-left: var(--sidebar-width);
+  transition: padding-left 180ms ease;
+}
+body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
+.app-nav {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1000;
+  display: flex;
+  width: var(--sidebar-width);
+  height: 100dvh;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 16px 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #101b31;
+  color: #fff;
+  border-right: 1px solid #20304d;
+  border-bottom: 0;
+  box-shadow: 5px 0 20px #0811201f;
+  transition: width 180ms ease;
+}
+.app-nav.is-collapsed {
+  width: var(--sidebar-compact-width);
+  padding-inline: 10px;
+}
+.app-nav__head {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+}
+.app-nav__brand {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+}
+.app-nav__mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 1px solid #79a7ff;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #4388ff, #245cc9);
+  box-shadow: inset 0 0 0 3px #ffffff1c, 0 3px 9px #0005;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+.app-nav__mark svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+.app-nav__copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.app-nav__copy strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+}
+.app-nav__copy small {
+  margin-top: 4px;
+  color: #94a4bf;
+  font-size: 10px;
+}
+.app-nav__toggle {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #2f6ee8;
+  color: #fff;
+  cursor: pointer;
+}
+.app-nav__toggle svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 180ms ease;
+}
+.app-nav.is-collapsed .app-nav__toggle svg { transform: rotate(180deg); }
+.app-nav__links {
+  display: flex;
+  grid-template-columns: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 7px;
+  padding-top: 14px;
+  border-top: 1px solid #24334e;
+}
+.app-nav__link {
+  position: relative;
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: #aebbd0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+.app-nav__link:hover {
+  background: #182842;
+  border-color: transparent;
+  color: #fff;
+}
+.app-nav__link[aria-current="page"] {
+  background: linear-gradient(100deg, #397ef2, #2662df);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 18px #0c3b9b4d;
+}
+.app-nav__icon {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+}
+.app-nav__icon svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+.app-nav.is-collapsed .app-nav__copy,
+.app-nav.is-collapsed .app-nav__label { display: none; }
+.app-nav.is-collapsed .app-nav__head { flex-direction: column; }
+.app-nav.is-collapsed .app-nav__brand { flex: 0 0 auto; }
+.app-nav.is-collapsed .app-nav__link {
+  justify-content: center;
+  padding-inline: 0;
+}
+.app-nav.is-collapsed .app-nav__link:hover::after {
+  position: fixed;
+  left: 66px;
+  z-index: 1100;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #0b1324;
+  color: #fff;
+  box-shadow: 0 4px 14px #0006;
+  content: attr(data-label);
+  font-size: 12px;
+  pointer-events: none;
+}
+.app-nav__toggle:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
+@media (max-width: 760px) {
+  body,
+  body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
+  .app-nav:not(.is-collapsed) { box-shadow: 8px 0 28px #03071170; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .app-nav,
+  .app-nav__toggle svg { transition: none; }
+}
+
+.app-footer {
+  margin: 8px auto 0;
+  padding: 20px 24px 28px;
+  color: #5f7182;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+.app-footer strong { color: #263f52; }
+.theme-dark .app-footer { color: #9fb0c3; }
+.theme-dark .app-footer strong { color: #e2e8f0; }

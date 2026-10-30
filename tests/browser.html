@@ -13,7 +13,15 @@ document.querySelector('iframe').addEventListener('load', async () => {
    assert(doc.documentElement.dataset.theme==='dark' && win.localStorage.getItem('justificador-vida-theme')==='dark', 'Tema oscuro y preferencia guardada');
    theme.value='light'; theme.dispatchEvent(new win.Event('change'));
    assert(doc.documentElement.dataset.theme==='light' && win.getComputedStyle(doc.body).backgroundColor!==darkBackground, 'Cambiar a tema claro');
-   assert(!doc.querySelector('footer,a[download]'), 'Sin aviso de pie ni enlaces de descarga');
+   const sidebar = doc.querySelector('.app-nav'), sidebarToggle = doc.querySelector('.app-nav__toggle');
+   assert(sidebar && sidebarToggle && doc.querySelector('.app-nav__link[aria-current="page"]'), 'Menú lateral y opción activa');
+   const wasCollapsed = sidebar.classList.contains('is-collapsed');
+   sidebarToggle.click();
+   assert(sidebar.classList.contains('is-collapsed')!==wasCollapsed && win.localStorage.getItem('herramientas-vida-sidebar'), 'Contraer y guardar menú lateral');
+   sidebarToggle.click();
+   assert(sidebar.classList.contains('is-collapsed')===wasCollapsed, 'Restaurar tamaño del menú lateral');
+   assert(doc.querySelector('.app-footer')?.textContent.includes('Cristian Heredia'), 'Pie de página del Justificador');
+   assert(!doc.querySelector('a[download]'), 'Sin enlaces de descarga en la interfaz');
    const text = doc.getElementById('texto');
    text.value = 'Este es un párrafo de prueba suficientemente largo para verificar que el justificador distribuye los espacios entre las palabras y conserva los caracteres especiales como la ñ y las tildes.\n\nSegundo párrafo.';
    text.dispatchEvent(new win.Event('input', {bubbles:true}));

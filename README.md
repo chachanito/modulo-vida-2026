@@ -1,8 +1,15 @@
-# Justificador Vida
+# Módulo Vida 2026
 
 ## Aplicacion publica para GitHub Pages
 
-Usar: https://chachanito.github.io/justificador_vida/
+Usar: https://chachanito.github.io/modulo-vida-2026/
+
+El menú principal ofrece dos herramientas independientes:
+
+- **Justificador:** prepara texto y tablas y los combina en un documento.
+- **Cruce de datos:** compara las bases de créditos ACTUAL y ANTERIOR, aplica parámetros de asegurabilidad, concilia totales y exporta resultados.
+
+El cruce se abre en `cruce-datos.html`. Ambas herramientas procesan los archivos localmente en el navegador.
 
 `index.html` es una aplicacion independiente, sin cuentas ni dependencias del ERP. Permite justificar texto, importar PDF con texto y Word .docx, procesar Excel/CSV, ordenar secciones y copiar. Incluye temas claro y oscuro; la eleccion se guarda localmente y inicialmente sigue el tema del sistema. La interfaz publica no contiene enlaces de descarga ni enlaces al codigo fuente. Todos los documentos se procesan en el navegador. Los lectores PDF.js, Mammoth y SheetJS estan incluidos localmente.
 

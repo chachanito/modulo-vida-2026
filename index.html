@@ -6,6 +6,8 @@
   <meta name="description" content="Justifica textos y tablas a 75 caracteres. Importa PDF, Word, Excel y CSV en tu navegador.">
   <title>Justificador Vida</title>
   <script src="public/js/pages/theme.js"></script>
+  <script src="public/js/pages/navigation.js" defer></script>
+  <link rel="stylesheet" href="public/css/navigation.css">
   <link rel="stylesheet" href="public/css/pages.css">
   <link rel="stylesheet" href="public/css/modules/justificador_tablas.css">
   <link rel="stylesheet" href="public/css/modules/justificador_vida.css">
@@ -18,6 +20,13 @@
   <script src="public/js/modules/justificador_vida.js" defer></script>
 </head>
 <body>
+<nav class="app-nav" aria-label="Herramientas principales">
+  <a class="app-nav__brand" href="index.html">Herramientas Vida</a>
+  <div class="app-nav__links">
+    <a class="app-nav__link" href="index.html" aria-current="page">Justificador</a>
+    <a class="app-nav__link" href="cruce-datos.html">Cruce de datos</a>
+  </div>
+</nav>
 <main class="jv-module">
   <header class="jv-heading"><div><h1>Justificador Vida</h1><p>Prepara texto y tablas, y combínalos en un documento.</p></div><div class="heading-tools"><span class="jv-width">75 caracteres</span><label class="theme-control" for="theme-select">Tema <select id="theme-select"><option value="light">Claro</option><option value="dark">Oscuro</option></select></label></div></header>
   <p class="privacy">Tus archivos se procesan en este navegador y no se suben a un servidor.</p>
@@ -86,5 +95,9 @@
     </section>
   </div>
 </main>
+<footer class="app-footer">
+  &copy; Copyright 2026, Todos los derechos reservados<br>
+  <strong>Cristian Heredia</strong> · Emisión Nacional
+</footer>
 </body>
 </html>
