@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir -p _site/public
           cp index.html cruce-datos.html cotizador.html _site/
-          cp -R public/js public/css _site/public/
+          cp -R public/js public/css public/images _site/public/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
