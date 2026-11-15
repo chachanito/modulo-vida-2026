@@ -1,0 +1,285 @@
+/* Define el formato de pagina y las reglas exclusivas para generar el PDF. */
+@page {
+  size: A4 portrait;
+  margin: 12mm 13mm;
+}
+
+@media print {
+  body {
+    padding: 0 !important;
+    background: #fff !important;
+    color: #1e293b;
+    font: 8.5pt/1.35 Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .app-nav,
+  .app-footer,
+  .rc-screen,
+  .rc-heading {
+    display: none !important;
+  }
+
+  main.rc-page {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .rc-quote {
+    position: relative;
+    isolation: isolate;
+    display: block !important;
+    color: #1e293b;
+    font-size: 8.5pt;
+  }
+
+  /* Mantiene el logo como marca de agua centrada en las paginas impresas. */
+  .rc-quote-watermark {
+    position: fixed;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 72mm;
+    max-height: 72mm;
+    object-fit: contain;
+    opacity: .065;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .rc-quote > :not(.rc-quote-watermark) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Presenta las ilustraciones y la identidad de marca en el encabezado. */
+  .rc-quote-illustration {
+    margin: 0 auto 6px;
+    text-align: center;
+  }
+
+  .rc-quote-illustration img {
+    display: block;
+    width: 100%;
+    max-height: 30mm;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  .rc-quote-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #173b59;
+  }
+
+  .rc-quote-head p,
+  .rc-quote-head h1 {
+    margin: 0;
+  }
+
+  .rc-quote-head h1 {
+    color: #173b59;
+    font-size: 19pt;
+    line-height: 1.1;
+  }
+
+  .rc-quote-kicker {
+    margin-bottom: 3px !important;
+    color: #0f766e;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+  }
+
+  .rc-quote-head > div:first-child > p:last-child {
+    margin-top: 4px;
+    color: #536b7a;
+  }
+
+  .rc-quote-dates {
+    min-width: 130px;
+    padding: 7px 9px;
+    background: #f1f5f9;
+    text-align: right;
+  }
+
+  .rc-quote-dates p + p {
+    margin-top: 5px;
+  }
+
+  .rc-quote-dates strong,
+  .rc-quote-dates span {
+    display: block;
+  }
+
+  .rc-quote-dates strong {
+    color: #536b7a;
+    font-size: 7pt;
+    text-transform: uppercase;
+  }
+
+  /* Ordena los datos del cliente, vehiculos y resumen de primas. */
+  .rc-quote-client,
+  .rc-quote-fleet,
+  .rc-quote-coverages,
+  .rc-quote-payment,
+  .rc-quote-notes {
+    margin-top: 9px;
+  }
+
+  .rc-quote-client h2,
+  .rc-quote-fleet h2,
+  .rc-quote-coverages > h2,
+  .rc-quote-payment h2,
+  .rc-quote-notes h2 {
+    margin: 0 0 5px;
+    padding: 4px 7px;
+    background: #e8edf1;
+    color: #173b59;
+    font-size: 8pt;
+    letter-spacing: .35px;
+    text-align: center;
+    break-after: avoid;
+  }
+
+  .rc-quote-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 14px;
+    margin: 0;
+  }
+
+  .rc-quote-grid p {
+    margin: 0;
+    padding: 2px 4px;
+    border-bottom: 1px solid #d8e2ea;
+    overflow-wrap: anywhere;
+  }
+
+  .rc-quote-grid strong {
+    color: #365366;
+  }
+
+  .rc-quote-fleet .rc-table {
+    width: 100%;
+    table-layout: auto;
+    font-size: 7.5pt;
+  }
+
+  .rc-quote-fleet .rc-table th {
+    padding: 4px 5px;
+    background: #173b59 !important;
+    color: #fff !important;
+    text-align: center;
+  }
+
+  .rc-quote-fleet .rc-table td {
+    padding: 3px 5px;
+    border: 1px solid #cad5de;
+    overflow-wrap: anywhere;
+  }
+
+  .rc-quote-fleet .rc-table tr {
+    break-inside: avoid;
+  }
+
+  .rc-quote-totals {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+    margin-top: 4px;
+  }
+
+  .rc-quote-totals p {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 125px;
+    margin: 0;
+    padding: 4px 7px;
+    background: #0f766e;
+    color: #fff;
+    font-size: 7.5pt;
+  }
+
+  .rc-quote-totals p + p {
+    border-left: 1px solid #fff;
+  }
+
+  .rc-breakdown {
+    max-width: 70%;
+    margin: 4px 0 0 auto;
+    font-size: 7.5pt;
+  }
+
+  .rc-breakdown div {
+    padding: 3px 5px;
+    border-bottom: 1px solid #d8e2ea;
+  }
+
+  /* Conserva coberturas, forma de pago y notas importantes al final del PDF. */
+  .rc-quote-coverages > h2 {
+    margin-bottom: 7px;
+    font-size: 9pt;
+  }
+
+  .rc-quote-coverages h3 {
+    margin: 7px 0 4px;
+    color: #365366;
+    font-size: 8pt;
+    text-align: center;
+    break-after: avoid;
+  }
+
+  .rc-quote-coverages h3 span {
+    font-weight: 400;
+  }
+
+  .rc-quote-description {
+    margin: 0 0 5px;
+    text-align: center;
+  }
+
+  .rc-coverage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+    break-inside: avoid;
+  }
+
+  .rc-coverage-table td {
+    width: 50%;
+    padding: 4px 7px;
+    border: 1px solid #667783;
+  }
+
+  .rc-coverage-table td:first-child {
+    text-align: center;
+  }
+
+  .rc-coverage-table td:last-child {
+    background: #14a99c;
+    color: #fff;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .rc-quote-payment p,
+  .rc-quote-notes p {
+    margin: 4px 2px;
+  }
+
+  .rc-quote-notes {
+    break-inside: avoid;
+  }
+
+  .rc-quote-notes p {
+    font-size: 8pt;
+  }
+}

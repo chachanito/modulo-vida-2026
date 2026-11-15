@@ -42,6 +42,16 @@ try {
  $shot = Send-Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
  [IO.File]::WriteAllBytes((Join-Path $projectRoot 'tmp/browser-test.png'), [Convert]::FromBase64String($shot.data))
  if ($text -notmatch '^PASS') { throw 'Las pruebas no terminaron correctamente.' }
+ $null = Send-Cdp 'Page.navigate' @{url='http://127.0.0.1:8087/tests/cotizador-core.html'}
+ $quoteTest = ''
+ for ($attempt=0; $attempt -lt 80; $attempt++) {
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("results").textContent';returnByValue=$true}
+  $quoteTest = $result.result.value
+  if ($quoteTest -match '^(PASS|FAIL)') { break }
+  Start-Sleep -Milliseconds 500
+ }
+ Write-Output ('COTIZADOR: ' + $quoteTest)
+ if ($quoteTest -notmatch '^PASS') { throw 'Las pruebas del cotizador no terminaron correctamente.' }
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  Start-Sleep -Milliseconds 700
  if ($SiteUrl -like 'https://*') {

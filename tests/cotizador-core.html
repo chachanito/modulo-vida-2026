@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Pruebas del cotizador</title></head>
+<body>
+<pre id="results">RUNNING</pre>
+<script src="../public/js/cotizador_rc_core.js"></script>
+<iframe id="cotizador" src="../cotizador.html" title="Cotizador en prueba" hidden></iframe>
+<script>
+const output = document.getElementById('results');
+const passed = [];
+let failed = false;
+function assert(condition, name) {
+  if (!condition) throw new Error(name);
+  passed.push(name);
+}
+function closeTo(actual, expected) {
+  return Math.abs(actual - expected) < 0.005;
+}
+
+try {
+  // Comprueba las reglas de prima, contribuciones, impuestos y tramos de emision.
+  const core = window.CotizadorRC;
+  const quote = core.calculate({
+    insuredValue: '5000',
+    vehicles: [{ brand: 'A', model: 'B', year: '2026', plate: 'ABC1234', passengers: '12', passengerRate: '6.50' }]
+  });
+  assert(quote.vehicles[0].complete && quote.vehicles[0].netPremium === 129.35, 'Prima por vehículo: base + pasajeros × prima neta');
+  assert(quote.insuredTotal === 5000 && quote.vehicleCount === 1, 'Valor asegurado depende de marca y modelo');
+  assert(closeTo(quote.bankContribution, 4.53) && closeTo(quote.scTax, 0.65), 'Contribuciones de 3,5% y 0,5%');
+  assert(quote.issueFee === 0.5 && closeTo(quote.vat, 20.25) && quote.totalPremium === 155.28, 'Derecho de emisión, IVA y total');
+
+  const differentRates = core.calculate({
+    insuredValue: '5000',
+    vehicles: [
+      { brand: 'A', model: 'B', year: '2026', plate: 'ABC1234', passengers: '12', passengerRate: '6.50' },
+      { brand: 'A', model: 'B', year: '2026', plate: 'XYZ9876', passengers: '12', passengerRate: '0' }
+    ]
+  });
+  assert(differentRates.netPremium === 180.7 && differentRates.vehicles[1].netPremium === 51.35, 'Cada vehículo usa su propia prima neta por pasajero');
+  const higherLimit = core.calculate({
+    insuredValue: '10000',
+    vehicles: [{ brand: 'A', model: 'B', year: '2026', plate: 'ABC1234', passengers: '12', passengerRate: '6.50' }]
+  });
+  assert(closeTo(higherLimit.vehicles[0].netPremium, 194.58), 'Prima base del límite de USD 10.000');
+  const invalidPassengers = core.calculate({
+    insuredValue: '5000',
+    vehicles: [{ brand: 'A', model: 'B', year: '2026', plate: 'ABC1234', passengers: '10', passengerRate: '6.50' }]
+  });
+  assert(invalidPassengers.vehicleCount === 0, 'Rechaza cantidades de pasajeros fuera de la lista permitida');
+
+  const partial = core.calculate({
+    insuredValue: '10000',
+    vehicles: [{ brand: 'A', model: 'B' }]
+  });
+  assert(partial.vehicles[0].insuredValue === 10000 && partial.vehicles[0].netPremium === null, 'Condiciones independientes para valor asegurado y prima');
+  assert(partial.issueFee === 0.9 && partial.totalPremium === 1.04, 'Derecho de emisión de Excel cuando la prima neta es cero');
+  assert([0, 250.99, 251, 501, 1001, 2001, 4001, 10000000].map(core.emissionFee).join(',') === '0.9,0.5,1,3,5,7,9,', 'Tramos del derecho de emisión');
+} catch (error) {
+  failed = true;
+  output.textContent = 'FAIL\n' + error.stack + '\n' + passed.join('\n');
+}
+
+document.getElementById('cotizador').addEventListener('load', () => {
+  if (failed) return;
+  try {
+    // Verifica que la interfaz y la plantilla imprimible se carguen completas.
+    const frame = document.getElementById('cotizador');
+    const win = frame.contentWindow;
+    const doc = win.document;
+    assert(!doc.getElementById('rc-print').disabled && !doc.getElementById('rc-copy').disabled, 'No se exige un mínimo de cuatro vehículos');
+    assert(doc.querySelector('.rc-quote-coverages').textContent.includes('COBERTURAS') && doc.querySelector('.rc-quote-coverages').textContent.includes('COBERTURA ADICIONAL PARA PASAJEROS EN EXCESO DEL SPPAT'), 'La cotización imprimible conserva las coberturas');
+    assert(doc.querySelector('.rc-quote-notes').textContent.includes('0992374722') && doc.querySelector('.rc-quote-notes').textContent.includes('15 días'), 'La cotización imprimible conserva las notas importantes');
+    assert(doc.getElementById('quote-limit-coverage').textContent !== '' && doc.getElementById('quote-expires').textContent !== '', 'La cotización imprimible muestra el límite y la vigencia');
+    const headerImage = doc.querySelector('.rc-quote-illustration img');
+    const watermarkImage = doc.querySelector('.rc-quote-watermark');
+    assert(headerImage && watermarkImage && headerImage.complete && headerImage.naturalWidth > 0 && watermarkImage.complete && watermarkImage.naturalWidth > 0, 'Carga las ilustraciones y el logo para la cotización imprimible');
+    const printedLimit = doc.getElementById('quote-limit-coverage').textContent;
+    doc.getElementById('rc-limit').value = '10000';
+    doc.getElementById('rc-limit').dispatchEvent(new win.Event('change', { bubbles: true }));
+    assert(doc.getElementById('quote-limit-coverage').textContent !== printedLimit && doc.getElementById('quote-deductible').textContent.includes('35%'), 'Actualiza límite y deducible impresos al cambiar el plan');
+    doc.getElementById('rc-limit').value = '5000';
+    doc.getElementById('rc-limit').dispatchEvent(new win.Event('change', { bubbles: true }));
+
+    // Ejercita las validaciones de anio, pasajeros, placa y captura de prima.
+    const selects = doc.querySelectorAll('#rc-vehicles tr:first-child select');
+    const [brand, models] = Object.entries(win.RCVehicleCatalog)[0];
+    const yearInput = doc.querySelector('#rc-vehicles tr:first-child [data-field="year"]');
+    const passengersInput = doc.querySelector('#rc-vehicles tr:first-child [data-field="passengers"]');
+    const yearOptions = doc.getElementById('rc-year-options');
+    const passengerOptions = doc.getElementById('rc-passenger-options');
+    assert(yearInput.type === 'text' && yearInput.inputMode === 'numeric' && yearInput.maxLength === 4 && yearOptions.options.length === new Date().getFullYear() - 1998 + 1, 'Año sugerido desde 1998 hasta el actual y editable');
+    assert(passengersInput.type === 'text' && passengersInput.inputMode === 'numeric' && passengersInput.maxLength === 2 && Array.from(passengerOptions.options).map((option) => option.value).join(',') === '12,15,17,20,25,30,35,40,45', 'Pasajeros sugeridos y editables solo con valores permitidos');
+    selects[0].value = brand;
+    selects[0].dispatchEvent(new win.Event('change', { bubbles: true }));
+    selects[1].value = models[0];
+    selects[1].dispatchEvent(new win.Event('change', { bubbles: true }));
+    yearInput.value = '1111111';
+    yearInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    assert(yearInput.value === '', 'Elimina años fuera del rango aunque se escriban o peguen');
+    yearInput.value = String(new Date().getFullYear());
+    yearInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    yearInput.value = '1';
+    yearInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    yearInput.dispatchEvent(new win.Event('blur'));
+    assert(yearInput.value === '', 'Borra años incompletos al salir del campo');
+    yearInput.value = String(new Date().getFullYear());
+    yearInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    const plate = doc.querySelector('#rc-vehicles tr:first-child [data-field="plate"]');
+    plate.value = '1111111';
+    plate.dispatchEvent(new win.Event('input', { bubbles: true }));
+    assert(plate.value === '', 'Filtra placas que no respetan el patrón');
+    plate.value = 'ABC1234';
+    plate.dispatchEvent(new win.Event('input', { bubbles: true }));
+    plate.value = 'ABC123';
+    plate.dispatchEvent(new win.Event('input', { bubbles: true }));
+    plate.dispatchEvent(new win.Event('blur'));
+    assert(plate.value === '', 'Borra placas incompletas al salir del campo');
+    plate.value = 'ABC1234';
+    plate.dispatchEvent(new win.Event('input', { bubbles: true }));
+    passengersInput.value = '13';
+    passengersInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    assert(passengersInput.value === '', 'Elimina pasajeros fuera de la lista aunque se escriban o peguen');
+    passengersInput.value = '12';
+    passengersInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    passengersInput.value = '1';
+    passengersInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    passengersInput.dispatchEvent(new win.Event('blur'));
+    assert(passengersInput.value === '', 'Borra cantidades de pasajeros incompletas al salir del campo');
+    passengersInput.value = '12';
+    passengersInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    const passengerRate = doc.querySelector('#rc-vehicles tr:first-child [data-field="passengerRate"]');
+    passengerRate.value = '6.50';
+    passengerRate.dispatchEvent(new win.Event('input', { bubbles: true }));
+    assert(doc.getElementById('rc-count').textContent === '1', 'Cotiza la fila con año, placa y pasajeros válidos');
+
+    passengersInput.value = '';
+    passengersInput.dispatchEvent(new win.Event('input', { bubbles: true }));
+    assert(doc.querySelector('#rc-vehicles tr:first-child .rc-insured').textContent !== '', 'Conserva el valor asegurado de una fila con prima incompleta');
+    assert(doc.querySelector('#rc-vehicles tr:first-child .rc-row-premium').textContent === 'Falta datos', 'Muestra la condición de datos incompletos');
+
+    // Confirma el limite de filas y que la accion de limpiar restaure el formulario.
+    for (let index = 0; index < 96; index++) doc.getElementById('rc-add').click();
+    assert(doc.querySelectorAll('#rc-vehicles tr').length === 100 && doc.getElementById('rc-add').disabled, 'Limita la captura a las 100 filas del Excel');
+    win.confirm = () => true;
+    doc.getElementById('rc-clear').click();
+    assert(doc.querySelectorAll('#rc-vehicles tr').length === 4 && !doc.getElementById('rc-add').disabled, 'Limpiar restablece el cotizador');
+    output.textContent = 'PASS\n' + passed.join('\n');
+  } catch (error) {
+    failed = true;
+    output.textContent = 'FAIL\n' + error.stack + '\n' + passed.join('\n');
+  }
+});
+</script>
+</body>
+</html>

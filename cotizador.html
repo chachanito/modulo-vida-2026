@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Cotizador de responsabilidad civil para flotas de transporte.">
+  <title>Cotizador RC Transporte</title>
+  <!-- Carga la navegacion, los datos, el motor de calculo y los estilos del modulo. -->
+  <script src="public/js/pages/theme.js"></script>
+  <script src="public/js/pages/navigation.js" defer></script>
+  <script src="public/js/cotizador_rc_core.js" defer></script>
+  <script src="public/js/data/rc_vehicle_catalog.js" defer></script>
+  <script src="public/js/modules/cotizador_rc.js" defer></script>
+  <link rel="stylesheet" href="public/css/navigation.css">
+  <link rel="stylesheet" href="public/css/pages.css">
+  <link rel="stylesheet" href="public/css/modules/cotizador_rc.css">
+  <link rel="stylesheet" href="public/css/modules/cotizador_rc_dark.css">
+  <link rel="stylesheet" href="public/css/modules/cotizador_rc_layout.css">
+  <link rel="stylesheet" href="public/css/modules/cotizador_rc_print.css">
+</head>
+<body>
+  <!-- Navegacion compartida y acceso al cotizador. -->
+  <nav class="app-nav" aria-label="Herramientas principales">
+    <a class="app-nav__brand" href="index.html">Herramientas Vida</a>
+    <div class="app-nav__links">
+      <a class="app-nav__link" href="index.html">Justificador</a>
+      <a class="app-nav__link" href="cruce-datos.html">Cruce de datos</a>
+      <a class="app-nav__link" href="cotizador.html" aria-current="page">Cotizador</a>
+    </div>
+  </nav>
+
+  <main class="rc-page">
+    <!-- Encabezado y opciones generales del producto. -->
+    <header class="rc-heading">
+      <div>
+        <h1>Cotizador</h1>
+        <p>Cotiza flotas de transporte con la lógica tarifaria del formato de emisión.</p>
+      </div>
+      <div class="rc-product">
+        <label for="rc-product">Producto</label>
+        <select id="rc-product"><option>RC Transporte</option></select>
+        <label class="theme-control" for="theme-select">Tema
+          <select id="theme-select">
+            <option value="light">Claro</option>
+            <option value="dark">Oscuro</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <div class="rc-screen">
+      <p class="privacy">Los datos se procesan en este navegador y no se envían a un servidor.</p>
+
+      <!-- Datos del cliente, vigencia y limite asegurado. -->
+      <section class="rc-card">
+        <h2>Información del cliente</h2>
+        <div class="rc-client-grid">
+          <div class="rc-field">
+            <label for="rc-id">Cédula o RUC</label>
+            <input id="rc-id" inputmode="numeric" maxlength="13">
+          </div>
+          <div class="rc-field">
+            <label for="rc-client">Nombre o razón social</label>
+            <input id="rc-client" maxlength="100">
+          </div>
+          <div class="rc-field">
+            <label for="rc-broker">Bróker</label>
+            <input id="rc-broker" maxlength="80">
+          </div>
+          <div class="rc-field">
+            <label for="rc-phone">Teléfono</label>
+            <input id="rc-phone" type="tel" maxlength="20">
+          </div>
+          <div class="rc-field">
+            <label for="rc-email">Correo</label>
+            <input id="rc-email" type="email" maxlength="100">
+          </div>
+          <div class="rc-field">
+            <label for="rc-city">Ciudad</label>
+            <input id="rc-city" maxlength="60">
+          </div>
+        </div>
+        <div class="rc-settings">
+          <div class="rc-field">
+            <label for="rc-date">Fecha de cotización</label>
+            <input id="rc-date" type="date">
+          </div>
+          <div class="rc-field">
+            <label for="rc-start">Inicio de vigencia</label>
+            <input id="rc-start" type="date">
+          </div>
+          <div class="rc-field">
+            <label for="rc-limit">Límite RC por vehículo</label>
+            <select id="rc-limit">
+              <option value="5000">USD 5.000</option>
+              <option value="10000">USD 10.000</option>
+            </select>
+          </div>
+        </div>
+        <p class="rc-help">Aplica a buses y furgonetas de turismo o escolares, y buses intercantonales, interparroquiales y urbanos. No aplica a buses interprovinciales ni internacionales.</p>
+      </section>
+
+      <!-- Tabla de captura, restricciones y acciones sobre la flota. -->
+      <section class="rc-card">
+        <h2>Vehículos</h2>
+        <div class="rc-table-wrap">
+          <table class="rc-table">
+            <thead>
+              <tr>
+                <th>Ítem</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Placa (AAA1234)</th>
+                <th>Pasajeros</th>
+                <th>PRIMA NETA por pasajero</th>
+                <th>Valor RC</th>
+                <th>Prima neta</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rc-vehicles"></tbody>
+          </table>
+        </div>
+        <p class="rc-help">Año permitido: desde 1998 hasta el año actual. Placa: 3 letras y 4 números (AAA1234). Pasajeros permitidos: 12, 15, 17, 20, 25, 30, 35, 40 o 45. Puedes seleccionar o escribir/pegar el año y la cantidad de pasajeros.</p>
+        <div class="rc-summary-notes">
+          <div><strong>Fin de vigencia</strong><span id="rc-end">—</span></div>
+          <div><strong>Cotización válida hasta</strong><span id="rc-expires">—</span></div>
+          <div><strong>Deducible RC</strong><span id="rc-deductible"></span></div>
+        </div>
+        <div class="rc-actions">
+          <button type="button" class="btn" id="rc-add">Agregar vehículo</button>
+          <button type="button" class="btn btn-primary" id="rc-print">Imprimir cotización</button>
+          <button type="button" class="btn" id="rc-copy">Copiar resumen</button>
+          <button type="button" class="btn" id="rc-clear">Limpiar</button>
+          <span id="rc-copy-status" class="rc-copy-status" role="status"></span>
+        </div>
+      </section>
+
+      <!-- Estado de validacion y resumen calculado de la cotizacion. -->
+      <div id="rc-status" class="rc-notice is-warn" role="status" aria-live="polite"></div>
+      <section class="rc-card">
+        <h2>Resumen de cotización</h2>
+        <div class="rc-totals">
+          <div class="rc-metric">
+            <small>Vehículos con prima</small>
+            <strong id="rc-count">0</strong>
+          </div>
+          <div class="rc-metric">
+            <small>Suma asegurada total</small>
+            <strong id="rc-insured-total">$0,00</strong>
+          </div>
+          <div class="rc-metric">
+            <small>Prima neta</small>
+            <strong id="rc-net-total">$0,00</strong>
+          </div>
+          <div class="rc-metric is-total">
+            <small>Prima total</small>
+            <strong id="rc-total">$0,00</strong>
+          </div>
+        </div>
+        <div class="rc-breakdown">
+          <div><span>Contribución Superintendencia de Bancos (3,5%)</span><strong id="rc-bank">$0,00</strong></div>
+          <div><span>Impuesto SC (0,5%)</span><strong id="rc-sc">$0,00</strong></div>
+          <div><span>Derecho de emisión</span><strong id="rc-issue">$0,00</strong></div>
+          <div><span>IVA (15%)</span><strong id="rc-vat">$0,00</strong></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Plantilla que JavaScript completa para imprimir o guardar como PDF. -->
+    <article class="rc-quote" aria-label="Cotización imprimible">
+      <img class="rc-quote-watermark" src="public/images/swaden-logo.png" alt="" aria-hidden="true">
+      <figure class="rc-quote-illustration">
+        <img src="public/images/rc-vehicles-header.png" alt="Ilustraciones de transporte escolar, bus y furgoneta">
+      </figure>
+
+      <!-- Identidad de la cotizacion y fechas de validez. -->
+      <header class="rc-quote-head">
+        <div>
+          <p class="rc-quote-kicker">COTIZACIÓN DE SEGURO</p>
+          <h1>RESPONSABILIDAD CIVIL</h1>
+          <p>Flota de buses y furgonetas de transporte</p>
+        </div>
+        <div class="rc-quote-dates">
+          <p><strong>Fecha de cotización</strong><span id="quote-date"></span></p>
+          <p><strong>Válida hasta</strong><span id="quote-expires"></span></p>
+        </div>
+      </header>
+
+      <!-- Datos del cliente para la cotizacion impresa. -->
+      <section class="rc-quote-client">
+        <h2>INFORMACIÓN DEL CLIENTE</h2>
+        <div class="rc-quote-grid">
+          <p><strong>Identificación:</strong> <span id="quote-id"></span></p>
+          <p><strong>Cliente:</strong> <span id="quote-client"></span></p>
+          <p><strong>Bróker:</strong> <span id="quote-broker"></span></p>
+          <p><strong>Teléfono:</strong> <span id="quote-phone"></span></p>
+          <p><strong>Correo:</strong> <span id="quote-email"></span></p>
+          <p><strong>Ciudad:</strong> <span id="quote-city"></span></p>
+          <p><strong>Inicio de vigencia:</strong> <span id="quote-start"></span></p>
+          <p><strong>Fin de vigencia:</strong> <span id="quote-end"></span></p>
+        </div>
+      </section>
+
+      <!-- Vehiculos cotizados y desglose de primas e impuestos. -->
+      <section class="rc-quote-fleet">
+        <h2>DETALLE DE VEHÍCULOS</h2>
+        <table class="rc-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
+              <th>Placa</th>
+              <th>Pasajeros</th>
+              <th>Valor RC</th>
+              <th>Prima neta</th>
+            </tr>
+          </thead>
+          <tbody id="quote-vehicles"></tbody>
+        </table>
+        <div class="rc-quote-totals">
+          <p><span>Vehículos ingresados</span><strong id="quote-count"></strong></p>
+          <p><span>Prima neta</span><strong id="quote-net"></strong></p>
+          <p><span>Prima total</span><strong id="quote-total"></strong></p>
+        </div>
+        <div class="rc-breakdown">
+          <div><span>Contribución Superintendencia de Bancos (3,5%)</span><strong id="quote-bank"></strong></div>
+          <div><span>Impuesto SC (0,5%)</span><strong id="quote-sc"></strong></div>
+          <div><span>Derecho de emisión</span><strong id="quote-issue"></strong></div>
+          <div><span>IVA (15%)</span><strong id="quote-vat"></strong></div>
+        </div>
+      </section>
+
+      <!-- Coberturas y deducibles que deben mantenerse en el documento PDF. -->
+      <section class="rc-quote-coverages">
+        <h2>COBERTURAS</h2>
+        <h3>Responsabilidad Civil <span>(Daños a terceros)</span></h3>
+        <p class="rc-quote-description">Para amparar los daños ocasionados por el vehículo asegurado, con exigencia de Sentencia Ejecutoriada.</p>
+        <table class="rc-coverage-table">
+          <tbody>
+            <tr>
+              <td>Subdividida 50% daños materiales<br>50% lesiones corporales en exceso del SPPAT</td>
+              <td id="quote-limit-coverage"></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>COBERTURA ADICIONAL PARA PASAJEROS EN EXCESO DEL SPPAT</h3>
+        <table class="rc-coverage-table">
+          <tbody>
+            <tr><td>Muerte Accidental - límite por ocupante</td><td>USD 2.000</td></tr>
+            <tr><td>Desmembración Accidental - límite por ocupante</td><td>USD 2.000</td></tr>
+            <tr><td>Incapacidad Total y/o permanente - límite por ocupante</td><td>USD 2.000</td></tr>
+            <tr><td>Gastos Médicos - límite por ocupante</td><td>USD 300</td></tr>
+            <tr><td>Gastos de Sepelio - límite por ocupante</td><td>USD 150</td></tr>
+          </tbody>
+        </table>
+        <h3>DEDUCIBLES RC - GASTOS MÉDICOS</h3>
+        <table class="rc-coverage-table">
+          <tbody>
+            <tr><td>Responsabilidad Civil</td><td id="quote-deductible"></td></tr>
+            <tr><td>Gastos médicos</td><td>10% del valor del siniestro, no menor a USD 30 - por pasajero.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Condiciones de pago y avisos que cierran la cotizacion. -->
+      <section class="rc-quote-payment">
+        <h2>FORMA DE PAGO</h2>
+        <p>Únicamente de contado, contra-entrega de la póliza. No aplica beneficio de pronto pago.</p>
+      </section>
+      <section class="rc-quote-notes">
+        <h2>NOTAS IMPORTANTES</h2>
+        <p><strong>Este producto no aplica para buses interprovinciales e internacionales.</strong></p>
+        <p>La presente cotización tiene validez de 15 días y no implica la aceptación del riesgo, el mismo que solo será asumido mediante la emisión de la póliza correspondiente y el consentimiento por escrito de la Compañía, previo al pago de la prima correspondiente.</p>
+        <p>La forma de pago es únicamente de contado, contra-entrega de la póliza (no aplica beneficio de pronto pago).</p>
+        <p>Denuncia al 0992374722 por cobros adicionales al valor de esta cotización.</p>
+      </section>
+    </article>
+  </main>
+
+  <!-- Pie compartido con las paginas de la aplicacion. -->
+  <footer class="app-footer">
+    &copy; Copyright 2026, Todos los derechos reservados<br>
+    <strong>Cristian Heredia</strong> · Emisión Nacional
+  </footer>
+</body>
+</html>

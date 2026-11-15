@@ -2,7 +2,8 @@
   const storageKey = 'herramientas-vida-sidebar';
   const icons = {
     justificador: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h13"/></svg>',
-    cruce: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h11m0 0-3-3m3 3-3 3M19 17H8m0 0 3-3m-3 3 3 3"/></svg>'
+    cruce: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h11m0 0-3-3m3 3-3 3M19 17H8m0 0 3-3m-3 3 3 3"/></svg>',
+    cotizador: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v4H7zM5 7h14v14H5zM8 11h8M8 15h3m2 0h3M8 18h3m2 0h3"/></svg>'
   };
   const mobileMedia = matchMedia('(max-width: 760px)');
 
@@ -40,7 +41,8 @@
 
     links.querySelectorAll('.app-nav__link').forEach((link) => {
       const label = link.textContent.trim();
-      const key = link.getAttribute('href')?.includes('cruce') ? 'cruce' : 'justificador';
+      const href = link.getAttribute('href') || '';
+      const key = href.includes('cotizador') ? 'cotizador' : href.includes('cruce') ? 'cruce' : 'justificador';
       link.dataset.label = label;
       link.innerHTML = '<span class="app-nav__icon">' + icons[key] + '</span><span class="app-nav__label">' + label + '</span>';
     });

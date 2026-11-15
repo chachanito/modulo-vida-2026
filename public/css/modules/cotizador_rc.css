@@ -1,0 +1,347 @@
+/* Colores compartidos por el formulario, el resumen y la cotizacion. */
+:root {
+  --rc-blue: #173b59;
+  --rc-teal: #0f766e;
+  --rc-line: #d8e2ea;
+  --rc-soft: #f7fafc;
+}
+
+/* Ancho, encabezado y selector de producto. */
+.rc-page {
+  max-width: 1500px;
+}
+
+.rc-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.rc-heading h1 {
+  margin: 0 0 6px;
+  font-size: clamp(25px, 3vw, 36px);
+}
+
+.rc-heading p {
+  margin: 0;
+  color: #536b7a;
+}
+
+.rc-product {
+  min-width: min(100%, 330px);
+}
+
+.rc-product label,
+.rc-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #365366;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rc-product select,
+.rc-field select,
+.rc-field input {
+  width: 100%;
+  min-height: 43px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff;
+  color: #172d3b;
+}
+
+/* Tarjetas, datos del cliente y configuracion de la cotizacion. */
+.rc-card {
+  margin-bottom: 18px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid var(--rc-line);
+  border-radius: 14px;
+  box-shadow: 0 3px 14px #172d3b0a;
+}
+
+.rc-card h2 {
+  margin: 0 0 16px;
+  color: var(--rc-blue);
+  font-size: 18px;
+}
+
+.rc-client-grid,
+.rc-settings,
+.rc-totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.rc-settings {
+  margin-top: 16px;
+}
+
+.rc-help {
+  margin: 10px 0 0;
+  color: #607686;
+  font-size: 13px;
+}
+
+/* Tabla editable de vehiculos y sus estados. */
+.rc-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--rc-line);
+  border-radius: 10px;
+}
+
+.rc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.rc-table th {
+  padding: 10px 8px;
+  background: var(--rc-blue);
+  color: #fff;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rc-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid #e7edf2;
+  vertical-align: middle;
+}
+
+.rc-table input {
+  min-width: 90px;
+  width: 100%;
+  border: 1px solid #cad6df;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.rc-table td:nth-child(3) input {
+  min-width: 230px;
+}
+
+.rc-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.rc-table tr.is-incomplete {
+  background: #fff7ed;
+}
+
+.rc-item {
+  width: 45px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.rc-money {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rc-remove {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #efc4c4;
+  border-radius: 7px;
+  background: #fff;
+  color: #a52323;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Acciones y mensajes de validacion. */
+.rc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.rc-actions button {
+  padding: 10px 15px;
+}
+
+.rc-notice {
+  margin: 0 0 18px;
+  padding: 12px 15px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.rc-notice.is-warn {
+  background: #fff3d6;
+  color: #77510c;
+}
+
+.rc-notice.is-good {
+  background: #def5e9;
+  color: #14623e;
+}
+
+/* Indicadores, desglose de importes y fechas. */
+.rc-metric {
+  padding: 16px;
+  border-left: 4px solid var(--rc-teal);
+  border-radius: 9px;
+  background: var(--rc-soft);
+}
+
+.rc-metric small {
+  display: block;
+  color: #607686;
+  font-weight: 650;
+}
+
+.rc-metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--rc-blue);
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-metric.is-total {
+  border-left-color: #d97706;
+  background: #fff8e9;
+}
+
+.rc-breakdown {
+  max-width: 520px;
+  margin: 18px 0 0 auto;
+}
+
+.rc-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e4ebf0;
+}
+
+.rc-breakdown strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-summary-notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.rc-summary-notes div {
+  padding: 13px;
+  border-radius: 9px;
+  background: #f4f7fa;
+}
+
+.rc-summary-notes strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--rc-blue);
+}
+
+/* Presentacion base de la plantilla, que se completa desde JavaScript. */
+.rc-quote {
+  display: none;
+}
+
+.rc-quote-head {
+  border-bottom: 3px solid var(--rc-blue);
+  padding-bottom: 10px;
+}
+
+.rc-quote-head h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.rc-quote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 24px;
+  margin: 18px 0;
+}
+
+.rc-quote-grid p {
+  margin: 0;
+}
+
+.rc-legal {
+  margin-top: 18px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.rc-copy-status {
+  color: #0f766e;
+  font-size: 13px;
+}
+
+/* Ajustes para pantallas pequenas y vista impresa sencilla. */
+@media (max-width: 760px) {
+  .rc-heading {
+    flex-direction: column;
+  }
+
+  .rc-product {
+    width: 100%;
+  }
+
+  .rc-card {
+    padding: 16px;
+  }
+
+  .rc-table td:nth-child(3) input {
+    min-width: 180px;
+  }
+}
+
+@media print {
+  body {
+    padding-left: 0 !important;
+    background: #fff;
+  }
+
+  .app-nav,
+  .app-footer,
+  .rc-screen,
+  .rc-heading {
+    display: none !important;
+  }
+
+  main.rc-page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .rc-quote {
+    display: block;
+    color: #111;
+  }
+
+  .rc-quote .rc-table th {
+    background: #e6edf3 !important;
+    color: #111;
+  }
+
+  .rc-quote .rc-table {
+    font-size: 10px;
+  }
+
+  .rc-quote .rc-table td,
+  .rc-quote .rc-table th {
+    padding: 5px;
+  }
+}

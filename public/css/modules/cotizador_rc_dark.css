@@ -1,0 +1,20 @@
+/* Ajusta tarjetas, campos, estados y resumen al tema oscuro de la aplicacion. */
+.theme-dark .rc-heading p,.theme-dark .rc-help{color:#b7c5d5}
+.theme-dark .rc-card{background:#182538;border-color:#3b4b60}
+.theme-dark .rc-card h2,.theme-dark .rc-metric strong,.theme-dark .rc-summary-notes strong{color:#e2e8f0}
+.theme-dark .rc-product label,.theme-dark .rc-field label{color:#cbd5e1}
+.theme-dark .rc-table td{border-color:#3b4b60}
+.theme-dark .rc-table tbody tr:nth-child(even){background:#1d2d42}
+.theme-dark .rc-table tr.is-incomplete{background:#4a3417}
+.theme-dark .rc-metric,.theme-dark .rc-summary-notes div{background:#213249}
+.theme-dark .rc-metric.is-total{background:#4a3417}
+.theme-dark .rc-breakdown div{border-color:#3b4b60}
+.theme-dark .rc-remove{background:#3b1f29;color:#fecaca;border-color:#7f3542}
+.theme-dark .rc-table input{background:#213249;color:#e2e8f0;border-color:#53657e}
+/* Conserva legibles los selectores de marca y modelo en ambos temas. */
+.rc-table select{min-width:150px;width:100%;border:1px solid #cad6df;border-radius:6px;padding:8px;background:#fff;color:#172d3b}
+.rc-table td:nth-child(3) select{min-width:260px}
+.theme-dark .rc-table select{background:#213249;color:#e2e8f0;border-color:#53657e}
+.rc-page,.rc-screen,.rc-card,.rc-table-wrap{min-width:0;max-width:100%}
+.rc-product{min-width:0;width:min(100%,330px)}
+@media(max-width:760px){main.rc-page{width:calc(100vw - var(--sidebar-compact-width));margin:0;overflow-x:hidden}.rc-heading,.rc-product{width:100%}.rc-card{width:100%}}
