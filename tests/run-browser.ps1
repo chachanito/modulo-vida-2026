@@ -130,6 +130,8 @@ try {
   Start-Sleep -Milliseconds 500
  }
  if (-not $productsReady) { throw 'El módulo Productos cerrados no terminó de cargar.' }
+ $productsActions = Send-Cdp 'Runtime.evaluate' @{expression='!Array.from(document.querySelectorAll(".action button")).some(button=>button.textContent.trim()==="Exportar JSON") && Array.from(document.querySelectorAll(".action button")).some(button=>button.textContent.trim()==="Imprimir / PDF") && Array.from(document.querySelectorAll(".action button")).some(button=>button.textContent.trim()==="Restablecer producto")';returnByValue=$true}
+ if (-not $productsActions.result.value) { throw 'Las acciones de Productos cerrados no coinciden con las esperadas.' }
  $productsFooter = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("footer").innerText.includes("Mauricio Balseca") && document.querySelector("footer").innerText.includes("Cristian heredia")';returnByValue=$true}
  if (-not $productsFooter.result.value) { throw 'El pie de página de Productos cerrados no coincide.' }
  $productsMobile = Send-Cdp 'Runtime.evaluate' @{expression='document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
