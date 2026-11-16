@@ -2,6 +2,7 @@
     'use strict';
     // Libraries are hosted with the site. File contents never leave the browser.
     let pdfModule, mammothLoading;
+    // Keep PDF extraction in page order so lines from different pages do not get merged into a single block.
     function check(signal) {
         if (signal?.aborted) throw new DOMException('Lectura cancelada.', 'AbortError');
     }

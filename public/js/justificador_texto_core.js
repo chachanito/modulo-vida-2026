@@ -1,3 +1,4 @@
+// Normalize smart quotes and dashes before wrapping; the visual width depends on ASCII-safe punctuation.
 function justificarTexto(texto, longitud = 75) {
     texto = texto.replace(/[\u201C\u201D]/g, '"')
                  .replace(/[\u2018\u2019]/g, "'")

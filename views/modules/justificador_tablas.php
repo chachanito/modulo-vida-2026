@@ -1,4 +1,6 @@
-<?php
+﻿<?php
+// Solo los usuarios con el permiso explicito de tablas pueden entrar aqui; la guarda
+// de acceso evita que la herramienta quede accesible desde rutas directas.
 if (!isset($_SESSION['usuario_id']) || (($_SESSION['rol'] ?? '') !== 'admin' && !in_array('justificador_tablas', (array)($_SESSION['permisos'] ?? []), true))) {
     require __DIR__ . '/403.php';
     return;

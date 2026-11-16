@@ -1,5 +1,6 @@
 (() => {
     'use strict';
+    // This screen assembles a final document from separate text and table blocks that the user can reorder.
     document.addEventListener('DOMContentLoaded', () => {
         const el = id => document.getElementById('jv-' + id);
         if (!el('preview')) return;

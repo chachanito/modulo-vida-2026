@@ -7,6 +7,7 @@ document.querySelector('iframe').addEventListener('load', async () => {
  function assert(condition, name) { if (!condition) throw new Error(name); passed.push(name); output.textContent='RUNNING\n'+passed.join('\n'); }
  function click(id) { doc.getElementById(id).click(); }
  try {
+   // Verifica las preferencias visuales y la navegacion global.
    const theme = doc.getElementById('theme-select');
    theme.value='dark'; theme.dispatchEvent(new win.Event('change'));
    const darkBackground = win.getComputedStyle(doc.body).backgroundColor;
@@ -22,6 +23,7 @@ document.querySelector('iframe').addEventListener('load', async () => {
    assert(sidebar.classList.contains('is-collapsed')===wasCollapsed, 'Restaurar tamaño del menú lateral');
    assert(doc.querySelector('.app-footer')?.textContent.includes('Cristian Heredia'), 'Pie de página del Justificador');
    assert(!doc.querySelector('a[download]'), 'Sin enlaces de descarga en la interfaz');
+   // Ejercita la preparacion del texto y el armado del documento final.
    const text = doc.getElementById('texto');
    text.value = 'Este es un párrafo de prueba suficientemente largo para verificar que el justificador distribuye los espacios entre las palabras y conserva los caracteres especiales como la ñ y las tildes.\n\nSegundo párrafo.';
    text.dispatchEvent(new win.Event('input', {bubbles:true}));
@@ -44,6 +46,7 @@ document.querySelector('iframe').addEventListener('load', async () => {
      input.dispatchEvent(new win.Event('change', {bubbles:true}));
      for (let attempt=0; attempt<100 && doc.getElementById('jt-result').hidden; attempt++) await new Promise(resolve=>setTimeout(resolve,50));
    }
+   // Usa archivos sintéticos para comprobar los lectores de formatos admitidos.
    await uploadTable(new win.File(['Concepto,Valor\nPrueba CSV,123\n'], 'tabla.csv'));
    assert(doc.getElementById('jt-preview').textContent.includes('Prueba CSV'), 'Importar CSV real');
    const workbook = win.XLSX.utils.book_new();

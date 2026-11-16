@@ -1,4 +1,6 @@
-<?php
+﻿<?php
+// El acceso al modulo se controla aqui para impedir que la pantalla se abra sin la
+// sesion y permisos del rol que corresponde al justificador de vida.
 if (!isset($_SESSION['usuario_id']) || (($_SESSION['rol'] ?? '') !== 'admin' && !in_array('justificador_vida', (array)($_SESSION['permisos'] ?? []), true))) {
     require __DIR__ . '/403.php';
     return;
@@ -43,6 +45,10 @@ $justificadorIntegrado = true;
 </div>
 <?php unset($justificadorIntegrado); ?>
 <link rel="stylesheet" href="public/css/modules/justificador_tablas.css?v=<?= filemtime(__DIR__ . '/../../public/css/modules/justificador_tablas.css') ?>">
+<?php
+// El modulo compone texto y tablas en un documento comun; los scripts de apoyo se
+// cargan aqui para trabajar sobre un solo estado de documento.
+?>
 <script src="public/js/justificador_texto_core.js?v=<?= filemtime(__DIR__ . '/../../public/js/justificador_texto_core.js') ?>" defer></script>
 <script src="public/js/vendor/xlsx-0.20.3.full.min.js" defer></script>
 <script src="public/js/justificador_tablas_core.js?v=<?= filemtime(__DIR__ . '/../../public/js/justificador_tablas_core.js') ?>" defer></script>

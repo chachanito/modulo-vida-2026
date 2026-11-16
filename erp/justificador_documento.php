@@ -1,5 +1,8 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/bootstrap.php';
+// Los archivos se procesan en el backend para validar sesion, permisos y CSRF antes
+// de pasar el binario a Python. El endpoint responde siempre JSON para que la UI
+// muestre mensajes de error sin revelar detalles internos extra.
 header('Content-Type: application/json; charset=utf-8');
 function documentoReply(array $data, int $status = 200): void {
     http_response_code($status);
@@ -29,6 +32,8 @@ try {
             if (is_file($candidate)) { $python = $candidate; break; }
         }
     }
+    // El proceso de Python recibe la ruta temporal del archivo y el tipo para extraer
+    // texto desde PDF/DOCX. El JSON de salida es la unica fuente de verdad para la UI.
     $process = proc_open([$python,'-B',__DIR__.'/automation/justificador_documento.py','--archivo',$file['tmp_name'],'--tipo',$type], [0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']], $pipes, $root, null, ['bypass_shell'=>true]);
     if (!is_resource($process)) throw new RuntimeException('No se pudo iniciar el lector de documentos.');
     fclose($pipes[0]);

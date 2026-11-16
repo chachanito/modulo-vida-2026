@@ -1,3 +1,4 @@
+/* Editor de tablas: campos, vista previa, estados y ajustes para movil. */
 .jt-module { display:flex; flex-direction:column; gap:18px; }
 .jt-card { padding:24px; }
 .jt-card h1,.jt-card h2 { margin:0 0 12px; }

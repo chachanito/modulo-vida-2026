@@ -1,3 +1,4 @@
+/* Vista combinada del justificador: panel de edicion y documento resultante. */
 .jv-module { display:flex; flex-direction:column; gap:16px; }
 .jv-module [hidden] { display:none !important; }
 .jv-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; }

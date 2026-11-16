@@ -4,6 +4,7 @@
         const form = document.getElementById('justificar-form');
         if (!form) return;
         const input = document.getElementById('texto');
+        // The form keeps the last prepared result in memory and only publishes it on submit to avoid losing typed content during editing.
         const section = document.getElementById('resultado-seccion');
         const preview = document.getElementById('texto-justificado');
         const download = document.getElementById('descargar-btn');

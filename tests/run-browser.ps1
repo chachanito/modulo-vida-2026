@@ -1,3 +1,4 @@
+# Ejecuta pruebas en Chrome mediante su protocolo de depuracion remota.
 param(
  [string]$SiteUrl = 'http://127.0.0.1:8087/',
  [string]$LocalSiteUrl = 'http://127.0.0.1:8087/'
@@ -10,6 +11,7 @@ $chromeArgs = @('--headless', '--disable-gpu', '--no-first-run', '--remote-debug
 $chrome = Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -ArgumentList $chromeArgs -WindowStyle Hidden -PassThru
 $socket = [System.Net.WebSockets.ClientWebSocket]::new()
 try {
+ # Espera el tab de prueba y abre el canal de control de Chrome.
  $target = $null
  for ($attempt=0; $attempt -lt 15 -and -not $target; $attempt++) {
   Start-Sleep -Milliseconds 500
@@ -18,6 +20,7 @@ try {
  if (-not $target) { throw 'Chrome no abrió la página de prueba.' }
  $socket.ConnectAsync([Uri]$target.webSocketDebuggerUrl, [Threading.CancellationToken]::None).GetAwaiter().GetResult()
  $requestId = 0
+ # Envía una orden CDP y espera su respuesta, ignorando eventos asincronos.
  function Send-Cdp($method, $parameters) {
   $script:requestId++
   $bytes = [Text.Encoding]::UTF8.GetBytes((@{id=$script:requestId;method=$method;params=$parameters} | ConvertTo-Json -Depth 12 -Compress))
@@ -36,6 +39,7 @@ try {
   return $reply.result
  }
  $text = ''
+ # Corre primero las pruebas de la interfaz y luego las del cotizador RC.
  for ($attempt=0; $attempt -lt 80; $attempt++) {
   $result = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("results").textContent';returnByValue=$true}
   $text = $result.result.value
@@ -58,6 +62,7 @@ try {
  if ($quoteTest -notmatch '^PASS') { throw 'Las pruebas del cotizador no terminaron correctamente.' }
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  Start-Sleep -Milliseconds 700
+ # En el sitio publicado, repite las pruebas que pueden ejecutarse con fixtures locales.
  if ($SiteUrl -like 'https://*') {
   for ($attempt=0; $attempt -lt 30; $attempt++) {
    $ready = Send-Cdp 'Runtime.evaluate' @{expression='!!globalThis.JustificadorDocumento && !!globalThis.XLSX && document.readyState === "complete"';returnByValue=$true}
@@ -77,6 +82,7 @@ try {
   Write-Output ('PUBLICADO: ' + $live.result.value)
   if ($live.result.value -notmatch '^PASS') { throw 'Fallaron las pruebas del sitio publicado.' }
  }
+ # Comprueba el acordeon de Cotizadores, sus destinos y el comportamiento en movil.
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  $menuReady = $false
  for ($attempt=0; $attempt -lt 80; $attempt++) {
@@ -140,6 +146,7 @@ try {
  if (-not $productsActive.result.value) { throw 'La navegación no identifica Productos Cerrados como módulo activo.' }
  Write-Output 'PASS: Macro pesados y Productos cerrados cargan con navegación, pie solicitado y sin desbordamiento móvil'
 } finally {
+ # Cierra el canal y el Chrome temporal incluso si falla una asercion.
  $socket.Dispose()
  if (-not $chrome.HasExited) { Stop-Process -Id $chrome.Id }
 }

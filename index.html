@@ -20,6 +20,7 @@
   <script src="public/js/modules/justificador_vida.js" defer></script>
 </head>
 <body>
+<!-- Navegacion compartida de la aplicacion. -->
 <nav class="app-nav" aria-label="Herramientas principales">
   <a class="app-nav__brand" href="index.html">Herramientas Vida</a>
   <div class="app-nav__links">
@@ -37,10 +38,12 @@
     </div>
   </div>
 </nav>
+<!-- Modulo principal para preparar texto, transformar tablas y reunir el documento. -->
 <main class="jv-module">
   <header class="jv-heading"><div><h1>Justificador Vida</h1><p>Prepara texto y tablas, y combínalos en un documento.</p></div><div class="heading-tools"><span class="jv-width">75 caracteres</span><label class="theme-control" for="theme-select">Tema <select id="theme-select"><option value="light">Claro</option><option value="dark">Oscuro</option></select></label></div></header>
   <p class="privacy">Tus archivos se procesan en este navegador y no se suben a un servidor.</p>
   <div class="jv-workspace">
+    <!-- El editor agrupa los paneles de texto y tablas. -->
     <div class="jv-editor">
       <div class="jv-tabs" role="tablist" aria-label="Tipo de contenido">
         <button type="button" class="btn btn-primary" id="jv-tab-texto" role="tab" aria-selected="true" aria-controls="jv-panel-texto" data-jv-tab="texto">Texto</button>
@@ -96,6 +99,7 @@
         <div class="jv-add"><button type="button" class="btn btn-primary" id="jv-add-tabla" disabled>Agregar tabla al documento</button></div>
       </section>
     </div>
+    <!-- Documento final, compuesto por las secciones agregadas desde el editor. -->
     <section class="glass-card jt-card jv-document">
       <div class="jt-result-head"><div><h2>Documento</h2><p id="jv-summary">Agrega tu primera sección.</p></div><div class="jt-actions"><button type="button" class="btn btn-primary" id="jv-copy" disabled>Copiar</button><button type="button" class="btn" id="jv-clear" disabled>Vaciar</button></div></div>
       <div id="jv-status" role="status" aria-live="polite"></div>
@@ -105,6 +109,7 @@
     </section>
   </div>
 </main>
+<!-- Pie compartido con las paginas de la aplicacion. -->
 <footer class="app-footer">
   &copy; Copyright 2026, Todos los derechos reservados<br>
   <strong>Cristian Heredia</strong> · Emisión Nacional

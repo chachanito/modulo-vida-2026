@@ -5,6 +5,10 @@
 </div>
 
 <?php endif; ?>
+<?php
+// Este fragmento se usa ya sea en la vista standalone o embebida en el documento
+// principal; el flag $justificadorIntegrado cambia solo la UI y activa el token CSRF.
+?>
 <div class="upload-card u-max-w-800 u-mx-auto">
     <?php if (empty($justificadorIntegrado)): ?>
     <div class="upload-header">
@@ -18,6 +22,8 @@
 
     <form id="justificar-form" class="upload-form">
         <?php if (!empty($justificadorIntegrado)): ?>
+        <?php // El formulario integrado debe enviar el token CSRF del modulo para cruzar
+        // la validacion del backend antes de procesar el texto. ?>
         <?= csrf_input() ?>
         <div class="jv-file-field">
             <label for="jv-text-file">Importar PDF o Word</label>

@@ -5,6 +5,7 @@
   root.CotizadorRC = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
+  // Shared browser/test API: the pricing engine does not depend on the DOM or external data files.
   // Limites y tarifas compartidos por el formulario y los calculos.
   const MAX_VEHICLES = 100;
   const PASSENGER_COUNTS = Object.freeze([12, 15, 17, 20, 25, 30, 35, 40, 45]);

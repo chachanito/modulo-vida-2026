@@ -1,3 +1,4 @@
+ # Genera un DOCX minimo y sintetico para probar lectura real sin datos de usuarios.
 Add-Type -AssemblyName System.IO.Compression
 $fixturePath = Join-Path $PSScriptRoot 'sample.docx'
 $stream = [System.IO.File]::Create($fixturePath)

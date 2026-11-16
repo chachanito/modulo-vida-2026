@@ -6,6 +6,7 @@
         if (!el('file')) return;
         let workbook = null, example = null, blobUrl = null, filename = 'tabla';
         let loading = 0;
+        // The selected sheet and range are reused while toggling display options so the user does not re-read the workbook each time.
         function status(message, error=false) { el('status').textContent=message; el('status').dataset.error=String(error); }
         function resetResult() { el('result').hidden=true; el('preview').textContent=''; if (blobUrl) URL.revokeObjectURL(blobUrl); blobUrl=null; el('download')?.removeAttribute('href'); document.dispatchEvent(new CustomEvent('justificador:tabla', {detail:{text:''}})); }
         function show(result) {

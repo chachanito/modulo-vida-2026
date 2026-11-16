@@ -4,6 +4,7 @@
     let saved;
     try { saved = localStorage.getItem(key); } catch { }
     const initial = ['light','dark'].includes(saved) ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    // Restore the saved theme before paint so the page does not flash with the wrong palette on load.
     function apply(theme) {
         document.documentElement.dataset.theme = theme;
         document.documentElement.classList.toggle('theme-dark', theme === 'dark');

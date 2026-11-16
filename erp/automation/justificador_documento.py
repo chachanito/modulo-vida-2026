@@ -1,4 +1,4 @@
-"""Extrae texto de PDF/DOCX locales; no ejecuta ni interpreta su contenido."""
+﻿"""Extrae texto de PDF/DOCX locales; no ejecuta ni interpreta su contenido."""
 import argparse
 import json
 import sys
@@ -10,6 +10,8 @@ MAX_TEXT = 1000000
 W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 
 def read_xml(archive, name):
+    # Se leen solo entradas exactas del ZIP documental; cualquier DTD o entidad
+    # en el XML se bloquea para evitar payloads XML maliciosos.
     info = archive.getinfo(name)
     if info.file_size > 12 * 1024 * 1024:
         raise ValueError('El contenido del Word es demasiado grande.')
@@ -34,6 +36,8 @@ def extract_docx(path):
             for number in numbering.findall(W+'num'):
                 abstract = number.find(W+'abstractNumId')
                 if abstract is not None: definitions[number.get(W+'numId')] = abstract.get(W+'val')
+        # Word guarda la numeracion en numbering.xml; reconstructimos el prefijo
+        # correcto para conservar viñetas y listas numeradas en el texto extraido.
         paragraphs, counters = [], {}
         total = 0
         for paragraph in root.iter(W+'p'):
@@ -79,6 +83,8 @@ def extract_pdf(path):
     return '\n\n'.join(pages), warning
 
 def extract(path, kind):
+    # El backend aplica el mismo limite de 10 MB que la vista para evitar archivos
+    # demasiado grandes o potencialmente costosos de parsear.
     if Path(path).stat().st_size > 10*1024*1024:
         raise ValueError('El archivo supera los 10 MB.')
     text, warning = extract_pdf(path) if kind == 'pdf' else extract_docx(path)
@@ -86,6 +92,8 @@ def extract(path, kind):
     return {'ok':True, 'texto':text, 'aviso':warning}
 
 def main():
+    # La salida se devuelve como JSON para que PHP pueda responder usando el mismo
+    # contrato de error/exito en toda la app.
     parser = argparse.ArgumentParser()
     parser.add_argument('--archivo', required=True)
     parser.add_argument('--tipo', required=True, choices=['pdf','docx'])

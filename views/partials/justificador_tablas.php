@@ -1,3 +1,7 @@
+﻿<?php
+// La tabla se prepara en el navegador: el archivo Excel/CSV se conviene a texto
+// alineado con JS y no pasa por el servidor, asi que la validacion esta en la UI.
+?>
 <div class="jt-module">
     <?php if (empty($justificadorIntegrado)): ?>
     <section class="glass-card jt-card">

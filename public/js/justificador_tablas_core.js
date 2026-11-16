@@ -2,6 +2,7 @@
 ((root) => {
     'use strict';
     const WIDTH = 75;
+    // Keep the final table fixed at 75 columns so copy/paste output remains stable across Excel, Word, and clipboard.
     const chars = value => Array.from(String(value));
     const length = value => chars(value).length;
     const clean = value => String(value ?? '').normalize('NFC').replace(/[\r\n\t\u0000-\u001f]+/g, ' ').replace(/\s+/g, ' ').trim();

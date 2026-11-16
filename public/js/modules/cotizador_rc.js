@@ -12,6 +12,7 @@
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length:currentYear - 1998 + 1 }, (_, index) => String(currentYear - index));
   const passengerCounts = new Set(core.PASSENGER_COUNTS.map(String));
+  // The form accepts only the same valid passenger counts used by the pricing engine, keeping the UI and totals in sync.
   // Obtiene la fecha local en formato ISO sin desplazar el dia por la zona horaria.
   function localDate() { const now = new Date(); now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); return now.toISOString().slice(0, 10); }
   // Escapa datos del catalogo antes de incorporarlos a las opciones del formulario.

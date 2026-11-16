@@ -1,3 +1,4 @@
+/* Navegacion compartida: primero se define la barra y luego su modo lateral. */
 .app-nav {
   position: sticky;
   top: 0;
@@ -213,6 +214,7 @@ body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
   color: #fff;
   box-shadow: 0 6px 18px #0c3b9b4d;
 }
+/* El grupo de Cotizadores usa un boton accesible y enlaces secundarios. */
 .app-nav__group { min-width:0; }
 .app-nav__group-toggle {
   position:relative;
@@ -337,6 +339,7 @@ body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
   .app-nav__caret { transition: none; }
 }
 .app-footer {
+  /* El fondo oscuro mantiene legible el texto en todas las paginas. */
   margin: 8px auto 0;
   padding: 20px 24px 28px;
   background: #102a43;

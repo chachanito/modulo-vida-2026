@@ -7,6 +7,7 @@
   };
   const mobileMedia = matchMedia('(max-width: 760px)');
 
+  // Remember the collapsed state for the next visit, while mobile always stays compact to fit the smaller viewport.
   function storedState() {
     if (mobileMedia.matches) return true;
     try {
