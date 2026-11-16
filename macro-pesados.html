@@ -240,6 +240,7 @@ header p{color:#dbe8f6}
 @media(max-width:850px){#dashboard .dashboard-layout{grid-template-columns:minmax(0,1fr)}}
 </style>
   <link rel="stylesheet" href="public/css/navigation.css"/>
+  <link rel="stylesheet" href="public/css/page-headers.css"/>
   <script src="public/js/pages/navigation.js" defer></script>
  </head>
  <body>
@@ -261,8 +262,8 @@ header p{color:#dbe8f6}
    </div>
   </nav>
   <!-- Identidad del cotizador y estado de la parametrizacion. -->
-  <header>
-   <div>
+  <header class="app-page-header app-page-header--dark">
+   <div class="app-page-header__copy">
     <h1>
      MACRO PESADOS
     </h1>
@@ -270,7 +271,7 @@ header p{color:#dbe8f6}
      Registro manual de veh&iacute;culos &middot; Cotizaci&oacute;n manual con matrices HINO y MULTIMARCA
     </p>
    </div>
-   <span class="pill">
+   <span class="pill app-page-header__badge">
     Parametrizaci&oacute;n protegida
    </span>
   </header>

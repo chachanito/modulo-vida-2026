@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="public/css/modules/cotizador_rc_dark.css">
   <link rel="stylesheet" href="public/css/modules/cotizador_rc_layout.css">
   <link rel="stylesheet" href="public/css/modules/cotizador_rc_print.css">
+  <link rel="stylesheet" href="public/css/page-headers.css">
 </head>
 <body>
   <!-- Navegacion compartida y acceso al cotizador. -->
@@ -40,15 +41,17 @@
 
   <main class="rc-page">
     <!-- Encabezado y opciones generales del producto. -->
-    <header class="rc-heading">
-      <div>
+    <header class="rc-heading app-page-header">
+      <div class="app-page-header__copy">
         <h1>Cotizador</h1>
         <p>Cotiza flotas de transporte con la lógica tarifaria del formato de emisión.</p>
       </div>
-      <div class="rc-product">
-        <label for="rc-product">Producto</label>
-        <select id="rc-product"><option>RC Transporte</option></select>
-        <label class="theme-control" for="theme-select">Tema
+      <div class="rc-product app-page-header__controls">
+        <div class="app-page-header__field">
+          <label for="rc-product">Producto</label>
+          <select id="rc-product"><option>RC Transporte</option></select>
+        </div>
+        <label class="theme-control app-page-header__field" for="theme-select">Tema
           <select id="theme-select">
             <option value="light">Claro</option>
             <option value="dark">Oscuro</option>
