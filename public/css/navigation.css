@@ -80,6 +80,18 @@ body {
   transition: padding-left 180ms ease;
 }
 body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
+/* Empuja el pie al borde inferior sin superponerlo al contenido. */
+@media screen {
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  body > main {
+    width: 100%;
+    flex: 1 0 auto;
+  }
+}
 .app-nav {
   position: fixed;
   inset: 0 auto 0 0;
@@ -328,8 +340,8 @@ body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
 }
 .app-nav__toggle:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
 @media (max-width: 760px) {
-  body,
-  body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
+  html body,
+  html body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
   .app-nav:not(.is-collapsed) { box-shadow: 8px 0 28px #03071170; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -340,9 +352,11 @@ body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
 }
 .app-footer {
   /* El fondo oscuro mantiene legible el texto en todas las paginas. */
-  margin: 8px auto 0;
+  width: 100%;
+  flex: 0 0 auto;
+  margin: auto 0 0;
   padding: 20px 24px 28px;
-  background: #102a43;
+  background: #101b31;
   color: #eaf4fb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 13px;
