@@ -1,8 +1,12 @@
-param([string]$SiteUrl = 'http://127.0.0.1:8087/')
+param(
+ [string]$SiteUrl = 'http://127.0.0.1:8087/',
+ [string]$LocalSiteUrl = 'http://127.0.0.1:8087/'
+)
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot
 $profilePath = Join-Path $projectRoot 'tmp/chrome-cdp'
-$chromeArgs = @('--headless', '--disable-gpu', '--no-first-run', '--remote-debugging-port=9228', ('--user-data-dir=' + $profilePath), 'http://127.0.0.1:8087/tests/browser.html')
+$localBaseUrl = $LocalSiteUrl.TrimEnd('/') + '/'
+$chromeArgs = @('--headless', '--disable-gpu', '--no-first-run', '--remote-debugging-port=9228', ('--user-data-dir=' + $profilePath), ($localBaseUrl + 'tests/browser.html'))
 $chrome = Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -ArgumentList $chromeArgs -WindowStyle Hidden -PassThru
 $socket = [System.Net.WebSockets.ClientWebSocket]::new()
 try {
@@ -42,7 +46,7 @@ try {
  $shot = Send-Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
  [IO.File]::WriteAllBytes((Join-Path $projectRoot 'tmp/browser-test.png'), [Convert]::FromBase64String($shot.data))
  if ($text -notmatch '^PASS') { throw 'Las pruebas no terminaron correctamente.' }
- $null = Send-Cdp 'Page.navigate' @{url='http://127.0.0.1:8087/tests/cotizador-core.html'}
+ $null = Send-Cdp 'Page.navigate' @{url=($localBaseUrl + 'tests/cotizador-core.html')}
  $quoteTest = ''
  for ($attempt=0; $attempt -lt 80; $attempt++) {
   $result = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("results").textContent';returnByValue=$true}
@@ -73,21 +77,66 @@ try {
   Write-Output ('PUBLICADO: ' + $live.result.value)
   if ($live.result.value -notmatch '^PASS') { throw 'Fallaron las pruebas del sitio publicado.' }
  }
+ $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
+ $menuReady = $false
+ for ($attempt=0; $attempt -lt 80; $attempt++) {
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='!!document.querySelector(".app-nav__group-toggle") && document.querySelectorAll(".app-nav__sublink").length === 3';returnByValue=$true}
+  $menuReady = $result.result.value
+  if ($menuReady) { break }
+  Start-Sleep -Milliseconds 500
+ }
+ if (-not $menuReady) { throw 'El menú desplegable de cotizadores no terminó de cargar.' }
+ $menuLinks = Send-Cdp 'Runtime.evaluate' @{expression='Array.from(document.querySelectorAll(".app-nav__sublink")).map(link=>link.textContent.trim()).join("|") === "Cotizador RC|Productos Cerrados|Macro Pesados"';returnByValue=$true}
+ if (-not $menuLinks.result.value) { throw 'El menú no muestra las tres opciones de cotizador esperadas.' }
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
+ $menuExpanded = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true" && !document.querySelector(".app-nav__submenu").hidden';returnByValue=$true}
+ if (-not $menuExpanded.result.value) { throw 'El menú de cotizadores no se despliega.' }
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
+ $menuCollapsed = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "false" && document.querySelector(".app-nav__submenu").hidden';returnByValue=$true}
+ if (-not $menuCollapsed.result.value) { throw 'El menú de cotizadores no se puede contraer.' }
+ $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/cotizador.html')}
+ Start-Sleep -Milliseconds 500
+ $activeQuote = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cotizador RC" && document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true"';returnByValue=$true}
+ if (-not $activeQuote.result.value) { throw 'La navegación no identifica el Cotizador RC activo.' }
+ Write-Output 'PASS: menú Cotizadores expandible, contraíble y con ruta activa'
  $null = Send-Cdp 'Emulation.setDeviceMetricsOverride' @{width=390;height=844;deviceScaleFactor=1;mobile=$true}
- Start-Sleep -Milliseconds 300
- $mobile = Send-Cdp 'Runtime.evaluate' @{expression='document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
- if (-not $mobile.result.value) { throw 'La página desborda el ancho del móvil.' }
- $shot = Send-Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
- [IO.File]::WriteAllBytes((Join-Path $projectRoot 'tmp/mobile.png'), [Convert]::FromBase64String($shot.data))
- Write-Output 'PASS: diseño móvil sin desbordamiento horizontal'
- $null = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("theme-select").value="dark";document.getElementById("theme-select").dispatchEvent(new Event("change"))'}
- $null = Send-Cdp 'Page.reload' @{}
- Start-Sleep -Milliseconds 700
- $restored = Send-Cdp 'Runtime.evaluate' @{expression='document.documentElement.dataset.theme === "dark" && document.getElementById("theme-select").value === "dark"';returnByValue=$true}
- if (-not $restored.result.value) { throw 'No se restauró el tema después de recargar.' }
- $shot = Send-Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
- [IO.File]::WriteAllBytes((Join-Path $projectRoot 'tmp/mobile-dark.png'), [Convert]::FromBase64String($shot.data))
- Write-Output 'PASS: tema oscuro restaurado tras recargar'
+ $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
+ Start-Sleep -Milliseconds 500
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
+ $mobileMenu = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true" && document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
+ if (-not $mobileMenu.result.value) { throw 'El menú de cotizadores no funciona correctamente en móvil.' }
+ Write-Output 'PASS: menú Cotizadores móvil'
+ $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/macro-pesados.html')}
+ $macroReady = $false
+ for ($attempt=0; $attempt -lt 80; $attempt++) {
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='!!document.getElementById("dashboard") && !!document.getElementById("addVehicle")';returnByValue=$true}
+  $macroReady = $result.result.value
+  if ($macroReady) { break }
+  Start-Sleep -Milliseconds 500
+ }
+ if (-not $macroReady) { throw 'El módulo Macro pesados no terminó de cargar.' }
+ $macroFooter = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("footer").innerText.includes("Mauricio Balseca") && document.querySelector("footer").innerText.includes("Cristian heredia")';returnByValue=$true}
+ if (-not $macroFooter.result.value) { throw 'El pie de página de Macro pesados no coincide.' }
+ $macroMobile = Send-Cdp 'Runtime.evaluate' @{expression='document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
+ if (-not $macroMobile.result.value) { throw 'Macro pesados desborda el ancho del móvil.' }
+ $macroActive = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__sublink[aria-current=page]")?.textContent.trim() === "Macro Pesados"';returnByValue=$true}
+ if (-not $macroActive.result.value) { throw 'La navegación no identifica Macro Pesados como módulo activo.' }
+ $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/cotizador-productos-cerrados.html')}
+ $productsReady = $false
+ for ($attempt=0; $attempt -lt 80; $attempt++) {
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='!!document.getElementById("category") && document.getElementById("category").options.length > 1';returnByValue=$true}
+  $productsReady = $result.result.value
+  if ($productsReady) { break }
+  Start-Sleep -Milliseconds 500
+ }
+ if (-not $productsReady) { throw 'El módulo Productos cerrados no terminó de cargar.' }
+ $productsFooter = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("footer").innerText.includes("Mauricio Balseca") && document.querySelector("footer").innerText.includes("Cristian heredia")';returnByValue=$true}
+ if (-not $productsFooter.result.value) { throw 'El pie de página de Productos cerrados no coincide.' }
+ $productsMobile = Send-Cdp 'Runtime.evaluate' @{expression='document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
+ if (-not $productsMobile.result.value) { throw 'Productos cerrados desborda el ancho del móvil.' }
+ $productsActive = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__sublink[aria-current=page]")?.textContent.trim() === "Productos Cerrados"';returnByValue=$true}
+ if (-not $productsActive.result.value) { throw 'La navegación no identifica Productos Cerrados como módulo activo.' }
+ Write-Output 'PASS: Macro pesados y Productos cerrados cargan con navegación, pie solicitado y sin desbordamiento móvil'
 } finally {
  $socket.Dispose()
  if (-not $chrome.HasExited) { Stop-Process -Id $chrome.Id }

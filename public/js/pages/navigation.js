@@ -42,10 +42,22 @@
     links.querySelectorAll('.app-nav__link').forEach((link) => {
       const label = link.textContent.trim();
       const href = link.getAttribute('href') || '';
-      const key = href.includes('cotizador') ? 'cotizador' : href.includes('cruce') ? 'cruce' : 'justificador';
+      const key = href.includes('cruce') ? 'cruce' : 'justificador';
       link.dataset.label = label;
       link.innerHTML = '<span class="app-nav__icon">' + icons[key] + '</span><span class="app-nav__label">' + label + '</span>';
     });
+
+    const cotizadorGroup = links.querySelector('.app-nav__group');
+    const groupToggle = cotizadorGroup?.querySelector('.app-nav__group-toggle');
+    const submenu = cotizadorGroup?.querySelector('.app-nav__submenu');
+    const currentCotizador = submenu?.querySelector('[aria-current="page"]');
+    if (groupToggle && submenu) {
+      groupToggle.dataset.label = 'Cotizadores';
+      groupToggle.innerHTML = '<span class="app-nav__icon">' + icons.cotizador +
+        '</span><span class="app-nav__label">Cotizadores</span>' +
+        '<span class="app-nav__caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>';
+      cotizadorGroup.classList.toggle('is-active', Boolean(currentCotizador));
+    }
 
     function setCollapsed(collapsed, save = true) {
       nav.classList.toggle('is-collapsed', collapsed);
@@ -58,9 +70,34 @@
     }
 
     setCollapsed(storedState(), false);
-    toggle.addEventListener('click', () => setCollapsed(!nav.classList.contains('is-collapsed')));
+    let closeSubmenu = () => {};
+    if (groupToggle && submenu) {
+      const setExpanded = (expanded) => {
+        groupToggle.setAttribute('aria-expanded', String(expanded));
+        submenu.hidden = !expanded;
+        cotizadorGroup.classList.toggle('is-expanded', expanded);
+      };
+      closeSubmenu = () => setExpanded(false);
+      setExpanded(Boolean(currentCotizador) && !nav.classList.contains('is-collapsed'));
+      groupToggle.addEventListener('click', () => {
+        if (nav.classList.contains('is-collapsed')) {
+          setCollapsed(false);
+          setExpanded(true);
+          return;
+        }
+        setExpanded(groupToggle.getAttribute('aria-expanded') !== 'true');
+      });
+    }
+    toggle.addEventListener('click', () => {
+      const collapsed = !nav.classList.contains('is-collapsed');
+      setCollapsed(collapsed);
+      if (collapsed) closeSubmenu();
+    });
     mobileMedia.addEventListener?.('change', (event) => {
-      if (event.matches) setCollapsed(true, false);
+      if (event.matches) {
+        setCollapsed(true, false);
+        closeSubmenu();
+      }
     });
   }
 

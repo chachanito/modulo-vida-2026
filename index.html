@@ -25,7 +25,16 @@
   <div class="app-nav__links">
     <a class="app-nav__link" href="index.html" aria-current="page">Justificador</a>
     <a class="app-nav__link" href="cruce-datos.html">Cruce de datos</a>
-    <a class="app-nav__link" href="cotizador.html">Cotizador</a>
+    <div class="app-nav__group">
+      <button class="app-nav__group-toggle" type="button" aria-expanded="false" aria-controls="app-nav-cotizadores">
+        <span class="app-nav__label">Cotizadores</span>
+      </button>
+      <div class="app-nav__submenu" id="app-nav-cotizadores" hidden>
+        <a class="app-nav__sublink" href="cotizador.html">Cotizador RC</a>
+        <a class="app-nav__sublink" href="cotizador-productos-cerrados.html">Productos Cerrados</a>
+        <a class="app-nav__sublink" href="macro-pesados.html">Macro Pesados</a>
+      </div>
+    </div>
   </div>
 </nav>
 <main class="jv-module">

@@ -4,15 +4,16 @@
 
 Usar: https://chachanito.github.io/modulo-vida-2026/
 
-El menú principal ofrece tres herramientas independientes:
+El menú principal ofrece cuatro herramientas independientes:
 
 - **Justificador:** prepara texto y tablas y los combina en un documento.
 - **Cruce de datos:** compara las bases de créditos ACTUAL y ANTERIOR, aplica parámetros de asegurabilidad, concilia totales y exporta resultados.
-- **Cotizador:** calcula responsabilidad civil para flotas de transporte, con detalle por vehículo, impuestos y formato imprimible.
+- **Cotizador RC:** calcula responsabilidad civil para flotas de transporte, con detalle por vehículo, impuestos y formato imprimible.
+- **Cotizadores:** agrupa en el menú lateral el Cotizador RC, Productos Cerrados y Macro Pesados, cada uno en su propio módulo y con sus cálculos independientes.
 
-El cotizador reproduce las condiciones de cálculo del Excel: el valor asegurado depende de marca y modelo; la prima neta requiere además pasajeros y prima por vehículo. Año, placa y pasajeros tienen validaciones específicas y admite hasta 100 vehículos. La cotización imprimible incluye el detalle de coberturas, deducibles, forma de pago, notas importantes, ilustraciones de transporte y el logo de Swaden como marca de agua.
+El cotizador RC reproduce las condiciones de cálculo del Excel: el valor asegurado depende de marca y modelo; la prima neta requiere además pasajeros y prima por vehículo. Año, placa y pasajeros tienen validaciones específicas y admite hasta 100 vehículos. La cotización imprimible incluye el detalle de coberturas, deducibles, forma de pago, notas importantes, ilustraciones de transporte y el logo de Swaden como marca de agua.
 
-El cruce se abre en `cruce-datos.html` y el cotizador en `cotizador.html`. Las herramientas procesan los datos localmente en el navegador.
+El menú lateral **Cotizadores** permite abrir `cotizador.html` (RC), `cotizador-productos-cerrados.html` y `macro-pesados.html`. El cruce de datos está disponible en `cruce-datos.html`. Las cotizaciones se procesan localmente en el navegador.
 
 `index.html` es una aplicacion independiente, sin cuentas ni dependencias del ERP. Permite justificar texto, importar PDF con texto y Word .docx, procesar Excel/CSV, ordenar secciones y copiar. Incluye temas claro y oscuro; la eleccion se guarda localmente y inicialmente sigue el tema del sistema. La interfaz publica no contiene enlaces de descarga ni enlaces al codigo fuente. Todos los documentos se procesan en el navegador. Los lectores PDF.js, Mammoth y SheetJS estan incluidos localmente.
 
@@ -24,7 +25,7 @@ El flujo `.github/workflows/pages.yml` publica automaticamente al subir a `main`
 
 Pruebas de navegador: generar el DOCX de prueba con `powershell -File tests/create-fixture.ps1` y abrir `/tests/browser.html` en el servidor local. Debe mostrar PASS para temas, texto, tablas, secciones e importacion PDF/DOCX.
 
-En Windows con Chrome instalado, `tests/run-browser.ps1` ejecuta las pruebas y verifica el ancho movil usando el servidor local en el puerto 8087. El parametro `-SiteUrl https://chachanito.github.io/justificador_vida/` repite las pruebas sobre la aplicacion publicada con documentos sinteticos. Las capturas quedan en `tmp/`, fuera de Git.
+En Windows con Chrome instalado, `tests/run-browser.ps1` ejecuta las pruebas del Justificador y del cotizador RC, y comprueba el menú desplegable **Cotizadores**, las rutas activas y la presentación móvil de Macro Pesados y Productos Cerrados usando el servidor local en el puerto 8087. `-LocalSiteUrl` permite indicar otro puerto si el predeterminado está ocupado. El parámetro `-SiteUrl https://chachanito.github.io/justificador_vida/` repite las pruebas compatibles sobre la aplicación publicada con documentos sintéticos. Las capturas quedan en `tmp/`, fuera de Git.
 
 Los archivos PHP originales siguen disponibles para integracion en un ERP, como se describe a continuacion. `MANIFIESTO.json` corresponde a la exportacion original, no a las modificaciones de la version web.
 
