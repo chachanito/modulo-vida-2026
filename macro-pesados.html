@@ -237,33 +237,94 @@ header p{color:#dbe8f6}
 
 /* Edición de valores en la tabla de vehículos */
 .row-actions{display:flex;gap:6px;align-items:center}.row-actions button{white-space:nowrap}.edit-money{width:112px;min-width:100px;padding:7px 8px;border:1px solid #cbd9e6;border-radius:8px;background:#fff;font:inherit;font-size:12px;color:#173c5c;text-align:right}.edit-money:focus{outline:none;border-color:#2b83a4;box-shadow:0 0 0 3px rgba(43,131,164,.13)}
-@media(max-width:850px){#dashboard .dashboard-layout{grid-template-columns:minmax(0,1fr)}}
+
+/* Distribucion solicitada: vehiculos a la izquierda y resumen a la derecha */
+@media (min-width: 851px){
+  .dashboard-layout{
+    grid-template-columns:minmax(0,1fr) minmax(320px,420px);
+    align-items:start;
+  }
+  .dashboard-layout > .card:first-child{grid-column:2;grid-row:1;}
+  .dashboard-layout > .card:nth-child(2){grid-column:1;grid-row:1;}
+}
+@media (max-width:850px){
+  .dashboard-layout{grid-template-columns:1fr;}
+  .dashboard-layout > .card:nth-child(2){order:1;}
+  .dashboard-layout > .card:first-child{order:2;}
+}
+
+/* Distribución principal: 3/4 vehículos a la izquierda y 1/4 resumen a la derecha */
+@media (min-width: 851px){
+  #dashboard .dashboard-layout{
+    display:grid;
+    grid-template-columns:minmax(0,3fr) minmax(280px,1fr);
+    gap:16px;
+    align-items:start;
+  }
+  #dashboard .dashboard-layout > .card:first-child{
+    grid-column:2;
+    grid-row:1;
+    min-width:0;
+    padding:16px;
+  }
+  #dashboard .dashboard-layout > .card:nth-child(2){
+    grid-column:1;
+    grid-row:1;
+    min-width:0;
+  }
+  #dashboard .dashboard-layout .calc-table{font-size:11px}
+  #dashboard .dashboard-layout .calc-table td{padding:9px 8px}
+  #dashboard .dashboard-layout .calc-table td:first-child{width:57%;}
+  #dashboard .dashboard-layout .calc-table select{font-size:12px;min-width:0}
+  #dashboard .dashboard-layout .summary-head{align-items:flex-start;flex-direction:column;gap:8px}
+  #dashboard .dashboard-layout .minrate-chip{font-size:10px;padding:6px 9px}
+}
+@media (max-width:850px){
+  #dashboard .dashboard-layout{display:flex;flex-direction:column}
+  #dashboard .dashboard-layout > .card{width:100%}
+  #dashboard .dashboard-layout > .card:nth-child(2){order:1}
+  #dashboard .dashboard-layout > .card:first-child{order:2}
+}
+
+/* Distribución solicitada: 70% vehículos izquierda / 30% resumen derecha */
+.client-card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.client-card-heading h2{margin:0}
+.client-card-heading button{white-space:nowrap}
+@media (min-width: 851px){
+  #dashboard .dashboard-layout{
+    grid-template-columns:minmax(0,7fr) minmax(300px,3fr) !important;
+    gap:16px;
+  }
+  #dashboard .dashboard-layout > .card:nth-child(2){grid-column:1;grid-row:1;min-width:0;}
+  #dashboard .dashboard-layout > .card:first-child{grid-column:2;grid-row:1;min-width:0;}
+}
+@media (max-width:850px){.client-card-heading{align-items:flex-start}}
+
 </style>
-  <link rel="stylesheet" href="public/css/navigation.css"/>
-  <link rel="stylesheet" href="public/css/page-headers.css"/>
-  <script src="public/js/pages/navigation.js" defer></script>
+<link rel="stylesheet" href="public/css/navigation.css"/>
+<link rel="stylesheet" href="public/css/page-headers.css"/>
+<script src="public/js/pages/navigation.js" defer></script>
  </head>
  <body>
-  <nav class="app-nav" aria-label="Navegación principal">
-   <a class="app-nav__brand" href="index.html">Herramientas Vida</a>
-   <div class="app-nav__links">
-    <a class="app-nav__link" href="index.html">Justificador</a>
-    <a class="app-nav__link" href="cruce-datos.html">Cruce de datos</a>
-    <div class="app-nav__group">
-     <button class="app-nav__group-toggle" type="button" aria-expanded="false" aria-controls="app-nav-cotizadores">
-      <span class="app-nav__label">Cotizadores</span>
-     </button>
-     <div class="app-nav__submenu" id="app-nav-cotizadores" hidden>
-      <a class="app-nav__sublink" href="cotizador.html">Cotizador RC</a>
-      <a class="app-nav__sublink" href="cotizador-productos-cerrados.html">Productos Cerrados</a>
-      <a class="app-nav__sublink" href="macro-pesados.html" aria-current="page">Macro Pesados</a>
-     </div>
+ <nav class="app-nav" aria-label="Navegaci&oacute;n principal">
+  <a class="app-nav__brand" href="index.html">Herramientas Vida</a>
+  <div class="app-nav__links">
+   <a class="app-nav__link" href="index.html">Justificador</a>
+   <a class="app-nav__link" href="cruce-datos.html">Cruce de datos</a>
+   <div class="app-nav__group">
+    <button class="app-nav__group-toggle" type="button" aria-expanded="false" aria-controls="app-nav-cotizadores">
+     <span class="app-nav__label">Cotizadores</span>
+    </button>
+    <div class="app-nav__submenu" id="app-nav-cotizadores" hidden>
+     <a class="app-nav__sublink" href="cotizador.html">Cotizador RC</a>
+     <a class="app-nav__sublink" href="cotizador-productos-cerrados.html">Productos Cerrados</a>
+     <a class="app-nav__sublink" href="macro-pesados.html" aria-current="page">Macro Pesados</a>
     </div>
    </div>
-  </nav>
-  <!-- Identidad del cotizador y estado de la parametrizacion. -->
-  <header class="app-page-header app-page-header--dark">
-   <div class="app-page-header__copy">
+  </div>
+ </nav>
+  <header>
+   <div>
     <h1>
      MACRO PESADOS
     </h1>
@@ -271,13 +332,11 @@ header p{color:#dbe8f6}
      Registro manual de veh&iacute;culos &middot; Cotizaci&oacute;n manual con matrices HINO y MULTIMARCA
     </p>
    </div>
-   <span class="pill app-page-header__badge">
+   <span class="pill">
     Parametrizaci&oacute;n protegida
    </span>
   </header>
-  <!-- Flujo principal de captura, cotizacion y configuracion. -->
   <main>
-   <!-- Navegacion entre paneles del cotizador. -->
    <div class="tabs">
     <button class="active" data-tab="dashboard">
      1 &middot; Pantalla principal
@@ -286,27 +345,29 @@ header p{color:#dbe8f6}
      2 &middot; Ingreso de veh&iacute;culos
     </button>
     <button data-tab="config">
-     🔒 4 &middot; Parametrizaci&oacute;n
+     🔒 3 &middot; Parametrizaci&oacute;n
     </button>
    </div>
-   <!-- Panel ejecutivo con datos del cliente y resumen. -->
    <section class="panel active" id="dashboard">
     <div class="card">
-     <h2>
-      Datos del cliente y vigencia
-     </h2>
+     <div class="client-card-heading">
+      <h2>
+       Datos del cliente y vigencia
+      </h2>
+      <button type="button" class="secondary" id="clearClientData">Limpiar datos</button>
+     </div>
      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px">
       <div>
        <label for="clientId">
         No. IDENTIFICACI&Oacute;N
        </label>
-       <input id="clientId" type="text"/>
+       <input id="clientId" type="text" value="1725654709"/>
       </div>
       <div>
        <label for="clientName">
         CLIENTE
        </label>
-       <input id="clientName" type="text"/>
+       <input id="clientName" type="text" value="MAURICIO BALSECA"/>
       </div>
       <div>
        <label for="broker">
@@ -4948,19 +5009,19 @@ header p{color:#dbe8f6}
        <label for="clientEmail">
         CORREO
        </label>
-       <input id="clientEmail" type="email"/>
+       <input id="clientEmail" type="email" value="maubalseca@hotmail.com"/>
       </div>
       <div>
        <label for="clientPhone">
         TEL&Eacute;FONO
        </label>
-       <input id="clientPhone" type="tel"/>
+       <input id="clientPhone" type="tel" value="0998639856"/>
       </div>
       <div>
        <label for="clientCity">
         CIUDAD
        </label>
-       <input id="clientCity" type="text"/>
+       <input id="clientCity" type="text" value="QUITO"/>
       </div>
       <div>
        <label for="startDate">
@@ -5311,7 +5372,6 @@ header p{color:#dbe8f6}
      </div>
     </div>
    </section>
-   <!-- Alta masiva y manual de vehiculos. -->
    <section class="panel" id="vehicles">
     <div class="card bulk-card">
      <div class="bulk-heading">
@@ -5735,9 +5795,12 @@ CHEVROLET	NPR	PBB1234	2021	30000	0" rows="7"></textarea>
       <h3>
        Detalle de veh&iacute;culos
       </h3>
-      <span class="muted" id="vehicleCount">
-       0 registros
-      </span>
+      <div class="inline">
+       <span class="muted" id="vehicleCount">
+        0 registros
+       </span>
+       <button class="danger" type="button" id="clearVehicles">Limpiar vehículos</button>
+      </div>
      </div>
      <div class="tablewrap">
       <table>
@@ -5789,7 +5852,6 @@ CHEVROLET	NPR	PBB1234	2021	30000	0" rows="7"></textarea>
      </div>
     </div>
    </section>
-   <!-- Resultados calculados para la cotizacion. -->
    <section class="panel" id="results">
     <div class="card">
      <div class="toolbar">
@@ -5867,7 +5929,6 @@ CHEVROLET	NPR	PBB1234	2021	30000	0" rows="7"></textarea>
      </div>
     </div>
    </section>
-   <!-- Parametros protegidos y controles administrativos. -->
    <section class="panel" id="config">
     <div class="card">
      <h2>
@@ -6023,11 +6084,10 @@ CHEVROLET	NPR	PBB1234	2021	30000	0" rows="7"></textarea>
     Listo para ingresar veh&iacute;culos.
    </div>
   </main>
-  <!-- Pie compartido con las paginas de la aplicacion. -->
   <footer class="app-footer">
-    &copy; Copyright 2026, Todos los derechos reservados<br>
-    <strong>Mauricio Balseca</strong> &amp; <strong>Cristian heredia</strong> &middot; Emisi&oacute;n Nacional
-   </footer>
+   &copy; Copyright 2026, Todos los derechos reservados<br>
+   <strong>Mauricio Balseca</strong> &amp; <strong>Cristian heredia</strong> &middot; Emisi&oacute;n Nacional
+  </footer>
   <div class="exec-overlay" hidden="" id="execOverlay">
    <div aria-labelledby="execTitle" aria-modal="true" class="exec-dialog" role="dialog">
     <h2 id="execTitle">
@@ -6379,6 +6439,25 @@ function saveVehicleEdit(i) {
     status(`Vehículo ${i + 1} actualizado. Se recalcularon suma asegurada, tasa y prima.`);
 }
 function removeVehicle(i) { vehicles.splice(i, 1); render(); status('Vehículo eliminado de la cotización.'); }
+function clearVehicles() {
+    if (!vehicles.length) {
+        status('No existen vehículos ingresados para limpiar.');
+        return;
+    }
+    if (!confirm(`¿Deseas eliminar los ${vehicles.length} vehículos de esta cotización? Esta acción no se puede deshacer.`))
+        return;
+    vehicles = [];
+    // Evita que una cotización guardada anteriormente vuelva a cargar los vehículos eliminados.
+    localStorage.removeItem('stor_quote_draft_v2');
+    if (typeof bulkPending !== 'undefined') bulkPending = [];
+    if ($('bulkPaste')) $('bulkPaste').value = '';
+    if ($('bulkPreviewRows')) $('bulkPreviewRows').innerHTML = '';
+    if ($('bulkPreviewWrap')) $('bulkPreviewWrap').classList.add('hidden');
+    if ($('bulkFeedback')) $('bulkFeedback').textContent = 'Pega aquí las filas copiadas desde Excel para validar antes de agregarlas.';
+    if ($('addBulk')) $('addBulk').disabled = true;
+    render();
+    status('Se eliminaron todos los vehículos. Los datos del cliente y la parametrización se conservaron.');
+}
 // ============================================================
 // 7. DESCUENTOS, RECARGOS Y CALCULO FINANCIERO
 // ============================================================
@@ -6540,8 +6619,10 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = async () => { l
 } if (t !== 'config')
     adminUnlocked = false; activate(t); });
 $('saveDraft').onclick = saveDraft;
+$('clearClientData').onclick = clearClientData;
 $('generatePdf').onclick = openExecutivePicker;
 $('addVehicle').onclick = addVehicle;
+$('clearVehicles').onclick = clearVehicles;
 $('clearForm').onclick = () => clearForm();
 $('goVehicles').onclick = () => activate('vehicles');
 $('year').addEventListener('input', () => { $('year').value = $('year').value.replace(/\D/g, '').slice(0, 4); updatePreview(); });
@@ -6570,6 +6651,13 @@ $('execContinue').onclick = () => { const name = $('executiveSelect').value; if 
     $('executiveSelect').focus();
     return;
 } $('execOverlay').hidden = true; generatePDF(name); };
+// Limpia únicamente los datos del cliente y la vigencia; conserva vehículos y parámetros.
+function clearClientData(){
+    const fields=['clientId','clientName','broker','clientEmail','clientPhone','clientCity','startDate','endDate'];
+    fields.forEach(id=>{if($(id))$(id).value='';});
+    status('Datos del cliente y vigencia limpiados. Los vehículos y la cotización se mantienen.');
+}
+
 // ============================================================
 // 11. GUARDAR Y RECUPERAR COTIZACIONES
 // ============================================================
