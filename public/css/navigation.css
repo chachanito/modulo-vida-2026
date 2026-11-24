@@ -314,18 +314,63 @@ body.sidebar-collapsed { padding-left: var(--sidebar-compact-width); }
   stroke-linejoin: round;
   stroke-width: 2;
 }
+.app-nav__release {
+  display:flex;
+  width:100%;
+  min-height:64px;
+  align-items:center;
+  gap:11px;
+  margin-top:auto;
+  padding:10px 11px;
+  border:1px solid #2a3d5e;
+  border-radius:11px;
+  background:#14233d;
+  color:#c8d5e8;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+.app-nav__release:hover { background:#192b49; border-color:#3e587d; }
+.app-nav__release:focus-visible { outline:3px solid #fbbf24; outline-offset:2px; }
+.app-nav__release-icon {
+  display:grid;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  place-items:center;
+  border-radius:50%;
+  background:#243752;
+  color:#aebed5;
+  font-size:12px;
+  font-weight:800;
+}
+.app-nav__release.is-new { border-color:#397ef2; background:#142a4d; }
+.app-nav__release.is-new .app-nav__release-icon {
+  background:#397ef2;
+  color:#fff;
+  box-shadow:0 0 0 4px #397ef229;
+}
+.app-nav__release-copy { display:flex; min-width:0; flex-direction:column; gap:2px; }
+.app-nav__release-copy small { color:#8092ae; font-size:9px; font-weight:750; letter-spacing:.08em; }
+.app-nav__release-copy strong { color:#fff; font-size:13px; }
+.app-nav__release-copy span { color:#8fa3bf; font-size:10px; }
+.app-nav__release.is-new .app-nav__release-copy span { color:#7fb0ff; font-weight:700; }
 .app-nav.is-collapsed .app-nav__label,
 .app-nav.is-collapsed .app-nav__copy,
-.app-nav.is-collapsed .app-nav__caret { display: none; }
+.app-nav.is-collapsed .app-nav__caret,
+.app-nav.is-collapsed .app-nav__release-copy { display: none; }
 .app-nav.is-collapsed .app-nav__head { flex-direction: column; }
 .app-nav.is-collapsed .app-nav__brand { flex: 0 0 auto; }
 .app-nav.is-collapsed .app-nav__link,
-.app-nav.is-collapsed .app-nav__group-toggle {
+.app-nav.is-collapsed .app-nav__group-toggle,
+.app-nav.is-collapsed .app-nav__release {
   justify-content: center;
   padding-inline: 0;
 }
+.app-nav.is-collapsed .app-nav__release { min-height:46px; }
 .app-nav.is-collapsed .app-nav__link:hover::after,
-.app-nav.is-collapsed .app-nav__group-toggle:hover::after {
+.app-nav.is-collapsed .app-nav__group-toggle:hover::after,
+.app-nav.is-collapsed .app-nav__release:hover::after {
   position: fixed;
   left: 66px;
   z-index: 1100;

@@ -15,6 +15,9 @@ output/
 *.log
 *.csv
 *.xlsx
+!public/templates/
+!public/templates/Plantilla_ACTUAL.xlsx
+!public/templates/Plantilla_MES_ANTERIOR.xlsx
 *.xls
 *.xlsm
 *.pdf
