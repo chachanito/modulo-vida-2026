@@ -27,7 +27,10 @@ jobs:
           VERSION_DATE=$(TZ=America/Bogota date +'%Y-%m-%d')
           VERSION_PREFIX=$(TZ=America/Bogota date +'%Y.%m.%d')
           VERSION="${VERSION_PREFIX}.${GITHUB_RUN_NUMBER}"
+          NAV_VERSION="${GITHUB_SHA:0:12}"
           printf '{"version":"%s","date":"%s","commit":"%s"}\n' "$VERSION" "$VERSION_DATE" "$GITHUB_SHA" > _site/version.json
+          sed -i -E "s#public/js/pages/navigation\\.js(\\?v=[^\"']*)?#public/js/pages/navigation.js?v=${NAV_VERSION}#g" _site/*.html
+          node tools/verify-pages-version.mjs _site
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
