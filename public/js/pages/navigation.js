@@ -1,12 +1,35 @@
 (() => {
   const storageKey = 'herramientas-vida-sidebar';
-  // Cambia este valor al publicar una nueva version. El aviso se mostrara
-  // automaticamente una vez por usuario y navegador.
-  const release = {
-    version: '2026.11.22.3',
-    date: '22 nov 2026'
+  // GitHub Pages genera version.json en cada despliegue. Este valor se usa
+  // solamente al abrir el proyecto sin el artefacto publicado.
+  const fallbackRelease = {
+    version: 'desarrollo local',
+    date: ''
   };
   const releaseStorageKey = 'erp-emision-version-vista';
+  async function loadRelease() {
+    try {
+      const response = await fetch('version.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('No se pudo consultar la versión publicada.');
+      const release = await response.json();
+      if (!release || typeof release.version !== 'string' || !release.version.trim()) {
+        throw new Error('La versión publicada no es válida.');
+      }
+      return {
+        version: release.version.trim(),
+        date: typeof release.date === 'string' ? release.date.trim() : ''
+      };
+    } catch (_) {
+      return fallbackRelease;
+    }
+  }
+
+  function formatReleaseDate(value) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+    if (!match) return value || '';
+    const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    return Number(match[3]) + ' ' + months[Number(match[2]) - 1] + ' ' + match[1];
+  }
   const icons = {
     justificador: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h13"/></svg>',
     cruce: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h11m0 0-3-3m3 3-3 3M19 17H8m0 0 3-3m-3 3 3 3"/></svg>',
@@ -69,19 +92,25 @@
     const releaseButton = document.createElement('button');
     releaseButton.type = 'button';
     releaseButton.className = 'app-nav__release';
-    releaseButton.dataset.label = 'Versión ' + release.version;
     nav.appendChild(releaseButton);
+    let release = fallbackRelease;
     let seenRelease = false;
-    try { seenRelease = localStorage.getItem(releaseStorageKey) === release.version; } catch (_) {}
     const renderRelease = () => {
+      const releaseDate = formatReleaseDate(release.date);
+      releaseButton.dataset.label = 'Versión ' + release.version;
       releaseButton.classList.toggle('is-new', !seenRelease);
-      releaseButton.setAttribute('aria-label', 'Versión ' + release.version + (!seenRelease ? '. Nueva versión; pulsar para marcar como vista.' : '. Actualizada el ' + release.date + '.'));
+      releaseButton.setAttribute('aria-label', 'Versión ' + release.version + (!seenRelease ? '. Nueva versión; pulsar para marcar como vista.' : releaseDate ? '. Actualizada el ' + releaseDate + '.' : '.'));
       releaseButton.innerHTML =
         '<span class="app-nav__release-icon" aria-hidden="true">v</span>' +
         '<span class="app-nav__release-copy"><small>VERSIÓN ACTUAL</small><strong>' + release.version + '</strong>' +
-        '<span>' + (!seenRelease ? 'Nueva versión' : 'Actualizado ' + release.date) + '</span></span>';
+        '<span>' + (!seenRelease ? 'Nueva versión' : releaseDate ? 'Actualizado ' + releaseDate : 'Versión local') + '</span></span>';
     };
     renderRelease();
+    loadRelease().then((publishedRelease) => {
+      release = publishedRelease;
+      try { seenRelease = localStorage.getItem(releaseStorageKey) === release.version; } catch (_) {}
+      renderRelease();
+    });
     releaseButton.addEventListener('click', () => {
       seenRelease = true;
       try { localStorage.setItem(releaseStorageKey, release.version); } catch (_) {}
