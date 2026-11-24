@@ -22,8 +22,8 @@ jobs:
       - name: Preparar aplicación estática
         run: |
           mkdir -p _site/public
-          cp index.html cruce-datos.html cotizador.html macro-pesados.html cotizador-productos-cerrados.html _site/
-          cp -R public/js public/css public/images _site/public/
+          cp index.html cruce-datos.html cotizador.html macro-pesados.html cotizador-productos-cerrados.html capturacion_facturacion.html _site/
+          cp -R public/js public/css public/images public/data public/templates _site/public/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
