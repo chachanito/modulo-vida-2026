@@ -38,6 +38,9 @@ try {
   if ($reply.error) { throw ($reply.error | ConvertTo-Json -Compress) }
   return $reply.result
  }
+ # Evita validar una versión HTML anterior almacenada por Chrome o GitHub Pages.
+ $null = Send-Cdp 'Network.enable' @{}
+ $null = Send-Cdp 'Network.setCacheDisabled' @{cacheDisabled=$true}
  $text = ''
  # Corre primero las pruebas de la interfaz y luego las del cotizador RC.
  for ($attempt=0; $attempt -lt 80; $attempt++) {
