@@ -27,7 +27,7 @@ El menú lateral ofrece **Cruce de datos** como un acordeón con acceso a `cruce
 
 Los comentarios del código señalan secciones y lógica que requiere contexto; no se comenta cada línea para evitar duplicar lo que el propio código ya expresa.
 
-`codigos_mau/` conserva versiones históricas independientes y no forma parte del sitio publicado; se mantiene intacta para que esos respaldos sigan siendo autocontenidos. `MANIFIESTO.json` también es un registro de la exportación original: sus rutas `public/css` son históricas, no rutas de carga de la aplicación actual.
+`MANIFIESTO.json` es un registro de la exportación original: sus rutas `public/css` son históricas, no rutas de carga de la aplicación actual.
 
 `index.html` es una aplicacion independiente, sin cuentas ni dependencias del ERP. Permite justificar texto, importar PDF con texto y Word .docx, procesar Excel/CSV, ordenar secciones y copiar. El tema claro/oscuro se cambia desde el menú lateral, se guarda localmente y se comparte entre todos los módulos; inicialmente sigue el tema del sistema. La interfaz publica no contiene enlaces de descarga ni enlaces al codigo fuente. Todos los documentos se procesan en el navegador. Los lectores PDF.js, Mammoth y SheetJS estan incluidos localmente.
 
