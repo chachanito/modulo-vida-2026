@@ -18,7 +18,7 @@ El menú lateral ofrece **Cruce de datos** como un acordeón con acceso a `cruce
 ## Estructura del proyecto
 
 - Las cinco páginas HTML de la raíz son los módulos activos del sitio.
-- `public/estilo/` contiene todas las hojas CSS, separadas por propósito y módulo. Los estilos antes incrustados en las páginas ahora se cargan desde `public/estilo/modules/`.
+- `public/estilo/` contiene todas las hojas CSS, separadas por propósito y módulo. Los estilos antes incrustados en las páginas ahora se cargan desde `public/estilo/modules/`, incluido el Conciliador de Créditos V36.
 - `public/js/pages/` contiene la navegación y el tema compartidos; `public/js/modules/` contiene los controladores de los módulos activos.
 - `public/js/data/` separa los catálogos y matrices de cálculo de su lógica; `public/js/vendor/` conserva las bibliotecas de terceros, incluido JSZip.
 - Cruce de datos, Macro Pesados y Productos Cerrados cargan sus archivos en orden: bibliotecas o datos primero, controlador después. Esto mantiene visibles los datos globales requeridos por los controladores y evita volver a incrustar lógica en el HTML.

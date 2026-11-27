@@ -99,6 +99,30 @@ try {
  $null = Send-Cdp 'Runtime.evaluate' @{expression='(()=>{const toggle=document.querySelector(".app-nav__toggle");if(toggle.getAttribute("aria-expanded")==="false")toggle.click()})()';returnByValue=$true}
  $activeCruce = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("#app-nav-cruce .app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cruce de datos" && document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cruce\"]").getAttribute("aria-expanded") === "true"';returnByValue=$true}
  if (-not $activeCruce.result.value) { throw 'La navegación no identifica Cruce de datos como módulo activo.' }
+ $v36Ready = Send-Cdp 'Runtime.evaluate' @{expression='document.title.includes("V36") && document.querySelectorAll(".tabs [data-tab]").length === 7 && !!document.getElementById("policySearchInput") && !!document.getElementById("fichaPdfUpload") && document.querySelectorAll("style").length === 0 && document.getElementById("templateActual").getAttribute("href") === "public/templates/Plantilla_ACTUAL.xlsx" && document.getElementById("templatePrevious").getAttribute("href") === "public/templates/Plantilla_MES_ANTERIOR.xlsx"';returnByValue=$true}
+ if (-not $v36Ready.result.value) { throw 'El Conciliador V36 no cargó su interfaz modular completa.' }
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("[data-tab=\"ficha\"]").click()';returnByValue=$true}
+ $v36PdfTab = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("ficha").classList.contains("active") && document.getElementById("fichaPdfUpload").accept.includes("pdf")';returnByValue=$true}
+ if (-not $v36PdfTab.result.value) { throw 'La pestaña de carga local de PDF del Conciliador V36 no funciona.' }
+ $v36Shot = Send-Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
+ [IO.File]::WriteAllBytes((Join-Path $projectRoot 'tmp/v36-browser-test.png'), [Convert]::FromBase64String($v36Shot.data))
+ $pdfIdentity = Send-Cdp 'Runtime.evaluate' @{expression='(()=>{const normal=pdfReadIdentityV35("POLIZA: 0002369 ENDOSO: 000002");const packed=pdfReadIdentityV35("NUMERO DE POLIZA PARA EL PAGO: 240002369000003");return normal?.policy==="24-2369"&&normal?.annex==="000002"&&packed?.policy==="24-2369"&&packed?.annex==="000003"})()';returnByValue=$true}
+ if (-not $pdfIdentity.result.value) { throw 'La lectura de póliza y anexo del V36 no reconoce los formatos esperados.' }
+ $v36Setup = Send-Cdp 'Runtime.evaluate' @{expression='JSON.stringify((()=>{try{document.querySelector("[data-tab=\"carga\"]").click();const current="CEDULA\tNOMBRES\tFECHA DE NACIMIENTO\tMONTO ACTUAL\n1710034065\tPERSONA PRUEBA\t1990-01-01\t1000";const previous="CEDULA\tNOMBRES COMPLETOS\tMONTO ANTERIOR\n1710034065\tPERSONA PRUEBA\t900";document.getElementById("actualPaste").value=current;document.getElementById("anteriorPaste").value=previous;document.getElementById("process").click();document.getElementById("cutoffInput").value="2026-11-26";document.getElementById("cutoffForm").requestSubmit();return {ok:true,dialog:document.getElementById("cutoffDialog").open}}catch(error){return {ok:false,error:error.stack}}})())';returnByValue=$true}
+ if ($v36Setup.result.value -notmatch '"ok":true') { throw ('No se pudo preparar la conciliación sintética: ' + $v36Setup.result.value) }
+ $v36Reconciled = $false
+ for ($attempt=0; $attempt -lt 40; $attempt++) {
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='document.getElementById("status").textContent.includes("completada:") && document.getElementById("resultBody").children.length === 1';returnByValue=$true}
+  $v36Reconciled = $result.result.value
+  if ($v36Reconciled) { break }
+  Start-Sleep -Milliseconds 250
+ }
+ if (-not $v36Reconciled) {
+  $diagnostic = Send-Cdp 'Runtime.evaluate' @{expression='JSON.stringify({status:document.getElementById("status").textContent,rows:document.getElementById("resultBody").children.length,cutoff:document.getElementById("corte").value})';returnByValue=$true}
+  Write-Output ('V36 DIAGNOSTICO: ' + $diagnostic.result.value)
+  throw 'El motor V36 no completó la conciliación sintética.'
+ }
+ Write-Output 'PASS: Conciliador V36 modular con siete pestañas y carga local de PDF'
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  Start-Sleep -Milliseconds 500
  $menuLinks = Send-Cdp 'Runtime.evaluate' @{expression='Array.from(document.querySelectorAll("#app-nav-cotizadores .app-nav__sublink")).map(link=>link.textContent.trim()).join("|") === "Cotizador RC|Productos Cerrados|Macro Pesados"';returnByValue=$true}
@@ -121,6 +145,11 @@ try {
  $mobileMenu = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").getAttribute("aria-expanded") === "true" && document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
  if (-not $mobileMenu.result.value) { throw 'El menú de cotizadores no funciona correctamente en móvil.' }
  Write-Output 'PASS: menú Cotizadores móvil'
+ $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/cruce-datos.html')}
+ Start-Sleep -Milliseconds 700
+ $v36Mobile = Send-Cdp 'Runtime.evaluate' @{expression='document.title.includes("V36") && document.documentElement.scrollWidth <= innerWidth && document.querySelectorAll(".tabs [data-tab]").length === 7';returnByValue=$true}
+ if (-not $v36Mobile.result.value) { throw 'El Conciliador V36 desborda o no carga correctamente en móvil.' }
+ Write-Output 'PASS: Conciliador V36 móvil sin desbordamiento'
  $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/macro-pesados.html')}
  $macroReady = $false
  for ($attempt=0; $attempt -lt 80; $attempt++) {

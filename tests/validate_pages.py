@@ -16,6 +16,7 @@ PUBLISHED_PAGES = (
 )
 REQUIRED_ASSETS = (
     "public/estilo/design-system.css",
+    "public/estilo/modules/cruce-datos-pdf.css",
     "public/js/pages/navigation.js",
     "public/js/vendor/jszip-3.10.1.min.js",
     "public/js/modules/cruce_datos.js",
@@ -42,6 +43,14 @@ REQUIRED_SCRIPT_SEQUENCES = {
         "public/js/modules/cotizador_productos_cerrados.js",
     ),
 }
+REQUIRED_ELEMENT_IDS = {
+    "cruce-datos.html": (
+        "actualPaste",
+        "anteriorPaste",
+        "policySearchInput",
+        "fichaPdfUpload",
+    ),
+}
 
 
 class LocalReferences(HTMLParser):
@@ -49,11 +58,17 @@ class LocalReferences(HTMLParser):
         super().__init__()
         self.urls = []
         self.scripts = []
+        self.ids = set()
         self.inline_script = False
+        self.inline_style = False
         self._inside_inline_script = False
 
     def handle_starttag(self, tag, attrs):
         attributes = dict(attrs)
+        if attributes.get("id"):
+            self.ids.add(attributes["id"])
+        if tag == "style" or "style" in attributes:
+            self.inline_style = True
         if tag == "script":
             source = attributes.get("src")
             if source:
@@ -112,6 +127,12 @@ def main():
         if "fetch('version.json', { cache: 'no-store' })" not in navigation_text:
             errors.append("La navegacion no consulta version.json sin cache")
 
+    cruce_source = root / "public/js/modules/cruce_datos.js"
+    if cruce_source.is_file():
+        cruce_text = cruce_source.read_text(encoding="utf-8")
+        if "PDF_REFERENCE_2752" in cruce_text or "JVBERi0" in cruce_text:
+            errors.append("El Conciliador incluye un PDF contractual precargado")
+
     expected_sha = os.environ.get("GITHUB_SHA", "")
     expected_nav_version = expected_sha[:12] if re.fullmatch(r"[0-9a-f]{40}", expected_sha) else ""
 
@@ -137,6 +158,8 @@ def main():
         if html_path.parent == root and html_path.name in REQUIRED_SCRIPT_SEQUENCES:
             if parser.inline_script:
                 errors.append(f"{html_path.name} todavía contiene JavaScript incrustado")
+            if html_path.name == "cruce-datos.html" and parser.inline_style:
+                errors.append("cruce-datos.html todavía contiene estilos incrustados")
 
             actual_scripts = [urlsplit(value).path for value in parser.scripts]
             position = 0
@@ -148,6 +171,11 @@ def main():
                         f"{html_path.name} debe cargar {asset} en el orden requerido"
                     )
                     break
+
+        if html_path.parent == root and html_path.name in REQUIRED_ELEMENT_IDS:
+            for element_id in REQUIRED_ELEMENT_IDS[html_path.name]:
+                if element_id not in parser.ids:
+                    errors.append(f"{html_path.name} no contiene el control #{element_id}")
 
         for value in parser.urls:
             url = urlsplit(value)
