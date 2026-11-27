@@ -1,6 +1,6 @@
 (() => {
     'use strict';
-    // This screen assembles a final document from separate text and table blocks that the user can reorder.
+    // Combina bloques de texto y tablas, que el usuario puede reordenar antes de copiar.
     document.addEventListener('DOMContentLoaded', () => {
         const el = id => document.getElementById('jv-' + id);
         if (!el('preview')) return;

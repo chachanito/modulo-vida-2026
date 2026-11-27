@@ -1,34 +1,28 @@
 (() => {
   const storageKey = 'herramientas-vida-sidebar';
-  // GitHub Pages genera version.json en cada despliegue. Este valor se usa
-  // solamente al abrir el proyecto sin el artefacto publicado.
-  const fallbackRelease = {
-    version: 'desarrollo local',
-    date: ''
-  };
+  const fallbackRelease = { version: 'desarrollo local', date: '' };
   const releaseStorageKey = 'erp-emision-version-vista';
+
   async function loadRelease() {
     try {
       const response = await fetch('version.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error('No se pudo consultar la versión publicada.');
-      const release = await response.json();
-      if (!release || typeof release.version !== 'string' || !release.version.trim()) {
-        throw new Error('La versión publicada no es válida.');
+      if (!response.ok) throw new Error('No se pudo consultar version.json');
+      const value = await response.json();
+      if (typeof value.version !== 'string' || typeof value.date !== 'string') {
+        throw new Error('version.json no tiene el formato esperado');
       }
-      return {
-        version: release.version.trim(),
-        date: typeof release.date === 'string' ? release.date.trim() : ''
-      };
+      return value;
     } catch (_) {
       return fallbackRelease;
     }
   }
 
   function formatReleaseDate(value) {
-    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
-    if (!match) return value || '';
+    if (!value) return '';
+    const parts = value.split('-').map(Number);
+    if (parts.length !== 3 || parts.some(Number.isNaN)) return value;
     const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-    return Number(match[3]) + ' ' + months[Number(match[2]) - 1] + ' ' + match[1];
+    return parts[2] + ' ' + months[parts[1] - 1] + ' ' + parts[0];
   }
   const icons = {
     justificador: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h13"/></svg>',
@@ -56,7 +50,13 @@
     const links = nav.querySelector('.app-nav__links');
     if (!brand || !links) return;
 
-    // Cruce de datos agrupa el conciliador nuevo y conserva el modulo anterior.
+    // La navegación carga una sola hoja compartida para todos los módulos activos.
+    document.body.classList.add('app-design-system');
+    const designSystem = document.createElement('link');
+    designSystem.rel = 'stylesheet';
+    designSystem.href = 'public/estilo/design-system.css?v=20261125-1054';
+    document.head.appendChild(designSystem);
+
     const cruceLink = links.querySelector(':scope > .app-nav__link[href*="cruce-datos.html"]');
     if (cruceLink) {
       const cruceGroup = document.createElement('div');
@@ -66,7 +66,6 @@
           '<span class="app-nav__label">Cruce de datos</span>' +
         '</button>' +
         '<div class="app-nav__submenu" id="app-nav-cruce" hidden>' +
-          '<a class="app-nav__sublink" href="capturacion_facturacion.html">Vida_mauricio</a>' +
           '<a class="app-nav__sublink" href="cruce-datos.html">Cruce de datos</a>' +
         '</div>';
       const currentFile = location.pathname.split('/').pop().toLowerCase();
@@ -92,22 +91,23 @@
     const releaseButton = document.createElement('button');
     releaseButton.type = 'button';
     releaseButton.className = 'app-nav__release';
-    nav.appendChild(releaseButton);
     let release = fallbackRelease;
+    releaseButton.dataset.label = 'Versión ' + release.version;
+    nav.appendChild(releaseButton);
     let seenRelease = false;
     const renderRelease = () => {
       const releaseDate = formatReleaseDate(release.date);
       releaseButton.dataset.label = 'Versión ' + release.version;
       releaseButton.classList.toggle('is-new', !seenRelease);
-      releaseButton.setAttribute('aria-label', 'Versión ' + release.version + (!seenRelease ? '. Nueva versión; pulsar para marcar como vista.' : releaseDate ? '. Actualizada el ' + releaseDate + '.' : '.'));
+      releaseButton.setAttribute('aria-label', 'Versión ' + release.version + (!seenRelease ? '. Nueva versión; pulsar para marcar como vista.' : (releaseDate ? '. Actualizada el ' + releaseDate + '.' : '.')));
       releaseButton.innerHTML =
         '<span class="app-nav__release-icon" aria-hidden="true">v</span>' +
         '<span class="app-nav__release-copy"><small>VERSIÓN ACTUAL</small><strong>' + release.version + '</strong>' +
-        '<span>' + (!seenRelease ? 'Nueva versión' : releaseDate ? 'Actualizado ' + releaseDate : 'Versión local') + '</span></span>';
+        '<span>' + (!seenRelease ? 'Nueva versión' : (releaseDate ? 'Actualizado ' + releaseDate : 'Versión local')) + '</span></span>';
     };
     renderRelease();
-    loadRelease().then((publishedRelease) => {
-      release = publishedRelease;
+    loadRelease().then((nextRelease) => {
+      release = nextRelease;
       try { seenRelease = localStorage.getItem(releaseStorageKey) === release.version; } catch (_) {}
       renderRelease();
     });
@@ -116,6 +116,15 @@
       try { localStorage.setItem(releaseStorageKey, release.version); } catch (_) {}
       renderRelease();
     });
+
+    const themeToggle = document.createElement('button');
+    themeToggle.type = 'button';
+    themeToggle.className = 'app-nav__theme-toggle';
+    themeToggle.dataset.themeToggle = '';
+    themeToggle.innerHTML =
+      '<span class="app-nav__icon" aria-hidden="true"></span>' +
+      '<span class="app-nav__label"></span>';
+    nav.insertBefore(themeToggle, releaseButton);
 
     links.querySelectorAll('.app-nav__link').forEach((link) => {
       const label = link.textContent.trim();
@@ -151,6 +160,7 @@
 
     setCollapsed(storedState(), false);
     const groupClosers = [];
+    const groupOpeners = [];
     groups.forEach((group) => {
       const groupToggle = group.querySelector('.app-nav__group-toggle');
       const submenu = group.querySelector('.app-nav__submenu');
@@ -161,6 +171,7 @@
         group.classList.toggle('is-expanded', expanded);
       };
       groupClosers.push(() => setExpanded(false));
+      groupOpeners.push(() => setExpanded(Boolean(submenu.querySelector('[aria-current="page"]'))));
       setExpanded(Boolean(submenu.querySelector('[aria-current="page"]')) && !nav.classList.contains('is-collapsed'));
       groupToggle.addEventListener('click', () => {
         if (nav.classList.contains('is-collapsed')) {
@@ -179,6 +190,7 @@
       const collapsed = !nav.classList.contains('is-collapsed');
       setCollapsed(collapsed);
       if (collapsed) closeSubmenu();
+      else groupOpeners.forEach((open) => open());
     });
     mobileMedia.addEventListener?.('change', (event) => {
       if (event.matches) {

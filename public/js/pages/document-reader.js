@@ -1,8 +1,8 @@
 (() => {
     'use strict';
-    // Libraries are hosted with the site. File contents never leave the browser.
+    // Lee PDF y DOCX con bibliotecas locales; los archivos nunca salen del navegador.
     let pdfModule, mammothLoading;
-    // Keep PDF extraction in page order so lines from different pages do not get merged into a single block.
+    // Conserva el orden de páginas para no mezclar líneas de documentos distintos.
     function check(signal) {
         if (signal?.aborted) throw new DOMException('Lectura cancelada.', 'AbortError');
     }

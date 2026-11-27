@@ -22,16 +22,17 @@ jobs:
       - name: Preparar aplicación estática
         run: |
           mkdir -p _site/public
-          cp index.html cruce-datos.html cotizador.html macro-pesados.html cotizador-productos-cerrados.html capturacion_facturacion.html _site/
-          cp -R public/js public/css public/images public/data public/templates _site/public/
+          cp index.html cruce-datos.html cotizador.html macro-pesados.html cotizador-productos-cerrados.html _site/
+          cp -R public/js public/estilo public/images public/templates _site/public/
           VERSION_DATE=$(TZ=America/Bogota date +'%Y-%m-%d')
           VERSION_PREFIX=$(TZ=America/Bogota date +'%Y.%m.%d')
           VERSION="${VERSION_PREFIX}.${GITHUB_RUN_NUMBER}"
           NAV_VERSION="${GITHUB_SHA:0:12}"
-          printf '{"version":"%s","date":"%s","commit":"%s"}\n' "$VERSION" "$VERSION_DATE" "$GITHUB_SHA" > _site/version.json
-          sed -i -E "s#public/js/pages/navigation\\.js(\\?v=[^\"']*)?#public/js/pages/navigation.js?v=${NAV_VERSION}#g" _site/*.html
-          node tools/verify-pages-version.mjs _site
+          printf '{"version":"%s","date":"%s","commit":"%s","run_number":%s}\n' "$VERSION" "$VERSION_DATE" "$GITHUB_SHA" "$GITHUB_RUN_NUMBER" > _site/version.json
+          sed -i -E "s#public/js/pages/navigation\.js([^\"]*)#public/js/pages/navigation.js?v=${NAV_VERSION}#g" _site/*.html
           touch _site/.nojekyll
+      - name: Validar sitio publicado
+        run: python tests/validate_pages.py _site
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site

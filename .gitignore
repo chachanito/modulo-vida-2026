@@ -12,6 +12,7 @@ public/uploads/
 backups/
 tmp/
 output/
+_site/
 *.log
 *.csv
 *.xlsx

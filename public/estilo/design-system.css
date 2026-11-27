@@ -1,0 +1,724 @@
+/* Variables globales de color usadas por las páginas y los módulos públicos. */
+:root {
+  --app-accent: #2175a5;
+  --app-accent-dark: #176980;
+  --app-ink: #173a59;
+  --app-muted: #60758b;
+  --app-line: #d7e5ef;
+  --app-surface: #fff;
+  --app-background: #f0f5fa;
+}
+
+body.app-design-system {
+  background:
+    radial-gradient(ellipse at 92% 18%, #e8f7f1 0, transparent 38%),
+    linear-gradient(125deg, #edf4fa 0%, #f7f9fc 58%, #edf7f4 100%);
+  background-color: var(--app-background);
+  color: #23384d;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Unifica el encabezado de cada módulo sin modificar su contenido. */
+body.app-design-system > header:not(.app-nav),
+body.app-design-system > .top,
+body.app-design-system .app-page-header,
+body.app-design-system .rc-heading,
+body.app-design-system .jv-heading {
+  color: #fff;
+  background: linear-gradient(108deg, #153d64 0%, #1d6680 55%, #278579 100%);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 8px 24px #153d6426;
+}
+
+body.app-design-system .app-page-header,
+body.app-design-system .rc-heading,
+body.app-design-system .jv-heading {
+  width: 100%;
+  max-width: none;
+  min-height: 128px;
+  margin: 0;
+  padding: 24px 34px;
+  border-radius: 0;
+}
+
+body.app-design-system > header:not(.app-nav),
+body.app-design-system > .top {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 24px 34px;
+  border-radius: 0;
+}
+
+body.app-design-system .app-page-header h1,
+body.app-design-system .app-page-header h2,
+body.app-design-system .rc-heading h1,
+body.app-design-system .jv-heading h1,
+body.app-design-system .top h1 {
+  color: #fff;
+}
+
+body.app-design-system > header:not(.app-nav) h1,
+body.app-design-system > .top h1,
+body.app-design-system .app-page-header h1,
+body.app-design-system .rc-heading h1,
+body.app-design-system .jv-heading h1 {
+  margin: 0;
+  font-size: clamp(32px, 3vw, 48px);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+body.app-design-system .app-page-header p,
+body.app-design-system .rc-heading p,
+body.app-design-system .jv-heading p,
+body.app-design-system .top small {
+  color: #e0edf5;
+}
+
+body.app-design-system > header:not(.app-nav) p,
+body.app-design-system > .top small,
+body.app-design-system .app-page-header p,
+body.app-design-system .rc-heading p,
+body.app-design-system .jv-heading p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Las cabeceras son macizas como Macro Pesados y el contenido comienza cerca de ellas. */
+body.app-design-system > header:not(.app-nav),
+body.app-design-system > .top,
+body.app-design-system .app-page-header,
+body.app-design-system .rc-heading,
+body.app-design-system .jv-heading {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 128px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 24px 34px !important;
+}
+
+body.app-design-system > main,
+body.app-design-system main.rc-page,
+body.app-design-system main.jv-module,
+body.app-design-system main.wrap {
+  margin-top: 22px;
+}
+
+body.app-design-system .app-page-header label,
+body.app-design-system .rc-heading label,
+body.app-design-system .jv-heading label {
+  color: #f1f7fa;
+}
+
+body.app-design-system > header.jv-heading .app-page-header__controls {
+  display: flex;
+  width: auto;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 12px;
+}
+
+body.app-design-system .jv-toolbar > .privacy {
+  margin: 0;
+  border: 0;
+  padding: 0 2px;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+body.app-design-system .jv-document > .jt-help {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #dce8f1;
+  border-radius: 12px;
+  background: #f3f8fd;
+  color: var(--app-muted);
+}
+
+body.app-design-system .app-page-header .jv-width,
+body.app-design-system .jv-heading .jv-width {
+  background: #e1eff8;
+  color: #1e567d;
+}
+
+body.app-design-system main h1,
+body.app-design-system main h2,
+body.app-design-system main h3 {
+  color: var(--app-ink);
+}
+
+body.app-design-system .app-page-header h1,
+body.app-design-system .app-page-header h2,
+body.app-design-system .rc-heading h1,
+body.app-design-system .jv-heading h1 {
+  color: #fff;
+}
+
+/* Superficies, métricas y pestañas compartidas por los módulos. */
+body.app-design-system .panel,
+body.app-design-system .pane,
+body.app-design-system .card,
+body.app-design-system .rc-card,
+body.app-design-system .glass-card,
+body.app-design-system .upload-card,
+body.app-design-system .jt-card,
+body.app-design-system .jv-document,
+body.app-design-system .metric {
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-line);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px #183e5c12;
+}
+
+body.app-design-system .metric,
+body.app-design-system .rc-metric {
+  background: linear-gradient(145deg, #f8fbfe, #eef5fb);
+  border-color: #dfebf4;
+  border-left: 1px solid #dfebf4;
+}
+
+body.app-design-system .tabs,
+body.app-design-system .jv-tabs {
+  gap: 10px;
+}
+
+body.app-design-system .tabs button,
+body.app-design-system .jv-tabs button,
+body.app-design-system [role="tab"] {
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid #d6e4ef;
+  border-radius: 12px;
+  background: #fff;
+  color: #244763;
+  font-weight: 650;
+  box-shadow: 0 3px 10px #183e5c0b;
+  transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+body.app-design-system .tabs button:hover,
+body.app-design-system .jv-tabs button:hover,
+body.app-design-system [role="tab"]:hover {
+  border-color: #77b5bc;
+  background: #f0f8f8;
+  transform: translateY(-1px);
+}
+
+body.app-design-system .tabs button.active,
+body.app-design-system .jv-tabs [aria-selected="true"],
+body.app-design-system [role="tab"][aria-selected="true"] {
+  border-color: transparent;
+  background: linear-gradient(105deg, #2175a5, #218579);
+  color: #fff;
+  box-shadow: 0 6px 16px #1c708044;
+}
+
+/* Controles comunes; las reglas de tema oscuro se definen en el bloque siguiente. */
+body.app-design-system main button:not(.tabs button):not(.jv-tabs button) {
+  min-height: 38px;
+  border: 1px solid #d4e2ed;
+  border-radius: 10px;
+  background: #fff;
+  color: #244763;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+body.app-design-system main button:not(.tabs button):not(.jv-tabs button):hover:not(:disabled) {
+  border-color: #82b8c0;
+  background: #f1f8f8;
+  box-shadow: 0 3px 10px #183e5c12;
+}
+
+body.app-design-system main table button {
+  min-height: 32px;
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+body.app-design-system main button.rc-remove {
+  width: 32px;
+  min-height: 32px;
+  padding: 0;
+}
+
+body.app-design-system main .primary,
+body.app-design-system main .btn-primary,
+body.app-design-system main .rc-actions button,
+body.app-design-system main .action button:not(.secondary),
+body.app-design-system main .jv-add .btn-primary,
+body.app-design-system main .jt-actions .btn-primary {
+  border-color: transparent;
+  background: linear-gradient(105deg, #2175a5, #218579);
+  color: #fff;
+  box-shadow: 0 5px 13px #1c70802b;
+}
+
+body.app-design-system main .secondary,
+body.app-design-system main .btn:not(.btn-primary) {
+  background: #f1f6fa;
+  color: #285071;
+}
+
+body.app-design-system main button:disabled {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Campos de captura y estados de foco accesibles. */
+body.app-design-system main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+body.app-design-system main select,
+body.app-design-system main textarea {
+  border: 1px solid #d1e0eb;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #172d42;
+  box-shadow: inset 0 1px 2px #183e5c08;
+}
+
+body.app-design-system main input:focus,
+body.app-design-system main select:focus,
+body.app-design-system main textarea:focus {
+  border-color: #438eaa;
+  outline: 3px solid #4f9dab2b;
+  outline-offset: 1px;
+}
+
+body.app-design-system main input[type="checkbox"],
+body.app-design-system main input[type="radio"] {
+  accent-color: var(--app-accent);
+}
+
+body.app-design-system main label {
+  color: #315571;
+}
+
+/* Tablas y pie de página de los módulos. */
+body.app-design-system .tablewrap,
+body.app-design-system .rc-table-wrap,
+body.app-design-system .jt-preview-wrap {
+  border-color: #d8e5ef;
+  border-radius: 12px;
+}
+
+body.app-design-system main table:not(.calc-table) {
+  border-color: #d8e5ef;
+}
+
+body.app-design-system main table:not(.calc-table) th {
+  border-color: #d8e5ef;
+  background: #e8f1f8 !important;
+  color: #284f6d !important;
+}
+
+body.app-design-system main table:not(.calc-table) td {
+  border-color: #e5edf3;
+}
+
+body.app-design-system main table:not(.calc-table) tbody tr:nth-child(even) {
+  background-color: #f6f9fc;
+}
+
+body.app-design-system .app-footer,
+body.app-design-system > footer {
+  border-top: 1px solid #dbe7ef;
+}
+
+/* Ajustes del tema oscuro y correcciones de contraste para componentes específicos. */
+.theme-dark body.app-design-system {
+  background: linear-gradient(135deg, #18212b, #202b35 55%, #232e38);
+  background-color: #18212b;
+  color: #e2eaf2;
+}
+
+.theme-dark body.app-design-system main h1,
+.theme-dark body.app-design-system main h2,
+.theme-dark body.app-design-system main h3,
+.theme-dark body.app-design-system main label {
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system .panel,
+.theme-dark body.app-design-system .pane,
+.theme-dark body.app-design-system .card,
+.theme-dark body.app-design-system .rc-card,
+.theme-dark body.app-design-system .rc-metric,
+.theme-dark body.app-design-system .glass-card,
+.theme-dark body.app-design-system .upload-card,
+.theme-dark body.app-design-system .jt-card,
+.theme-dark body.app-design-system .jv-document,
+.theme-dark body.app-design-system .metric {
+  background: #1b2b3e;
+  border-color: #344a60;
+  box-shadow: none;
+}
+
+.theme-dark body.app-design-system .jv-toolbar > .privacy {
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system .jv-document > .jt-help {
+  border-color: #344a60;
+  background: #203348;
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.theme-dark body.app-design-system main select,
+.theme-dark body.app-design-system main textarea {
+  background-color: #24374c;
+  color: #e2eaf2;
+  border-color: #4a6078;
+}
+
+.theme-dark body.app-design-system .tabs button,
+.theme-dark body.app-design-system .jv-tabs button,
+.theme-dark body.app-design-system main button:not(.tabs button):not(.jv-tabs button) {
+  background: #24374c;
+  color: #dce9f4;
+  border-color: #40566d;
+}
+
+.theme-dark body.app-design-system .tabs button.active,
+.theme-dark body.app-design-system .jv-tabs [aria-selected="true"],
+.theme-dark body.app-design-system [role="tab"][aria-selected="true"] {
+  background: linear-gradient(105deg, #2175a5, #218579);
+  color: #fff;
+}
+
+.theme-dark body.app-design-system main table:not(.calc-table) th {
+  background: #253e56 !important;
+  color: #e2eaf2 !important;
+}
+
+.theme-dark body.app-design-system main table:not(.calc-table) td {
+  border-color: #344a60;
+}
+
+.theme-dark body.app-design-system main table:not(.calc-table) tbody tr:nth-child(even) {
+  background-color: #203348;
+}
+
+.theme-dark body.app-design-system .hint,
+.theme-dark body.app-design-system .muted,
+.theme-dark body.app-design-system .summary-note,
+.theme-dark body.app-design-system .rc-metric small {
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system .age-config,
+.theme-dark body.app-design-system .issuer-picker,
+.theme-dark body.app-design-system .new-entry-config,
+.theme-dark body.app-design-system .policy-tools,
+.theme-dark body.app-design-system .portable-catalog {
+  border-color: #40566d;
+  background: #24374c;
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system .new-entry-check,
+.theme-dark body.app-design-system .policy-tools summary,
+.theme-dark body.app-design-system .policy-message,
+.theme-dark body.app-design-system .portable-heading,
+.theme-dark body.app-design-system .portable-catalog p {
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system .age-parts small {
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system .policy-message.ok {
+  border-color: #34745d;
+  background: #1d3d35;
+}
+
+.theme-dark body.app-design-system .policy-message.bad {
+  border-color: #85464e;
+  background: #482b32;
+}
+
+.theme-dark body.app-design-system .policy-panel h2 {
+  color: #dce9f4 !important;
+}
+
+.theme-dark body.app-design-system .policy-panel #policyNew,
+.theme-dark body.app-design-system .policy-panel #policyDelete {
+  border-color: #536b80 !important;
+  background: #2b4053 !important;
+  color: #e2eaf2 !important;
+}
+
+.theme-dark body.app-design-system .quote-field {
+  border-color: #40566d;
+  background: #24374c;
+  color: #e2eaf2;
+}
+
+.theme-dark body.app-design-system .quote-field.rate-display {
+  background: #253e56;
+}
+
+.theme-dark body.app-design-system .quote-field.net-display {
+  border-color: #42637b;
+  background: #29455a;
+}
+
+.theme-dark body.app-design-system .quote-field small {
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system .coverage-modern tbody tr {
+  background: #203348;
+  box-shadow: none;
+}
+
+.theme-dark body.app-design-system .coverage-modern .special-rate {
+  background: #493b22 !important;
+  color: #f2d89f !important;
+}
+
+.theme-dark body.app-design-system .coverage-modern .special-premium {
+  background: #24445a !important;
+  color: #c4e3f2 !important;
+}
+
+.theme-dark body.app-design-system .coverage-modern tfoot td {
+  background: #253e56 !important;
+  color: #e2eaf2;
+}
+
+.theme-dark body.app-design-system .ded-modern tbody tr {
+  background: #203348;
+}
+
+.theme-dark body.app-design-system .ded-modern tbody td:first-child {
+  border-color: #40566d !important;
+  background: #203d35;
+  color: #c3e3d3;
+}
+
+.theme-dark body.app-design-system .ded-modern tbody td:last-child {
+  border-color: #40566d !important;
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system #dashboard label,
+.theme-dark body.app-design-system #dashboard .card p,
+.theme-dark body.app-design-system #dashboard .notice,
+.theme-dark body.app-design-system #dashboard .tag {
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system #dashboard .notice,
+.theme-dark body.app-design-system #dashboard .tag {
+  border-color: #40566d;
+  background: #24374c;
+}
+
+.theme-dark body.app-design-system > header .pill {
+  border-color: #56718a;
+  background: #244969;
+  color: #eaf4fb;
+}
+
+.theme-dark body.app-design-system button.secondary {
+  border-color: #40566d !important;
+  background: #2b4053 !important;
+  color: #e2eaf2 !important;
+}
+
+.theme-dark body.app-design-system button.primary {
+  color: #fff !important;
+}
+
+.theme-dark body.app-design-system main button:disabled {
+  border-color: #53677b !important;
+  background: #33475b !important;
+  color: #b4c3d2 !important;
+  opacity: 1;
+}
+
+.theme-dark body.app-design-system .rc-actions .btn {
+  border-color: #40566d !important;
+  background: #24374c !important;
+  color: #dce9f4 !important;
+}
+
+.theme-dark body.app-design-system .rc-actions .btn-primary {
+  border-color: #3c88a9 !important;
+  background: linear-gradient(105deg, #2175a5, #218579) !important;
+  color: #fff !important;
+}
+
+.theme-dark body.app-design-system .quote-field span {
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system .summary-meta,
+.theme-dark body.app-design-system .section-kicker {
+  color: #cbd5e1;
+}
+
+.theme-dark body.app-design-system .coverage-modern tbody tr td {
+  border-color: #40566d !important;
+  background: #203348 !important;
+  color: #e2eaf2 !important;
+}
+
+.theme-dark body.app-design-system .coverage-modern tbody tr td:first-child {
+  border-color: #665735 !important;
+  background: #3d3524 !important;
+  color: #f2d89f !important;
+}
+
+.theme-dark body.app-design-system .coverage-modern tbody tr td:nth-child(3) {
+  background: #1f3b35 !important;
+  color: #b6e0ce !important;
+}
+
+.theme-dark body.app-design-system .coverage-modern tbody tr td:nth-child(7) {
+  background: #243b4f !important;
+  color: #c4deee !important;
+}
+
+.theme-dark body.app-design-system #dashboard button.secondary {
+  border-color: #40566d !important;
+  background: #2b4053 !important;
+  color: #dce9f4 !important;
+}
+
+.theme-dark body.app-design-system #dashboard .tabs button {
+  border-color: #40566d !important;
+  background: #24374c !important;
+  color: #dce9f4 !important;
+}
+
+.theme-dark body.app-design-system #dashboard .tabs button.active {
+  border-color: #4386aa !important;
+  background: linear-gradient(105deg, #2175a5, #218579) !important;
+  color: #fff !important;
+}
+
+.theme-dark body.app-design-system #dashboard .minrate-chip {
+  border-color: #34745d;
+  background: #1f3b35;
+  color: #b6e0ce;
+}
+
+.theme-dark body.app-design-system .app-nav__release-icon {
+  background: #1d4ed8;
+}
+
+.theme-dark body.app-design-system #dashboard .card,
+.theme-dark body.app-design-system #dashboard .stat,
+.theme-dark body.app-design-system #dashboard .tablewrap {
+  background: #1b2b3e;
+  border-color: #344a60;
+  box-shadow: none;
+}
+
+.theme-dark body.app-design-system #dashboard h2,
+.theme-dark body.app-design-system #dashboard h3,
+.theme-dark body.app-design-system #dashboard .muted,
+.theme-dark body.app-design-system #dashboard .helpnote,
+.theme-dark body.app-design-system #dashboard .stat strong {
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system #dashboard .toolbar {
+  border-color: #40566d;
+  background: #203348;
+}
+
+.theme-dark body.app-design-system #dashboard input,
+.theme-dark body.app-design-system #dashboard select {
+  border-color: #4a6078;
+  background: #24374c;
+  color: #e2eaf2;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table {
+  border-color: #344a60;
+  background: #1b2b3e;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table td {
+  border-color: #40566d;
+  background: #1b2b3e;
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table td.blue {
+  background: linear-gradient(135deg, #143b87, #1d4da1);
+  color: #fff;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table td.yellow {
+  background: linear-gradient(135deg, #ffd600, #ffe964);
+  color: #2e2b00;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table td.orange {
+  background: linear-gradient(135deg, #f5c58c, #f0d8ad);
+  color: #4b300e;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table td.total {
+  background: #203348;
+  color: #dce9f4;
+}
+
+.theme-dark body.app-design-system #dashboard .calc-table input,
+.theme-dark body.app-design-system #dashboard .calc-table select {
+  border-color: transparent;
+  background: transparent;
+  color: inherit;
+}
+
+/* Reduce anchos y espacios en pantallas pequeñas; respeta movimiento reducido. */
+@media (max-width: 700px) {
+  body.app-design-system > header:not(.app-nav),
+  body.app-design-system > .top {
+    width: calc(100% - 24px);
+    margin-top: 12px;
+    padding: 16px;
+  }
+
+  body.app-design-system .app-page-header,
+  body.app-design-system .rc-heading,
+  body.app-design-system .jv-heading {
+    padding: 16px;
+  }
+
+  body.app-design-system .jv-toolbar > .privacy {
+    padding: 0;
+  }
+
+  body.app-design-system > header.jv-heading .app-page-header__controls {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  body.app-design-system .tabs button,
+  body.app-design-system .jv-tabs button {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.app-design-system .tabs button,
+  body.app-design-system .jv-tabs button,
+  body.app-design-system main button {
+    transition: none;
+  }
+}

@@ -1,0 +1,427 @@
+/* Estilos de la interfaz del cotizador Macro Pesados. */
+:root{font-family:Arial,Helvetica,sans-serif;color:#192b40;background:#f3f6fa}*{box-sizing:border-box}body{margin:0}header{background:#142d4d;color:white;padding:22px max(22px,calc((100vw - 1300px)/2));display:flex;justify-content:space-between;align-items:center;gap:15px}header h1{font-size:22px;margin:0}header p{font-size:12px;color:#c5d3e7;margin:6px 0 0}.pill{background:#254969;color:#c6eddd;padding:9px 13px;border-radius:25px;font-size:12px}main{max-width:1320px;margin:auto;padding:25px 20px 60px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tabs button{background:white;color:#243e59;border:1px solid #dce5ef}.tabs button.active{background:#1b5d8e;color:white;border-color:#1b5d8e}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid #dfe6ee;border-radius:13px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px #14263a08}h2{font-size:18px;margin:0 0 8px}h3{font-size:15px;margin:0 0 12px}p{line-height:1.55}.muted{color:#64758b;font-size:13px}button,.filebutton{cursor:pointer;border:0;background:#1a649b;color:#fff;border-radius:7px;padding:10px 13px;font-weight:bold;font-family:inherit;font-size:13px}button.secondary,.filebutton.secondary{background:#edf3fa;color:#205078}button.danger{background:#fbe9e9;color:#a23c3c}button:disabled{opacity:.45;cursor:not-allowed}input,select{border:1px solid #d3dfeb;padding:9px 10px;border-radius:7px;font:inherit;max-width:100%}input[type=number]{width:100px}input[type=file]{font-size:13px}label{font-weight:600;font-size:12px;color:#40556c;display:block;margin:0 0 6px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:14px}.inline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0 15px}.tablewrap{width:100%;overflow:auto;max-height:510px;border:1px solid #e1e8f1;border-radius:8px}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}thead{position:sticky;top:0;z-index:2;background:#eaf2fa}th,td{text-align:left;padding:9px 11px;border-bottom:1px solid #edf0f4}th{color:#31516d}tbody tr:nth-child(even){background:#fafcff}td input{width:100px;font-size:12px;padding:6px}td button{padding:5px 8px;font-size:11px}.stat{background:#f0f5fb;padding:15px;border-radius:9px}.stat strong{display:block;font-size:22px;margin-top:7px}.notice{padding:11px 14px;border-radius:8px;border:1px solid #d5e7f3;background:#eef7fe;font-size:12px;color:#27506e}.error{color:#a32d2d}.good{color:#13704b}.small{font-size:12px}.hidden{display:none!important}footer{margin-top:20px;color:#7b8897;font-size:11px;text-align:center}input[type=checkbox]{accent-color:#1b6496}.rateinput{max-width:84px}.steps{display:flex;flex-wrap:wrap;gap:8px}.step{background:#eaf1f8;color:#315475;border-radius:20px;padding:8px 12px;font-size:12px}
+
+.dashboard-layout{display:grid;grid-template-columns:minmax(320px,420px) minmax(0,1fr);gap:18px}.calc-table{width:100%;white-space:normal;border:2px solid #192b40;font-size:13px}.calc-table td{border:1px solid #24334a;padding:8px}.calc-table td:first-child{width:55%;font-weight:700;text-align:center}.calc-table td:last-child{text-align:right}.calc-table input,.calc-table select{width:100%;border:0;background:transparent;text-align:right;font-weight:bold;padding:5px;appearance:auto}.calc-table .blue{background:#111e77;color:white}.calc-table .yellow{background:#fff000;color:#111}.calc-table .orange{background:#ffce9b}.calc-table .total{background:#fff4b6;font-weight:bold}.calc-table .ratevalue{font-size:19px}.calc-table .right{text-align:right}.dash-table td input{width:105px;text-align:right}.dash-table td{vertical-align:middle}.dash-outputs{font-size:22px;font-weight:bold}.helpnote{color:#5a6779;font-size:12px}.calcsum{text-align:right;font-weight:bold}.dashboard-layout .card{margin:0}@media(max-width:850px){.dashboard-layout{grid-template-columns:1fr}}
+
+/* Acceso administrativo para la versión local */
+.admin-overlay{position:fixed;inset:0;background:rgba(9,25,44,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.admin-overlay[hidden]{display:none}.admin-dialog{background:#fff;border-radius:16px;padding:26px;max-width:420px;width:100%;box-shadow:0 18px 48px #0003}.admin-dialog h2{margin-bottom:10px}.admin-dialog input{width:100%;margin:7px 0 13px}.admin-dialog .inline{justify-content:flex-end}.admin-dialog .error{min-height:19px;font-size:12px}.admin-lock{float:right}
+
+.vehicle-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:end}.vehicle-form>div{min-width:0}.vehicle-form input,.vehicle-form select{width:100%;min-height:44px}.vehicle-form label{font-size:12px;letter-spacing:.25px}.vehicle-form .wide{grid-column:span 3}.vehicle-section-title{grid-column:1/-1;margin:6px 0 -5px;padding-bottom:8px;border-bottom:1px solid #e6edf4;color:#244764;font-size:13px;font-weight:700}.vehicle-form input,.vehicle-form select{width:100%}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.result-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.result-cards .stat{background:#f0f5fb;padding:14px;border-radius:9px}.admin-overlay{position:fixed;inset:0;background:rgba(9,25,44,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.admin-overlay[hidden]{display:none}.admin-dialog{background:#fff;border-radius:16px;padding:26px;max-width:420px;width:100%;box-shadow:0 18px 48px #0003}.admin-dialog input{width:100%;margin:7px 0 13px}.admin-dialog .inline{justify-content:flex-end}.admin-dialog .error{min-height:19px;font-size:12px}.rate-cell{min-width:85px}.right{text-align:right}.tag{display:inline-block;background:#eaf2fa;border-radius:20px;padding:4px 8px;font-size:11px;color:#31516d}@media(max-width:900px){.vehicle-form{grid-template-columns:repeat(2,minmax(0,1fr))}.vehicle-form .wide{grid-column:span 2}}@media(max-width:600px){.vehicle-form{grid-template-columns:1fr}.vehicle-form .wide{grid-column:span 1}header{align-items:flex-start;flex-direction:column}}
+.hino-selected{background:#fff0cf!important;border:2px solid #d18a16!important;color:#754300!important}
+.vehicle-form input.money-input{font-variant-numeric:tabular-nums}
+@media print{body{background:#fff}.no-print{display:none!important}}
+
+/* ===== Refresh visual de Pantalla principal (sin cambiar lógica) ===== */
+body{
+  background:
+    radial-gradient(circle at top left, #f7fbff 0%, #eef4fb 28%, transparent 58%),
+    radial-gradient(circle at top right, #edf9f4 0%, #f5fbf8 25%, transparent 50%),
+    linear-gradient(180deg,#eef3f9 0%,#f8fbff 100%);
+}
+header{
+  background:linear-gradient(135deg,#10314f 0%,#1c5f7d 55%,#257a76 100%);
+  box-shadow:0 10px 30px rgba(16,49,79,.18);
+}
+header p{color:#dbe8f6}
+.pill{background:rgba(255,255,255,.16);color:#effaf6;border:1px solid rgba(255,255,255,.18);backdrop-filter: blur(4px)}
+.tabs{gap:10px;margin-bottom:22px}
+.tabs button{
+  border-radius:14px;
+  padding:12px 16px;
+  background:rgba(255,255,255,.85);
+  border:1px solid #d8e6f1;
+  box-shadow:0 4px 14px rgba(31,74,113,.06);
+}
+.tabs button.active{
+  background:linear-gradient(135deg,#195d91 0%,#267c87 100%);
+  border-color:#195d91;
+  box-shadow:0 8px 18px rgba(25,93,145,.24);
+}
+#dashboard.panel.active{
+  position:relative;
+}
+#dashboard .card{
+  border:1px solid #dde8f2;
+  border-radius:20px;
+  padding:24px;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  box-shadow:0 12px 28px rgba(17,56,92,.08);
+}
+#dashboard > .card:first-child{
+  background:
+    linear-gradient(135deg,rgba(24,97,144,.06),rgba(48,146,118,.06)),
+    linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border-color:#d6e6f1;
+}
+#dashboard h2{
+  color:#123a5d;
+  font-size:19px;
+  margin-bottom:12px;
+}
+#dashboard h3{color:#1b547a}
+#dashboard .muted{color:#61788f}
+#dashboard label{
+  color:#35516d;
+  letter-spacing:.02em;
+}
+#dashboard input,
+#dashboard select{
+  min-height:44px;
+  border-radius:12px;
+  border:1px solid #cfddea;
+  background:#fdfefe;
+  transition:.2s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+#dashboard input:focus,
+#dashboard select:focus{
+  outline:none;
+  border-color:#6aa7c3;
+  box-shadow:0 0 0 3px rgba(61,135,179,.12);
+  background:#fff;
+}
+#dashboard .dashboard-layout{
+  display:grid;
+  grid-template-columns:minmax(340px,420px) minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+#dashboard .calc-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid #dbe5ef;
+  background:#fff;
+}
+#dashboard .calc-table td{
+  border-bottom:1px solid #e8eef5;
+  padding:13px 16px;
+}
+#dashboard .calc-table tr:last-child td{border-bottom:0}
+#dashboard .calc-table td:first-child{
+  width:58%;
+  font-weight:700;
+  color:#173d60;
+}
+#dashboard .calc-table td.blue{
+  background:linear-gradient(135deg,#143b87 0%,#1d4da1 100%);
+  color:#fff;
+}
+#dashboard .calc-table td.yellow{
+  background:linear-gradient(135deg,#ffd600 0%,#ffe964 100%);
+  color:#2e2b00;
+}
+#dashboard .calc-table td.orange{
+  background:linear-gradient(135deg,#f5c58c 0%,#f0d8ad 100%);
+  color:#4b300e;
+}
+#dashboard .calc-table td.total{
+  background:#edf7f2;
+  color:#14553c;
+}
+#dashboard .dash-outputs{
+  font-size:20px;
+  font-weight:800;
+  color:#0f4a78;
+}
+#dashboard .helpnote{
+  margin-top:14px;
+  background:#f3f8fd;
+  border:1px solid #dde9f3;
+  padding:12px 14px;
+  border-radius:12px;
+  color:#5a7088;
+}
+#dashboard .kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:16px;
+}
+#dashboard .stat{
+  background:linear-gradient(180deg,#f7fbff 0%,#eef5fb 100%);
+  border:1px solid #dde8f3;
+  border-radius:16px;
+  padding:18px 16px;
+  box-shadow:0 6px 16px rgba(18,67,108,.05);
+}
+#dashboard .stat strong{
+  color:#11385b;
+  font-size:18px;
+  margin-top:7px;
+}
+#dashboard .toolbar{
+  margin:8px 0 16px;
+  padding:12px 14px;
+  background:#f7fafc;
+  border:1px dashed #d7e3ef;
+  border-radius:14px;
+}
+#dashboard .tablewrap{
+  border:1px solid #dde8f2;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
+}
+#dashboard thead{
+  background:linear-gradient(180deg,#edf4fb 0%,#e3edf8 100%);
+}
+#dashboard th{
+  color:#2f516f;
+  font-size:12px;
+  letter-spacing:.03em;
+}
+#dashboard tbody tr:nth-child(even){background:#f9fcff}
+#dashboard tbody tr:hover{background:#f1f8ff}
+#dashboard button,
+#dashboard .filebutton{
+  border-radius:12px;
+  padding:10px 15px;
+  background:linear-gradient(135deg,#1b679f 0%,#258279 100%);
+  box-shadow:0 8px 20px rgba(28,106,136,.18);
+}
+#dashboard button.secondary,
+#dashboard .filebutton.secondary{
+  background:linear-gradient(180deg,#f3f7fb 0%,#eaf1f9 100%);
+  color:#1e597f;
+  border:1px solid #d6e1ed;
+  box-shadow:none;
+}
+#dashboard button.danger{
+  background:linear-gradient(180deg,#fff1f1 0%,#fde5e5 100%);
+}
+@media (max-width: 980px){
+  #dashboard .dashboard-layout{grid-template-columns:1fr}
+  #dashboard .kpis{grid-template-columns:1fr}
+}
+
+
+/* Ajuste solicitado: ocultar pestaña Resultados y compactar Prima Total */
+.tabs button[data-tab="config"]{margin-left:0}
+#results{display:none!important}
+#dashboard #premiumTotal{white-space:nowrap;font-size:16px!important;line-height:1.15;padding-left:8px;padding-right:8px;letter-spacing:-.25px}
+#dashboard .calc-table tr:last-child td{vertical-align:middle}
+
+
+/* Carga masiva por copiar y pegar desde Excel */
+.bulk-card{border:1px solid #cfe0ec;background:linear-gradient(145deg,#f4f9fd 0%,#ffffff 70%)}
+.bulk-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.bulk-badge{background:#e2f2ed;color:#17664f;border:1px solid #c5e5d9;border-radius:30px;padding:7px 12px;font-size:11px;font-weight:700}
+.bulk-help{background:#edf5fb;border:1px solid #d8e7f2;border-radius:10px;padding:11px 13px;margin:12px 0 15px;color:#31516d;font-size:12px;line-height:1.6}
+.bulk-help span{color:#637a90}
+#bulkPaste{display:block;width:100%;max-width:100%;min-height:135px;border:1px solid #c9dbe9;border-radius:11px;padding:12px;font:12px/1.55 Consolas,monospace;resize:vertical;background:#fff}
+#bulkPaste:focus{outline:none;border-color:#3c91ad;box-shadow:0 0 0 3px #3c91ad20}
+.bulk-actions{margin:12px 0}
+#bulkFeedback{white-space:pre-line}
+#bulkPreviewWrap{max-height:280px;margin-top:12px}
+#bulkPreviewRows tr.bulk-error{background:#fff0ef;color:#923d36}
+#bulkPreviewRows tr.bulk-ok{background:#f0faf5}
+@media(max-width:600px){.bulk-heading{display:block}.bulk-badge{display:inline-block;margin-top:8px}}
+
+
+.summary-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}.summary-head h2{margin-bottom:0}.minrate-chip{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:linear-gradient(135deg,#e8f7ee 0%,#d7f0e2 100%);border:1px solid #b9dfc8;color:#1c6c47;font-size:12px;font-weight:700}
+
+/* Selector de ejecutiva antes de generar PDF */
+.exec-overlay{position:fixed;inset:0;background:rgba(10,28,48,.68);z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px}.exec-overlay[hidden]{display:none}.exec-dialog{background:#fff;width:min(440px,100%);padding:26px;border-radius:18px;box-shadow:0 22px 60px rgba(0,0,0,.25);border:1px solid #d8e5ef}.exec-dialog h2{color:#153f60;margin:0 0 8px}.exec-dialog p{color:#64758b;font-size:13px;margin:0 0 16px}.exec-dialog select{width:100%;min-height:46px;margin:6px 0 16px}.exec-dialog .actions{display:flex;justify-content:flex-end;gap:9px}
+
+/* Edición de valores en la tabla de vehículos */
+.row-actions{display:flex;gap:6px;align-items:center}.row-actions button{white-space:nowrap}.edit-money{width:112px;min-width:100px;padding:7px 8px;border:1px solid #cbd9e6;border-radius:8px;background:#fff;font:inherit;font-size:12px;color:#173c5c;text-align:right}.edit-money:focus{outline:none;border-color:#2b83a4;box-shadow:0 0 0 3px rgba(43,131,164,.13)}
+
+/* Distribucion solicitada: vehiculos a la izquierda y resumen a la derecha */
+@media (min-width: 851px){
+  .dashboard-layout{
+    grid-template-columns:minmax(0,1fr) minmax(320px,420px);
+    align-items:start;
+  }
+  .dashboard-layout > .card:first-child{grid-column:2;grid-row:1;}
+  .dashboard-layout > .card:nth-child(2){grid-column:1;grid-row:1;}
+}
+@media (max-width:850px){
+  .dashboard-layout{grid-template-columns:1fr;}
+  .dashboard-layout > .card:nth-child(2){order:1;}
+  .dashboard-layout > .card:first-child{order:2;}
+}
+
+/* Distribución principal: 3/4 vehículos a la izquierda y 1/4 resumen a la derecha */
+@media (min-width: 851px){
+  #dashboard .dashboard-layout{
+    display:grid;
+    grid-template-columns:minmax(0,3fr) minmax(280px,1fr);
+    gap:16px;
+    align-items:start;
+  }
+  #dashboard .dashboard-layout > .card:first-child{
+    grid-column:2;
+    grid-row:1;
+    min-width:0;
+    padding:16px;
+  }
+  #dashboard .dashboard-layout > .card:nth-child(2){
+    grid-column:1;
+    grid-row:1;
+    min-width:0;
+  }
+  #dashboard .dashboard-layout .calc-table{font-size:11px}
+  #dashboard .dashboard-layout .calc-table td{padding:9px 8px}
+  #dashboard .dashboard-layout .calc-table td:first-child{width:57%;}
+  #dashboard .dashboard-layout .calc-table select{font-size:12px;min-width:0}
+  #dashboard .dashboard-layout .summary-head{align-items:flex-start;flex-direction:column;gap:8px}
+  #dashboard .dashboard-layout .minrate-chip{font-size:10px;padding:6px 9px}
+}
+@media (max-width:850px){
+  #dashboard .dashboard-layout{display:flex;flex-direction:column}
+  #dashboard .dashboard-layout > .card{width:100%}
+  #dashboard .dashboard-layout > .card:nth-child(2){order:1}
+  #dashboard .dashboard-layout > .card:first-child{order:2}
+}
+
+/* Distribución solicitada: 70% vehículos izquierda / 30% resumen derecha */
+.client-card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.client-card-heading h2{margin:0}
+.client-card-heading button{white-space:nowrap}
+@media (min-width: 851px){
+  #dashboard .dashboard-layout{
+    grid-template-columns:minmax(0,7fr) minmax(300px,3fr) !important;
+    gap:16px;
+  }
+  #dashboard .dashboard-layout > .card:nth-child(2){grid-column:1;grid-row:1;min-width:0;}
+  #dashboard .dashboard-layout > .card:first-child{grid-column:2;grid-row:1;min-width:0;}
+}
+@media (max-width:850px){.client-card-heading{align-items:flex-start}}
+
+
+/* ==========================================================
+   PARAMETRIZACION: PRESENTACION COMPACTA Y ORDENADA
+   Solo estilos; no modifica tasas, formulas ni eventos.
+   ========================================================== */
+#config{max-width:100%;}
+#config>.card{
+  padding:18px 20px;
+  border-radius:14px;
+  margin-bottom:12px;
+  box-shadow:0 5px 16px rgba(22,58,91,.055);
+}
+#config h2{margin-bottom:5px;color:#173d60;font-size:18px;}
+#config> .card>p.muted{margin:4px 0 14px;font-size:12px;}
+#config .grid{gap:8px;margin-bottom:12px;}
+#config label{margin-bottom:4px;font-size:11px;}
+#config select{min-height:36px;padding:7px 10px;border-radius:8px;font-size:13px;}
+#config .toolbar{margin:8px 0 9px;gap:8px;}
+#config .toolbar strong{font-size:14px;color:#214866;}
+#config .tag{font-size:10px;padding:4px 8px;}
+#config .tablewrap{
+  max-height:430px;
+  border:1px solid #dce6f0;
+  border-radius:9px;
+  background:#fff;
+}
+#config table{
+  width:100%;
+  table-layout:fixed;
+  white-space:normal;
+  font-size:11px;
+}
+#config thead th{
+  position:sticky;top:0;z-index:3;
+  padding:8px 9px;
+  background:#e8f0f8;
+  color:#31516d;
+  font-size:10px;
+  line-height:1.25;
+  letter-spacing:.02em;
+}
+#config tbody td{
+  padding:5px 8px;
+  height:40px;
+  vertical-align:middle;
+  border-bottom:1px solid #e9eff5;
+}
+#config tbody tr:nth-child(even){background:#f8fbfe;}
+#config tbody tr:hover{background:#eef6fc;}
+#config td input[type=number],
+#config td input.rate-cell{
+  display:block;
+  width:100%;
+  max-width:150px;
+  height:31px;
+  min-height:31px;
+  padding:5px 8px;
+  border:1px solid #cfdeeb;
+  border-radius:7px;
+  font-size:11px;
+  background:#fff;
+}
+#config td button{
+  padding:6px 9px;
+  min-height:28px;
+  border-radius:7px;
+  font-size:10px;
+  white-space:nowrap;
+}
+/* MULTIMARCA: ancho proporcional para evitar columnas dispersas */
+#config #multiRatePanel table th:nth-child(1),
+#config #multiRatePanel table td:nth-child(1){width:16%;}
+#config #multiRatePanel table th:nth-child(2),
+#config #multiRatePanel table td:nth-child(2){width:24%;}
+#config #multiRatePanel table th:nth-child(3),
+#config #multiRatePanel table td:nth-child(3){width:24%;}
+#config #multiRatePanel table th:nth-child(4),
+#config #multiRatePanel table td:nth-child(4){width:17%;}
+#config #multiRatePanel table th:nth-child(5),
+#config #multiRatePanel table td:nth-child(5){width:19%;}
+/* HINO: tabla corta y centrada */
+#config #hinoRatePanel table{max-width:760px;}
+#config #hinoRatePanel table th:nth-child(1),
+#config #hinoRatePanel table td:nth-child(1){width:38%;}
+#config #hinoRatePanel table th:nth-child(2),
+#config #hinoRatePanel table td:nth-child(2){width:38%;}
+#config #hinoRatePanel table th:nth-child(3),
+#config #hinoRatePanel table td:nth-child(3){width:24%;}
+/* Descuentos por cantidad: bloque breve y alineado */
+#config .card[style*="margin-top"]{margin-top:14px!important;padding:14px 16px;}
+#config .card[style*="margin-top"] .helpnote{margin:5px 0 10px;font-size:11px;}
+#config .card[style*="margin-top"] table{max-width:760px;}
+#config .card[style*="margin-top"] table th:nth-child(1),
+#config .card[style*="margin-top"] table td:nth-child(1){width:38%;}
+#config .card[style*="margin-top"] table th:nth-child(2),
+#config .card[style*="margin-top"] table td:nth-child(2){width:32%;}
+#config .card[style*="margin-top"] table th:nth-child(3),
+#config .card[style*="margin-top"] table td:nth-child(3){width:30%;}
+#config .helpnote{font-size:11px;line-height:1.4;margin:8px 0;color:#60758a;}
+#config .toolbar button,#config button{border-radius:8px;}
+#config .toolbar button{padding:8px 11px;font-size:11px;}
+#config .toolbar:last-of-type{padding-top:12px;border-top:1px solid #e5edf4;margin-top:16px;}
+@media(max-width:760px){
+  #config .tablewrap{overflow-x:auto;}
+  #config #multiRatePanel table{min-width:720px;}
+  #config #hinoRatePanel table{min-width:480px;}
+  #config .card[style*="margin-top"] table{min-width:430px;}
+}
+
+
+/* Parametrizacion agrupada por año de antiguedad */
+.year-accordion-list{display:grid;gap:8px;margin:8px 0 14px}
+.year-accordion{border:1px solid #d8e4ef;border-radius:10px;background:#fff;overflow:hidden}
+.year-accordion>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 14px;background:linear-gradient(90deg,#eef5fb,#f8fbfe);color:#244764;font-size:13px;font-weight:600}
+.year-accordion>summary::-webkit-details-marker{display:none}
+.year-accordion>summary:after{content:'+';font-size:18px;color:#246b91;font-weight:700;margin-left:8px}
+.year-accordion[open]>summary:after{content:'−'}
+.year-summary-value{margin-left:auto;color:#60788f;font-size:11px;font-weight:500}
+.year-accordion-content{padding:10px 12px 12px;border-top:1px solid #e4edf5}
+.rate-edit-table{width:100%;border-collapse:collapse;font-size:12px}
+.rate-edit-table th{background:#eaf2fa;color:#31516d;padding:8px;text-align:left}
+.rate-edit-table td{padding:7px 8px;border-bottom:1px solid #edf1f5}
+.rate-edit-table input{max-width:150px;width:100%;padding:7px 9px;font-size:12px}
+.year-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.year-toolbar .helpnote{margin:0}
+@media(max-width:650px){.year-accordion>summary{align-items:flex-start;flex-wrap:wrap}.year-summary-value{margin-left:0;width:100%}.rate-edit-table{min-width:600px}}
+
+
+/* Tasas visibles en el encabezado del año y primer año abierto por defecto */
+.year-accordion>summary{align-items:flex-start;flex-wrap:wrap}
+.year-summary-value{flex:1 1 100%;margin-left:0;white-space:normal;line-height:1.5;color:#315b78;font-weight:600}
+.year-accordion-content{display:block}
+.year-accordion[open] .year-accordion-content{background:#fff}

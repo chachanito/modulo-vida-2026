@@ -1,0 +1,119 @@
+/* Paleta y superficies espec?ficas del conciliador. */
+:root{color:#28343f;background:#f5f2f8}.top{background:linear-gradient(105deg,#6c3476,#276b77,#db7f36)}.tabs button.active{background:#7a467f;border-color:#7a467f}.sectiontitle{background:linear-gradient(90deg,#714477,#287980)!important}table th{background:#26777d!important}tbody tr:nth-child(even){background:#f4eff7}button.primary{background:#b55d18!important}button.secondary{background:#f0e5f2;border-color:#d6bfd7;color:#563663}.metric:nth-child(4n+1){border-left:5px solid #df8841;background:#fff7ec}.metric:nth-child(4n+2){border-left:5px solid #2e958d;background:#ebf8f5}.metric:nth-child(4n+3){border-left:5px solid #9d71b3;background:#f8f0fc}.metric:nth-child(4n+4){border-left:5px solid #cf6593;background:#fff0f6}#limite{background:#fff0dc!important;color:#9c3e05;font-weight:bold;border-color:#e9a862}#resultBody tr td:nth-child(7){background:#fff0dc;color:#9c3e05;font-weight:bold} .panel h2{color:#713b79}.age-config{background:#f7f0fa}
+/* V14 — nueva sección: visualmente separada de los requisitos existentes. */
+.new-entry-config{border:1px solid #cdb5de;background:#f8f3fc;padding:15px;border-radius:10px;margin:8px 0 18px}
+.new-entry-check{display:flex!important;gap:9px;align-items:center;font-weight:700;color:#673d80;margin-bottom:13px}
+.new-entry-check input{width:18px;height:18px;accent-color:#77478c}
+.new-entry-grid{display:grid;grid-template-columns:1.2fr 1.2fr .8fr 1.4fr;gap:12px;align-items:start}
+.new-entry-grid input{width:100%;min-width:0}
+@media(max-width:1100px){.new-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.new-entry-grid{grid-template-columns:1fr}}
+
+/* ===== Encabezado compacto y distribución visual moderna ===== */
+body {
+  background:
+    radial-gradient(circle at top left, rgba(52, 125, 164, .08), transparent 28rem),
+    linear-gradient(180deg, #edf3f8 0, #f7f9fc 100%);
+}
+
+.top {
+  display: flex;
+  min-height: 132px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px clamp(24px, 3vw, 42px);
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  background: linear-gradient(135deg, #10314f 0%, #1c5f7d 58%, #257a76 100%);
+  box-shadow: 0 10px 30px rgba(16, 49, 79, .18);
+}
+
+.top__copy {
+  min-width: 0;
+}
+
+.top h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.top h1 span {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  opacity: .72;
+  vertical-align: middle;
+}
+
+.top p {
+  margin: 10px 0 0;
+  color: #d9e8f4;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.top__badge {
+  flex: 0 0 auto;
+  padding: 16px 22px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .16);
+  color: #effaf6;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(8, 32, 49, .12);
+  backdrop-filter: blur(5px);
+}
+
+.wrap {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px clamp(20px, 3vw, 34px) 40px;
+}
+
+.tabs {
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.tabs button {
+  min-height: 46px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .88);
+  box-shadow: 0 5px 16px rgba(31, 74, 113, .06);
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #195d91 0%, #267c87 100%);
+  box-shadow: 0 8px 18px rgba(25, 93, 145, .22);
+}
+
+.panel {
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(17, 56, 92, .07);
+}
+
+@media (max-width: 980px) {
+  .top {
+    min-height: 110px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .top h1 {
+    font-size: 30px;
+  }
+
+  .top__badge {
+    padding: 10px 14px;
+  }
+
+  .wrap {
+    padding-inline: 16px;
+  }
+}

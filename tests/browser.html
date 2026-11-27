@@ -8,11 +8,13 @@ document.querySelector('iframe').addEventListener('load', async () => {
  function click(id) { doc.getElementById(id).click(); }
  try {
    // Verifica las preferencias visuales y la navegacion global.
-   const theme = doc.getElementById('theme-select');
-   theme.value='dark'; theme.dispatchEvent(new win.Event('change'));
+   const theme = doc.querySelector('[data-theme-toggle]');
+   assert(theme, 'Control de tema en el menú lateral');
+   if (doc.documentElement.dataset.theme==='dark') theme.click();
+   theme.click();
    const darkBackground = win.getComputedStyle(doc.body).backgroundColor;
    assert(doc.documentElement.dataset.theme==='dark' && win.localStorage.getItem('justificador-vida-theme')==='dark', 'Tema oscuro y preferencia guardada');
-   theme.value='light'; theme.dispatchEvent(new win.Event('change'));
+   theme.click();
    assert(doc.documentElement.dataset.theme==='light' && win.getComputedStyle(doc.body).backgroundColor!==darkBackground, 'Cambiar a tema claro');
    const sidebar = doc.querySelector('.app-nav'), sidebarToggle = doc.querySelector('.app-nav__toggle');
    assert(sidebar && sidebarToggle && doc.querySelector('.app-nav__link[aria-current="page"]'), 'Menú lateral y opción activa');

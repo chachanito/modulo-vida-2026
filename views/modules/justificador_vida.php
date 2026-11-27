@@ -44,7 +44,7 @@ $justificadorIntegrado = true;
     </div>
 </div>
 <?php unset($justificadorIntegrado); ?>
-<link rel="stylesheet" href="public/css/modules/justificador_tablas.css?v=<?= filemtime(__DIR__ . '/../../public/css/modules/justificador_tablas.css') ?>">
+<link rel="stylesheet" href="public/estilo/modules/justificador_tablas.css?v=<?= filemtime(__DIR__ . '/../../public/estilo/modules/justificador_tablas.css') ?>">
 <?php
 // El modulo compone texto y tablas en un documento comun; los scripts de apoyo se
 // cargan aqui para trabajar sobre un solo estado de documento.

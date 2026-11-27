@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Justifica textos y tablas a 75 caracteres. Importa PDF, Word, Excel y CSV en tu navegador.">
   <title>Justificador Vida</title>
-  <script src="public/js/pages/theme.js"></script>
-  <script src="public/js/pages/navigation.js?v=20261124-auto-1" defer></script>
-  <link rel="stylesheet" href="public/css/navigation.css">
-  <link rel="stylesheet" href="public/css/pages.css">
-  <link rel="stylesheet" href="public/css/modules/justificador_tablas.css">
-  <link rel="stylesheet" href="public/css/modules/justificador_vida.css">
-  <link rel="stylesheet" href="public/css/page-headers.css">
+  <script src="public/js/pages/theme.js?v=20261124-16"></script>
+  <script src="public/js/pages/navigation.js?v=20261125-1058" defer></script>
+  <link rel="stylesheet" href="public/estilo/navigation.css?v=20261124-16">
+  <link rel="stylesheet" href="public/estilo/pages.css?v=20261124-16">
+  <link rel="stylesheet" href="public/estilo/modules/justificador_tablas.css">
+  <link rel="stylesheet" href="public/estilo/modules/justificador_vida.css">
+  <link rel="stylesheet" href="public/estilo/page-headers.css?v=20261124-16">
   <script src="public/js/justificador_texto_core.js" defer></script>
   <script src="public/js/vendor/xlsx-0.20.3.full.min.js" defer></script>
   <script src="public/js/justificador_tablas_core.js" defer></script>
@@ -39,17 +39,19 @@
     </div>
   </div>
 </nav>
+<header class="jv-heading app-page-header"><div class="app-page-header__copy"><h1>Justificador Vida</h1><p>Prepara texto y tablas, y combínalos en un documento.</p></div><div class="heading-tools app-page-header__controls"><span class="jv-width">75 caracteres</span></div></header>
 <!-- Modulo principal para preparar texto, transformar tablas y reunir el documento. -->
 <main class="jv-module">
-  <header class="jv-heading app-page-header"><div class="app-page-header__copy"><h1>Justificador Vida</h1><p>Prepara texto y tablas, y combínalos en un documento.</p></div><div class="heading-tools app-page-header__controls"><span class="jv-width">75 caracteres</span><label class="theme-control" for="theme-select">Tema <select id="theme-select"><option value="light">Claro</option><option value="dark">Oscuro</option></select></label></div></header>
-  <p class="privacy">Tus archivos se procesan en este navegador y no se suben a un servidor.</p>
+  <div class="jv-toolbar">
+    <div class="jv-tabs" role="tablist" aria-label="Tipo de contenido">
+      <button type="button" class="btn btn-primary" id="jv-tab-texto" role="tab" aria-selected="true" aria-controls="jv-panel-texto" data-jv-tab="texto">Texto</button>
+      <button type="button" class="btn" id="jv-tab-tabla" role="tab" aria-selected="false" aria-controls="jv-panel-tabla" data-jv-tab="tabla" tabindex="-1">Tablas</button>
+    </div>
+    <p class="privacy">Tus archivos se procesan en este navegador y no se suben a un servidor.</p>
+  </div>
   <div class="jv-workspace">
     <!-- El editor agrupa los paneles de texto y tablas. -->
     <div class="jv-editor">
-      <div class="jv-tabs" role="tablist" aria-label="Tipo de contenido">
-        <button type="button" class="btn btn-primary" id="jv-tab-texto" role="tab" aria-selected="true" aria-controls="jv-panel-texto" data-jv-tab="texto">Texto</button>
-        <button type="button" class="btn" id="jv-tab-tabla" role="tab" aria-selected="false" aria-controls="jv-panel-tabla" data-jv-tab="tabla" tabindex="-1">Tablas</button>
-      </div>
       <section id="jv-panel-texto" role="tabpanel" aria-labelledby="jv-tab-texto">
         <div class="upload-card">
           <form id="justificar-form" class="upload-form">

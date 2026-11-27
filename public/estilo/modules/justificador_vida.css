@@ -1,10 +1,11 @@
 /* Vista combinada del justificador: panel de edicion y documento resultante. */
-.jv-module { display:flex; flex-direction:column; gap:16px; }
+.jv-module { display:flex; width:100%; max-width:1320px; flex-direction:column; gap:16px; padding:25px 20px 60px; }
 .jv-module [hidden] { display:none !important; }
 .jv-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; }
 .jv-heading h1 { margin:0; font-size:26px; }
 .jv-heading p { margin:6px 0 0; color:#64748b; font-size:14px; }
 .jv-width { flex-shrink:0; border-radius:20px; background:#ccfbf1; color:#115e59; padding:6px 12px; font-size:12px; font-weight:600; }
+.jv-toolbar { display:flex; align-items:center; justify-content:space-between; gap:18px; }
 .jv-workspace { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:18px; align-items:start; }
 .jv-editor,.jv-document { min-width:0; }
 .jv-document { position:sticky; top:18px; }
@@ -67,6 +68,7 @@
     .jv-heading { align-items:flex-start; }
     .jv-heading h1 { font-size:22px; }
     .jv-width { padding:5px 8px; font-size:11px; }
+    .jv-toolbar { align-items:flex-start; flex-direction:column; gap:10px; }
     .jv-module .btn { width:auto; }
     .jv-tabs .btn { flex:1; }
     .jv-add .btn { width:100%; }

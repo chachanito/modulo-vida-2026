@@ -6,18 +6,18 @@
   <meta name="description" content="Cotizador de responsabilidad civil para flotas de transporte.">
   <title>Cotizador RC Transporte</title>
   <!-- Carga la navegacion, los datos, el motor de calculo y los estilos del modulo. -->
-  <script src="public/js/pages/theme.js"></script>
-  <script src="public/js/pages/navigation.js?v=20261124-auto-1" defer></script>
+  <script src="public/js/pages/theme.js?v=20261124-16"></script>
+  <script src="public/js/pages/navigation.js?v=20261125-1058" defer></script>
   <script src="public/js/cotizador_rc_core.js" defer></script>
   <script src="public/js/data/rc_vehicle_catalog.js" defer></script>
   <script src="public/js/modules/cotizador_rc.js" defer></script>
-  <link rel="stylesheet" href="public/css/navigation.css">
-  <link rel="stylesheet" href="public/css/pages.css">
-  <link rel="stylesheet" href="public/css/modules/cotizador_rc.css">
-  <link rel="stylesheet" href="public/css/modules/cotizador_rc_dark.css">
-  <link rel="stylesheet" href="public/css/modules/cotizador_rc_layout.css">
-  <link rel="stylesheet" href="public/css/modules/cotizador_rc_print.css">
-  <link rel="stylesheet" href="public/css/page-headers.css">
+  <link rel="stylesheet" href="public/estilo/navigation.css?v=20261124-16">
+  <link rel="stylesheet" href="public/estilo/pages.css?v=20261124-16">
+  <link rel="stylesheet" href="public/estilo/modules/cotizador_rc.css">
+  <link rel="stylesheet" href="public/estilo/modules/cotizador_rc_dark.css">
+  <link rel="stylesheet" href="public/estilo/modules/cotizador_rc_layout.css">
+  <link rel="stylesheet" href="public/estilo/modules/cotizador_rc_print.css">
+  <link rel="stylesheet" href="public/estilo/page-headers.css?v=20261124-16">
 </head>
 <body>
   <!-- Navegacion compartida y acceso al cotizador. -->
@@ -39,27 +39,21 @@
     </div>
   </nav>
 
-  <main class="rc-page">
-    <!-- Encabezado y opciones generales del producto. -->
-    <header class="rc-heading app-page-header">
-      <div class="app-page-header__copy">
-        <h1>Cotizador</h1>
-        <p>Cotiza flotas de transporte con la lógica tarifaria del formato de emisión.</p>
+  <!-- Encabezado y opciones generales del producto. -->
+  <header class="rc-heading app-page-header">
+    <div class="app-page-header__copy">
+      <h1>Cotizador</h1>
+      <p>Cotiza flotas de transporte con la lógica tarifaria del formato de emisión.</p>
+    </div>
+    <div class="rc-product app-page-header__controls">
+      <div class="app-page-header__field">
+        <label for="rc-product">Producto</label>
+        <select id="rc-product"><option>RC Transporte</option></select>
       </div>
-      <div class="rc-product app-page-header__controls">
-        <div class="app-page-header__field">
-          <label for="rc-product">Producto</label>
-          <select id="rc-product"><option>RC Transporte</option></select>
-        </div>
-        <label class="theme-control app-page-header__field" for="theme-select">Tema
-          <select id="theme-select">
-            <option value="light">Claro</option>
-            <option value="dark">Oscuro</option>
-          </select>
-        </label>
-      </div>
-    </header>
+    </div>
+  </header>
 
+  <main class="rc-page">
     <!-- Captura de datos y resumen interactivo de la cotizacion. -->
     <div class="rc-screen">
       <p class="privacy">Los datos se procesan en este navegador y no se envían a un servidor.</p>

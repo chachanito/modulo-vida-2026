@@ -82,34 +82,43 @@ try {
   Write-Output ('PUBLICADO: ' + $live.result.value)
   if ($live.result.value -notmatch '^PASS') { throw 'Fallaron las pruebas del sitio publicado.' }
  }
- # Comprueba el acordeon de Cotizadores, sus destinos y el comportamiento en movil.
+ # Comprueba el acordeon de Cruce de datos y el de Cotizadores.
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  $menuReady = $false
  for ($attempt=0; $attempt -lt 80; $attempt++) {
-  $result = Send-Cdp 'Runtime.evaluate' @{expression='!!document.querySelector(".app-nav__group-toggle") && document.querySelectorAll(".app-nav__sublink").length === 3';returnByValue=$true}
+  $result = Send-Cdp 'Runtime.evaluate' @{expression='!!document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cruce\"]") && !!document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]") && document.querySelectorAll("#app-nav-cotizadores .app-nav__sublink").length === 3';returnByValue=$true}
   $menuReady = $result.result.value
   if ($menuReady) { break }
   Start-Sleep -Milliseconds 500
  }
  if (-not $menuReady) { throw 'El menú desplegable de cotizadores no terminó de cargar.' }
- $menuLinks = Send-Cdp 'Runtime.evaluate' @{expression='Array.from(document.querySelectorAll(".app-nav__sublink")).map(link=>link.textContent.trim()).join("|") === "Cotizador RC|Productos Cerrados|Macro Pesados"';returnByValue=$true}
+ $cruceNavigation = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelectorAll("#app-nav-cruce .app-nav__sublink").length === 1 && document.querySelector("#app-nav-cruce .app-nav__sublink").textContent.trim() === "Cruce de datos" && !document.querySelector("a[href=\"capturacion_facturacion.html\"]")';returnByValue=$true}
+ if (-not $cruceNavigation.result.value) { throw 'La navegación conserva un enlace al módulo retirado.' }
+ $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/cruce-datos.html')}
+ Start-Sleep -Milliseconds 500
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='(()=>{const toggle=document.querySelector(".app-nav__toggle");if(toggle.getAttribute("aria-expanded")==="false")toggle.click()})()';returnByValue=$true}
+ $activeCruce = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("#app-nav-cruce .app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cruce de datos" && document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cruce\"]").getAttribute("aria-expanded") === "true"';returnByValue=$true}
+ if (-not $activeCruce.result.value) { throw 'La navegación no identifica Cruce de datos como módulo activo.' }
+ $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
+ Start-Sleep -Milliseconds 500
+ $menuLinks = Send-Cdp 'Runtime.evaluate' @{expression='Array.from(document.querySelectorAll("#app-nav-cotizadores .app-nav__sublink")).map(link=>link.textContent.trim()).join("|") === "Cotizador RC|Productos Cerrados|Macro Pesados"';returnByValue=$true}
  if (-not $menuLinks.result.value) { throw 'El menú no muestra las tres opciones de cotizador esperadas.' }
- $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
- $menuExpanded = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true" && !document.querySelector(".app-nav__submenu").hidden';returnByValue=$true}
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").click()';returnByValue=$true}
+ $menuExpanded = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").getAttribute("aria-expanded") === "true" && !document.querySelector("#app-nav-cotizadores").hidden';returnByValue=$true}
  if (-not $menuExpanded.result.value) { throw 'El menú de cotizadores no se despliega.' }
- $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
- $menuCollapsed = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "false" && document.querySelector(".app-nav__submenu").hidden';returnByValue=$true}
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").click()';returnByValue=$true}
+ $menuCollapsed = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").getAttribute("aria-expanded") === "false" && document.querySelector("#app-nav-cotizadores").hidden';returnByValue=$true}
  if (-not $menuCollapsed.result.value) { throw 'El menú de cotizadores no se puede contraer.' }
  $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/cotizador.html')}
  Start-Sleep -Milliseconds 500
- $activeQuote = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cotizador RC" && document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true"';returnByValue=$true}
+ $activeQuote = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("#app-nav-cotizadores .app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cotizador RC" && document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").getAttribute("aria-expanded") === "true"';returnByValue=$true}
  if (-not $activeQuote.result.value) { throw 'La navegación no identifica el Cotizador RC activo.' }
  Write-Output 'PASS: menú Cotizadores expandible, contraíble y con ruta activa'
  $null = Send-Cdp 'Emulation.setDeviceMetricsOverride' @{width=390;height=844;deviceScaleFactor=1;mobile=$true}
  $null = Send-Cdp 'Page.navigate' @{url=$SiteUrl}
  Start-Sleep -Milliseconds 500
- $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").click()';returnByValue=$true}
- $mobileMenu = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle").getAttribute("aria-expanded") === "true" && document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
+ $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").click()';returnByValue=$true}
+ $mobileMenu = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cotizadores\"]").getAttribute("aria-expanded") === "true" && document.documentElement.scrollWidth <= innerWidth';returnByValue=$true}
  if (-not $mobileMenu.result.value) { throw 'El menú de cotizadores no funciona correctamente en móvil.' }
  Write-Output 'PASS: menú Cotizadores móvil'
  $null = Send-Cdp 'Page.navigate' @{url=($SiteUrl.TrimEnd('/') + '/macro-pesados.html')}

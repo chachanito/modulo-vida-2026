@@ -1,12 +1,13 @@
+// Lee tablas de Excel/CSV, configura su formato y publica el texto de 75 caracteres.
 (() => {
     'use strict';
-    // El footer se ejecuta antes que los scripts defer del módulo.
+    // La navegación compartida se inicializa antes de este controlador diferido.
     document.addEventListener('DOMContentLoaded', () => {
         const el = id => document.getElementById('jt-' + id);
         if (!el('file')) return;
         let workbook = null, example = null, blobUrl = null, filename = 'tabla';
         let loading = 0;
-        // The selected sheet and range are reused while toggling display options so the user does not re-read the workbook each time.
+        // Reutiliza hoja y rango al cambiar opciones para no volver a leer el libro.
         function status(message, error=false) { el('status').textContent=message; el('status').dataset.error=String(error); }
         function resetResult() { el('result').hidden=true; el('preview').textContent=''; if (blobUrl) URL.revokeObjectURL(blobUrl); blobUrl=null; el('download')?.removeAttribute('href'); document.dispatchEvent(new CustomEvent('justificador:tabla', {detail:{text:''}})); }
         function show(result) {
