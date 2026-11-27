@@ -1,7 +1,0 @@
-/* Estilos para pegar datos tabulares desde Excel. */
-/* V19: Pegado desde Excel. Cada fuente mantiene su identidad visual. */
-.paste-area{margin-top:14px;padding:13px;border-top:2px dashed #b9cbd2;background:rgba(255,255,255,.55);border-radius:8px}
-.paste-area label{font-size:12px;margin-bottom:9px}
-.paste-area textarea{display:block;width:100%;min-height:125px;padding:11px;font:12px/1.55 Consolas,monospace;resize:vertical;border:1px solid #b8cadb;border-radius:8px;background:#fff;white-space:pre;tab-size:4}
-.paste-area textarea:focus{outline:2px solid #8b69a6;outline-offset:1px}
-.paste-area .hint{margin-bottom:0;line-height:1.5}

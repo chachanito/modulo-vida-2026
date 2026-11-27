@@ -98,7 +98,10 @@ try {
  Start-Sleep -Milliseconds 500
  $null = Send-Cdp 'Runtime.evaluate' @{expression='(()=>{const toggle=document.querySelector(".app-nav__toggle");if(toggle.getAttribute("aria-expanded")==="false")toggle.click()})()';returnByValue=$true}
  $activeCruce = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("#app-nav-cruce .app-nav__sublink[aria-current=page]")?.textContent.trim() === "Cruce de datos" && document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cruce\"]").getAttribute("aria-expanded") === "true"';returnByValue=$true}
- if (-not $activeCruce.result.value) { throw 'La navegación no identifica Cruce de datos como módulo activo.' }
+ if (-not $activeCruce.result.value) {
+  $activeCruceDebug = Send-Cdp 'Runtime.evaluate' @{expression='JSON.stringify({path:location.pathname,enhanced:document.querySelector(".app-nav")?.dataset.enhanced,current:document.querySelector("#app-nav-cruce .app-nav__sublink")?.getAttribute("aria-current"),groupExpanded:document.querySelector(".app-nav__group-toggle[aria-controls=\"app-nav-cruce\"]")?.getAttribute("aria-expanded"),sidebarExpanded:document.querySelector(".app-nav__toggle")?.getAttribute("aria-expanded"),bodyClass:document.body.className})';returnByValue=$true}
+  throw ('La navegación no identifica Cruce de datos como módulo activo. Estado: ' + $activeCruceDebug.result.value)
+ }
  $v36Ready = Send-Cdp 'Runtime.evaluate' @{expression='document.title.includes("V36") && document.querySelectorAll(".tabs [data-tab]").length === 7 && !!document.getElementById("policySearchInput") && !!document.getElementById("fichaPdfUpload") && document.querySelectorAll("style").length === 0 && document.getElementById("templateActual").getAttribute("href") === "public/templates/Plantilla_ACTUAL.xlsx" && document.getElementById("templatePrevious").getAttribute("href") === "public/templates/Plantilla_MES_ANTERIOR.xlsx"';returnByValue=$true}
  if (-not $v36Ready.result.value) { throw 'El Conciliador V36 no cargó su interfaz modular completa.' }
  $null = Send-Cdp 'Runtime.evaluate' @{expression='document.querySelector("[data-tab=\"ficha\"]").click()';returnByValue=$true}

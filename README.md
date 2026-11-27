@@ -18,8 +18,8 @@ El menú lateral ofrece **Cruce de datos** como un acordeón con acceso a `cruce
 ## Estructura del proyecto
 
 - Las cinco páginas HTML de la raíz son los módulos activos del sitio.
-- `public/estilo/` contiene todas las hojas CSS, separadas por propósito y módulo. Los estilos antes incrustados en las páginas ahora se cargan desde `public/estilo/modules/`, incluido el Conciliador de Créditos V36.
-- `public/js/pages/` contiene la navegación y el tema compartidos; `public/js/modules/` contiene los controladores de los módulos activos.
+- `public/estilo/` contiene todas las hojas CSS, separadas por propósito y módulo. El Conciliador V36 agrupa sus estilos por responsabilidad en `public/estilo/modules/cruce-datos/`.
+- `public/js/pages/` contiene la navegación y el tema compartidos; `public/js/modules/` contiene los controladores de los módulos activos. La lógica del Conciliador está dividida en `public/js/modules/cruce-datos/`: núcleo, pólizas, parámetros, entrada de datos, conciliación, exportaciones y documentos.
 - `public/js/data/` separa los catálogos y matrices de cálculo de su lógica; `public/js/vendor/` conserva las bibliotecas de terceros, incluido JSZip.
 - Cruce de datos, Macro Pesados y Productos Cerrados cargan sus archivos en orden: bibliotecas o datos primero, controlador después. Esto mantiene visibles los datos globales requeridos por los controladores y evita volver a incrustar lógica en el HTML.
 - `public/images/` y `public/templates/` contienen los recursos de la interfaz y las plantillas del Conciliador.
@@ -73,8 +73,8 @@ El lector busca Python en `.venv/Scripts/python.exe`, `.venv/bin/python` o en el
 5. Cargar el CSS global y el CSS del modulo, y el controlador de Vida. La vista ya carga los motores compartidos, SheetJS y los controladores de texto y tablas. Ejemplo para la pagina integrada:
 
 ```html
-<link rel="stylesheet" href="public/estilo/style.css">
-<link rel="stylesheet" href="public/estilo/modules/justificador_vida.css">
+<link rel="stylesheet" href="public/estilo/style.css" />
+<link rel="stylesheet" href="public/estilo/modules/justificador_vida.css" />
 <script src="public/js/modules/justificador_vida.js" defer></script>
 ```
 

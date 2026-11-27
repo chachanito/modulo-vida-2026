@@ -14,12 +14,28 @@ PUBLISHED_PAGES = (
     "cotizador-productos-cerrados.html",
     "macro-pesados.html",
 )
+CRUCE_STYLES = (
+    "public/estilo/modules/cruce-datos/base.css",
+    "public/estilo/modules/cruce-datos/theme.css",
+    "public/estilo/modules/cruce-datos/data-input.css",
+    "public/estilo/modules/cruce-datos/policies.css",
+    "public/estilo/modules/cruce-datos/documents.css",
+)
+CRUCE_SCRIPTS = (
+    "public/js/modules/cruce-datos/core.js",
+    "public/js/modules/cruce-datos/policies.js",
+    "public/js/modules/cruce-datos/parameters.js",
+    "public/js/modules/cruce-datos/data-input.js",
+    "public/js/modules/cruce-datos/reconciliation.js",
+    "public/js/modules/cruce-datos/exports-workspace.js",
+    "public/js/modules/cruce-datos/documents.js",
+)
 REQUIRED_ASSETS = (
     "public/estilo/design-system.css",
-    "public/estilo/modules/cruce-datos-pdf.css",
+    *CRUCE_STYLES,
     "public/js/pages/navigation.js",
     "public/js/vendor/jszip-3.10.1.min.js",
-    "public/js/modules/cruce_datos.js",
+    *CRUCE_SCRIPTS,
     "public/js/data/macro_pesados_catalog.js",
     "public/js/modules/macro_pesados.js",
     "public/js/data/productos_cerrados_catalog.js",
@@ -32,7 +48,7 @@ REQUIRED_ASSETS = (
 REQUIRED_SCRIPT_SEQUENCES = {
     "cruce-datos.html": (
         "public/js/vendor/jszip-3.10.1.min.js",
-        "public/js/modules/cruce_datos.js",
+        *CRUCE_SCRIPTS,
     ),
     "macro-pesados.html": (
         "public/js/data/macro_pesados_catalog.js",
@@ -127,11 +143,13 @@ def main():
         if "fetch('version.json', { cache: 'no-store' })" not in navigation_text:
             errors.append("La navegacion no consulta version.json sin cache")
 
-    cruce_source = root / "public/js/modules/cruce_datos.js"
-    if cruce_source.is_file():
-        cruce_text = cruce_source.read_text(encoding="utf-8")
-        if "PDF_REFERENCE_2752" in cruce_text or "JVBERi0" in cruce_text:
-            errors.append("El Conciliador incluye un PDF contractual precargado")
+    cruce_text = "".join(
+        (root / asset).read_text(encoding="utf-8")
+        for asset in CRUCE_SCRIPTS
+        if (root / asset).is_file()
+    )
+    if "PDF_REFERENCE_2752" in cruce_text or "JVBERi0" in cruce_text:
+        errors.append("El Conciliador incluye un PDF contractual precargado")
 
     expected_sha = os.environ.get("GITHUB_SHA", "")
     expected_nav_version = expected_sha[:12] if re.fullmatch(r"[0-9a-f]{40}", expected_sha) else ""

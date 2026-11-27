@@ -1,0 +1,85 @@
+/* Carga y consulta local de documentos PDF por poliza. */
+/* V34 - Consola de PDF y acceso sencillo desde Parámetros */
+.pdf-link-param-v34 {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #f9ebf5;
+  border: 1px solid #e5b6d5;
+  border-radius: 9px;
+}
+.pdf-link-param-v34 button {
+  border-color: #b15b92 !important;
+  background: #ab3b83 !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+.pdf-upload-only-v34 {
+  border-top: 5px solid #ac4487;
+}
+.pdf-upload-only-v34 h2 {
+  color: #97366e;
+}
+.pdf-upload-only-v34 .ficha-upload-box {
+  margin-top: 16px;
+}
+
+/* V35: presentación de múltiples documentos por póliza, sin afectar cálculos. */
+.policy-pdf-list-v35 {
+  margin: 8px 0 17px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 10px;
+}
+.policy-pdf-item-v35 {
+  border: 1px solid #d8b2cb;
+  background: #fff7fc;
+  border-radius: 9px;
+  padding: 12px 15px;
+  min-width: 0;
+}
+.policy-pdf-item-v35 button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  color: #8a2c6b;
+  border: 1px solid #e3bad3;
+  border-radius: 7px;
+  padding: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.policy-pdf-item-v35 small {
+  display: block;
+  margin-top: 7px;
+  color: #706178;
+}
+.policy-pdf-empty-v35 {
+  color: #6d7781;
+  font-size: 12px;
+  padding: 8px;
+}
+.ficha-existing-v35 {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ficha-existing-v35 span {
+  border: 1px solid #a9d3c0;
+  background: #f5fcf7;
+  color: #18654d;
+  font-weight: 650;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}

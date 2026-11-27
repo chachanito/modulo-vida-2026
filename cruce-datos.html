@@ -1,190 +1,964 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>Conciliador de Créditos V36 | Local</title>
-  <link href="public/estilo/navigation.css?v=20261124-16" rel="stylesheet"/>
-  <link href="public/estilo/page-headers.css?v=20261124-16" rel="stylesheet"/>
-  <script src="public/js/pages/theme.js?v=20261124-16">
-  </script>
-  <script defer="" src="public/js/pages/navigation.js?v=20261125-1058">
-  </script>
-  <!-- SECCIÓN 1: ESTILOS GENERALES Y APARIENCIA -->
-  <link href="public/estilo/modules/cruce-datos-base.css?v=20261126-36" rel="stylesheet"/>
-  <link href="public/estilo/modules/cruce-datos-apariencia.css?v=20261126-36" rel="stylesheet"/>
-  <link href="public/estilo/modules/cruce-datos-pegado.css?v=20261126-36" rel="stylesheet"/>
-  <link href="public/estilo/modules/cruce-datos-politicas.css?v=20261126-36" rel="stylesheet"/>
-  <link href="public/estilo/modules/cruce-datos-pdf.css?v=20261126-36" rel="stylesheet"/>
- </head>
- <body>
-<nav aria-label="Herramientas principales" class="app-nav">
-   <a class="app-nav__brand" href="index.html">
-    Herramientas Vida
-   </a>
-   <div class="app-nav__links">
-    <a class="app-nav__link" href="index.html">
-     Justificador
-    </a>
-    <a aria-current="page" class="app-nav__link" href="cruce-datos.html">
-     Cruce de datos
-    </a>
-    <div class="app-nav__group">
-     <button aria-controls="app-nav-cotizadores" aria-expanded="false" class="app-nav__group-toggle" type="button">
-      <span class="app-nav__label">
-       Cotizadores
-      </span>
-     </button>
-     <div class="app-nav__submenu" hidden="" id="app-nav-cotizadores">
-      <a class="app-nav__sublink" href="cotizador.html">
-       Cotizador RC
-      </a>
-      <a class="app-nav__sublink" href="cotizador-productos-cerrados.html">
-       Productos Cerrados
-      </a>
-      <a class="app-nav__sublink" href="macro-pesados.html">
-       Macro Pesados
-      </a>
-     </div>
-    </div>
-   </div>
-  </nav>
-<header class="top">
-   <div class="top__copy">
-    <h1>
-     CONCILIADOR DE CR&Eacute;DITOS
-     <span>
-      V36
-     </span>
-    </h1>
-    <p>
-     Aplicaci&oacute;n local &middot; ACTUAL como base principal &middot; Comparaci&oacute;n, asegurabilidad y conciliaci&oacute;n de totales
-    </p>
-   </div>
-   <span class="top__badge">
-    Parametrizaci&oacute;n protegida
-   </span>
-  </header>
-<!-- SECCIÓN 2: ENCABEZADO Y NAVEGACIÓN -->
-<main class="wrap"><div class="tabs"><button class="active" data-tab="parametros">1. Parámetros</button><button data-tab="carga">2. Cargar bases</button><button data-tab="resumen">3. Control de totales</button><button data-tab="resultados">4. Resultados</button><button data-tab="salidas">5. Solo anterior</button><button data-tab="catalogo">6. Catálogo <span aria-hidden="true">🔒</span></button><button data-tab="ficha">7. Cargar PDF</button></div>
-<!-- SECCIÓN 4: PARÁMETROS EDITABLES Y REGLAS -->
-<section class="pane active" id="parametros"><!-- V16: CATÁLOGO DE PÓLIZAS. Cada póliza guarda toda su parametrización de manera independiente. -->
-<div class="panel policy-panel" id="policyCatalog">
-  <h2><span aria-hidden="true">▣</span> Catálogo de pólizas y configuraciones guardadas</h2>
-  <p class="hint">Selecciona una póliza para recuperar sus reglas. Guarda cada póliza una sola vez y actualízala cuando cambien sus parámetros. Las bases Excel no se almacenan aquí.</p>
-  <!-- V28: búsqueda global por número o descripción, sin cambiar configuraciones -->
-  <div class="policy-search" id="policySearchPanel">
-    <label for="policySearchInput">BUSCAR PÓLIZA EN TODOS LOS EMISORES</label>
-    <input id="policySearchInput" type="search" placeholder="Ej.: 24-2879 o CAJA DE AHORRO" autocomplete="off">
-    <div id="policySearchResults" class="policy-search-results" role="status" aria-live="polite">Escribe un número o nombre para localizar su emisor.</div>
-  </div>
-  <div class="policy-grid"><div class="issuer-picker"><label for="issuerSelect">EMISOR RESPONSABLE</label><select id="issuerSelect"><option value="">Sin asignar / pólizas anteriores</option><option value="OCANIA CEVALLOS NAYELI ANAHI">OCANIA CEVALLOS NAYELI ANAHI</option><option value="MORALES VARGAS SHARON NATALIA">MORALES VARGAS SHARON NATALIA</option><option value="ACHIG DONOSO JHOSELYN PAMELA">ACHIG DONOSO JHOSELYN PAMELA</option><option value="PAREDES YANEZ JAMILETH ALEJANDRA">PAREDES YANEZ JAMILETH ALEJANDRA</option><option value="POZO ENCALADA ANDREA LIZETH">POZO ENCALADA ANDREA LIZETH</option><option value="BALSECA CARDENAS EDWIN MAURICIO">BALSECA CARDENAS EDWIN MAURICIO</option></select><p class="hint">Cada emisor visualiza sus pólizas guardadas. Las pólizas históricas indicadas se asignan automáticamente a BALSECA CARDENAS EDWIN MAURICIO.</p></div>
-    <div><label for="policyList">Pólizas guardadas</label><select id="policyList"><option value="">+ Nueva póliza</option></select></div>
-    <div><label for="policyNumber">Número de póliza</label><input id="policyNumber" placeholder="Ej.: 24-3036" maxlength="50" autocomplete="off"></div>
-    <div><label for="policyDescription">Descripción / nombre</label><input id="policyDescription" placeholder="Ej.: SUMAC LLACTA" maxlength="120" autocomplete="off"></div>
-  </div>
-  <div class="actions policy-actions"><button type="button" class="secondary" id="policyNew">+ Nueva póliza</button><button type="button" class="secondary" id="policyDelete">Eliminar póliza guardada</button></div>
-<div id="policyMessage" role="status" class="policy-message" aria-live="polite">Los perfiles locales pertenecen a este navegador. Para otra PC, descarga CATALOGO_POLIZAS.json y ábrelo allí. No se sincronizan automáticamente.</div>
-<div class="pdf-link-param-v34"><button type="button" id="policyOpenPdfV34" class="secondary" hidden>📄 Ver PDF de la póliza ↗</button><span id="policyOpenPdfStatusV34" class="hint">Selecciona una póliza guardada para abrir su documento en otra pestaña.</span></div><div id="policyPdfListV35" class="policy-pdf-list-v35" aria-live="polite"></div>
-</div>
-<div class="panel"><h2>Parámetros generales</h2><div class="grid"><!-- V20: el monto de crédito es el primer parámetro editable. --><div><label>Límite general crédito (USD)</label><input type="text" id="limite" value="USD 60.000,00" inputmode="decimal" autocomplete="off" title="Importe en USD, por ejemplo USD 40.000,01"></div><div class="age-config"><label>Edad mínima de ingreso</label><div class="age-parts"><div><small>AÑOS</small><input type="number" id="min" value="18" min="0" step="1"></div><div><small>MESES</small><input type="number" id="minMes" value="0" min="0" max="11" step="1"></div><div><small>DÍAS</small><input type="number" id="minDia" value="0" min="0" max="30" step="1"></div></div></div><div class="age-config"><label>Política de ingresos nuevos</label>
-<select id="allowNewEntries" aria-label="Política de ingresos nuevos"><option value="si">Permitir ingresos nuevos</option><option value="no">No permitir ingresos nuevos — solo permanencia</option></select>
-<div id="newAgePanel"><label>Edad máxima nuevo ingreso</label><div class="age-parts"><div><small>AÑOS</small><input type="number" id="maxNuevo" value="70" min="0" step="1"></div><div><small>MESES</small><input type="number" id="maxNuevoMes" value="0" min="0" max="11" step="1"></div><div><small>DÍAS</small><input type="number" id="maxNuevoDia" value="0" min="0" max="30" step="1"></div></div></div></div><div class="age-config"><label>Edad máxima permanencia</label><div class="age-parts"><div><small>AÑOS</small><input type="number" id="maxPerm" value="75" min="0" max="100" step="1"></div><div><small>MESES</small><input type="number" id="maxPermMes" value="0" min="0" max="11" step="1"></div><div><small>DÍAS</small><input type="number" id="maxPermDia" value="0" min="0" max="30" step="1"></div></div></div></div><div class="sectiontitle">Rangos especiales por edad exacta (años, meses y días; extremos incluidos)</div><p class="hint">Los rangos especiales deben estar entre la edad mínima de ingreso y la edad máxima de permanencia, con años, meses y días exactos.</p><div id="ageRanges"></div><button class="secondary" id="addAge">+ Agregar rango de edad</button><div class="sectiontitle header-credit">Requisitos por rango de crédito (se acumulan observaciones)</div><div id="guaranteeRanges"></div><button class="secondary" id="addGuarantee">+ Agregar requisito</button><div class="sectiontitle header-combined">Requisitos combinados por edad exacta y suma global asegurada</div><p class="hint">Configura desde/hasta en años, meses y días; la condición se aplica al TOTAL de la cédula, no a cada crédito. Si ya se exigía en el mes anterior no se vuelve a solicitar.</p><div id="combinedRanges"></div><button class="secondary" id="addCombined">+ Agregar condición por edad y monto</button><!-- V14: REGLA ADICIONAL EXCLUSIVA PARA INGRESOS NUEVOS. No altera las reglas históricas. -->
-<div class="sectiontitle header-health">Declaración de Salud — únicamente INGRESOS NUEVOS</div>
-<p class="hint">Se activa si la persona NO figura en MES ANTERIOR y su edad exacta y suma global actual alcanzan los umbrales configurados. «Mayor de 70 años» comienza a los 70 años y 1 día. La prioridad de exclusión por edad sigue vigente.</p>
-<div class="new-entry-config"><label class="new-entry-check"><input type="checkbox" id="newOnlyEnabled" checked> Activar requisito para ingresos nuevos</label><div id="newOnlyDetails"><div class="new-entry-grid">
-<div class="age-config"><label>Edad desde (inclusive)</label><div class="age-parts"><div><small>AÑOS</small><input type="number" min="0" max="100" step="1" id="newOnlyFromY" value="70"></div><div><small>MESES</small><input type="number" min="0" max="11" step="1" id="newOnlyFromM" value="0"></div><div><small>DÍAS</small><input type="number" min="0" max="30" step="1" id="newOnlyFromD" value="1"></div></div></div>
-<div class="age-config"><label>Edad hasta (inclusive)</label><div class="age-parts"><div><small>AÑOS</small><input type="number" min="0" max="100" step="1" id="newOnlyToY" value="100"></div><div><small>MESES</small><input type="number" min="0" max="11" step="1" id="newOnlyToM" value="0"></div><div><small>DÍAS</small><input type="number" min="0" max="30" step="1" id="newOnlyToD" value="0"></div></div></div>
-<div><label>Monto desde (USD)</label><input type="text" id="newOnlyAmount" inputmode="decimal" value="USD 20.000,00"></div>
-<div><label>Observación que se acumula</label><input type="text" id="newOnlyObs" value="DECLARACIÓN DE SALUD EN FORMULARIO DE ASEGURABILIDAD"></div>
-</div></div></div>
-<div class="notice warn">Reglas piloto editables. Un requisito por monto no significa aprobación automática. El estado PENDIENTE indica que la exigencia debe verificarse externamente. Los requisitos previamente exigibles se presumen gestionados y no se solicitan de nuevo; esto NO constituye prueba de recepción. Los límites y requisitos deben confirmarse con las políticas vigentes antes de usar decisiones operativas.</div><div class="actions"><button class="primary" id="policySave">Guardar póliza y parámetros</button><button class="primary" id="recalc">Aplicar parámetros y recalcular</button><button class="secondary" id="clearAllParams">Limpiar todo</button></div></div></section>
-<!-- SECCIÓN 3: CARGA Y COMPARACIÓN DE BASES -->
-<section class="pane" id="carga"><div class="panel"><h2>Seleccionar archivos Excel</h2><div class="twocol upload-separated"><div class="upload-card upload-current"><label>BASE ACTUAL (.xlsx)</label><input id="actualFile" type="file" accept=".xlsx"><div class="paste-area"><label for="actualPaste">O pegar BASE ACTUAL desde Excel (Ctrl+C → Ctrl+V)</label><textarea id="actualPaste" placeholder="CÉDULA&#9;NOMBRES COMPLETOS&#9;FECHA DE NACIMIENTO&#9;MONTO ACTUAL&#10;0101234567&#9;NOMBRE APELLIDO&#9;13/09/2018&#9;USD 5.000,00" rows="6" spellcheck="false"></textarea><p class="hint">Copia las cuatro columnas de Excel, con o sin títulos. Si pegas datos, se usarán en lugar del archivo seleccionado.</p></div><p class="hint">Debe contener CÉDULA, NOMBRES, FECHA DE NACIMIENTO y MONTO ACTUAL. Se conservan todas las filas.</p><a class="secondary template-link" id="templateActual" download="PLANTILLA_ACTUAL_SIN_POLIZA.xlsx" href="public/templates/Plantilla_ACTUAL.xlsx">⬇ Descargar plantilla ACTUAL (.xlsx)</a></div><div class="upload-card upload-previous"><label>MES ANTERIOR (.xlsx)</label><input id="anteriorFile" type="file" accept=".xlsx"><div class="paste-area"><label for="anteriorPaste">O pegar MES ANTERIOR desde Excel (Ctrl+C → Ctrl+V)</label><textarea id="anteriorPaste" placeholder="CÉDULA&#9;NOMBRES COMPLETOS&#9;MONTO ANTERIOR&#10;0101234567&#9;NOMBRE APELLIDO&#9;USD 4.500,00" rows="6" spellcheck="false"></textarea><p class="hint">Copia las tres columnas de Excel, con o sin títulos. Si pegas datos, se usarán en lugar del archivo seleccionado.</p></div><p class="hint">Debe contener CÉDULA, NOMBRES COMPLETOS y MONTO ANTERIOR. No requiere fecha de nacimiento.</p><a class="secondary template-link" id="templatePrevious" download="PLANTILLA_MES_ANTERIOR_SIN_POLIZA.xlsx" href="public/templates/Plantilla_MES_ANTERIOR.xlsx">⬇ Descargar plantilla MES ANTERIOR (.xlsx)</a></div></div><input type="hidden" id="corte" value=""><div class="actions"><button class="primary" id="process">Procesar y conciliar bases</button><button class="secondary" id="reset">Limpiar todo</button></div><div id="cutoffSummary" class="cutoff-summary" hidden></div><div id="status" class="notice">Los archivos se procesan dentro de este navegador. No se envían a un servidor.</div></div><div class="panel"><h2>Reglas de integridad</h2><p>La base ACTUAL es la única que define las filas exportadas en RESULTADOS. Los totales por cédula se muestran solo en la primera fila correspondiente y también en la hoja TOTALES POR CEDULA, para evitar sumarlos varias veces. Las cédulas repetidas se conservan, mientras que los límites y la comparación se calculan por suma global de cédula.</p><p>El total de MONTO ACTUAL debe coincidir con la suma de RESULTADOS. Los registros que desaparecieron se muestran por separado y se incluyen en la conciliación de la variación global.</p></div></section>
-<!-- V23: Fecha de corte operativa por procesamiento, ajena a parámetros guardados -->
-<dialog id="cutoffDialog" class="cutoff-modal" aria-labelledby="cutoffTitle">
-  <form method="dialog" id="cutoffForm">
-    <div class="cutoff-icon">📅</div>
-    <h2 id="cutoffTitle">Fecha de corte de edad</h2>
-    <p>Selecciona la fecha de corte correspondiente a las bases de este mes. Se utilizará para calcular edades y validar los límites; no modificará las reglas guardadas de la póliza.</p>
-    <label for="cutoffInput">FECHA DE CORTE PARA ESTA CONCILIACIÓN</label>
-    <input type="date" id="cutoffInput" required>
-    <div class="actions"><button type="button" class="secondary" id="cutoffCancel">Cancelar</button><button type="submit" class="primary" id="cutoffAccept">Confirmar fecha y procesar</button></div>
-  </form>
-</dialog>
-<!-- SECCIÓN 5: CONTROL DE TOTALES -->
-<section class="pane" id="resumen"><div id="cutoffSummaryControl" class="cutoff-summary" hidden></div><div class="grid" id="cards"></div><div class="twocol"><div class="panel"><h2>Conciliación de movimiento</h2><div id="movement"></div></div><div class="panel"><h2>Distribución de decisiones</h2><div id="decisions"></div></div></div><div class="panel"><h2>Controles de integridad</h2><div id="checks"></div><div class="actions"><button class="primary" id="exportAll">Descargar reporte Excel (.xlsx)</button><button class="secondary" id="exportCSV">Descargar RESULTADOS (.csv)</button><button class="secondary" id="exportMass">Descargar CARGA MASIVA (.txt)</button></div></div></section>
-<!-- SECCIÓN 6: RESULTADOS INDIVIDUALES -->
-<section class="pane" id="resultados"><div class="panel"><h2>Resultados por crédito individual</h2><div class="rowtools"><div><label>Buscar cédula o nombre</label><input id="search" placeholder="Buscar..."></div><div><label>Estado de carga</label><select id="decisionFilter"><option value="">Todos</option><option>APTO PARA CARGA</option><option>PENDIENTE DE REQUISITOS</option><option>SUPERA EL LÍMITE DE CRÉDITO</option><option>SUPERA LA EDAD MÁXIMA DE INGRESO</option><option>OTRAS VALIDACIONES / REVISAR</option><option value="INGRESOS NUEVOS">INGRESOS NUEVOS</option><option value="NO PERMITE INGRESOS NUEVOS">NO PERMITE INGRESOS NUEVOS</option></select></div><button class="secondary" id="downloadFiltered">Exportar resultados filtrados</button></div><p class="hint">Los motivos de exclusión se muestran por separado. Si coinciden varias causas, todas permanecen en OBSERVACIONES y el registro aparece en cada filtro correspondiente.</p><p id="count" class="hint"></p><div class="tablewrap"><table><thead><tr><th>FILA</th><th>CÉDULA</th><th>ESTADO CÉDULA</th><th>NOMBRES COMPLETOS</th><th>FECHA NAC.</th><th>EDAD A/M/D</th><th>MONTO ACTUAL</th><th>SUMA GLOBAL ACTUAL</th><th>SUMA GLOBAL ANTERIOR</th><th>DIFERENCIA GLOBAL</th><th>VARIACIÓN</th><th>OBSERVACIONES</th><th>DECISIÓN</th></tr></thead><tbody id="resultBody"></tbody></table></div></div></section>
-<!-- SECCIÓN 7: REGISTROS QUE SOLO CONSTAN EN EL MES ANTERIOR -->
-<!-- V26: CATÁLOGO PORTÁTIL EN PESTAÑA INDEPENDIENTE, PROTEGIDA CON CLAVE LOCAL -->
-<section class="pane" id="catalogo"><div class="panel policy-panel">
-<h2>6. Catálogo portátil de pólizas — acceso protegido</h2>
-<div id="catalogLock" class="catalog-locked"><div class="catalog-lock">
-<label for="catalogPassword">Clave de acceso al catálogo</label><input id="catalogPassword" type="password" autocomplete="off" placeholder="Escribe tu clave" minlength="6">
-<div class="actions"><button id="catalogUnlock" class="primary" type="button">Abrir catálogo</button></div>
-<p class="hint" id="catalogLockHelp">En el primer acceso, elige una clave de al menos 6 caracteres. Después úsala para entrar al catálogo.</p>
-<p id="catalogLockMessage" role="status" class="hint"></p>
-</div></div>
-<div id="catalogUnlocked" class="catalog-unlocked">
-<div class="catalog-toolbar"><button type="button" id="catalogRelock" class="secondary">Cerrar catálogo 🔒</button><button type="button" id="catalogChangePassword" class="secondary">Cambiar clave</button></div>
-<div class="portable-catalog" aria-label="Catálogo de pólizas portátil">
-    <div class="portable-heading"><span aria-hidden="true">&#128193;</span><strong>CATÁLOGO PORTÁTIL DE PÓLIZAS</strong><span id="portableCount" class="portable-count">0 pólizas</span></div>
-    <p>Guarda tus pólizas en un archivo <strong>CATALOGO_POLIZAS.json</strong> para recuperarlas en otra computadora. El archivo conserva números, descripciones, parámetros, fichas documentales y PDF originales asociados; <strong>no contiene las bases de asegurados</strong>. Puede ser más grande cuando hay documentos PDF.</p>
-    <div class="actions portable-actions">
-      <button type="button" class="primary" id="portableDownload">&#8595; Descargar catálogo portátil</button>
-      <button type="button" class="secondary" id="portableOpen">&#8593; Abrir catálogo de otra PC</button>
-    </div>
-    <label class="portable-auto"><input type="checkbox" id="portableAuto"> Descargar catálogo al guardar una póliza (solo mientras la pestaña esté desbloqueada)</label>
-    <small>Importante: cada nueva descarga reemplaza tu respaldo anterior al conservar la versión más reciente. Si el navegador añade (1), (2)... al nombre, identifica el archivo más reciente antes de llevarlo a otra PC. La importación no se ejecuta sola.</small>
-  </div>
-<details class="policy-tools"><summary>Opciones avanzadas del catálogo (respaldo y recuperación)</summary>
-<p class="hint">Exporta un respaldo JSON o recupera tus pólizas desde otro equipo.</p>
-<div class="actions"><button type="button" class="secondary" id="policyBackup">Respaldar catálogo (.json)</button><button type="button" class="secondary" id="policyImportButton">Importar catálogo (.json)</button></div></details>
-<input type="file" id="policyImport" accept=".json,application/json" hidden>
-<p class="notice warn">La clave limita el acceso a esta pestaña en este navegador. No cifra el archivo JSON. Conserva los respaldos en una ubicación segura. Si olvidas la clave local, no se puede recuperar desde el programa.</p>
-</div></div></section>
-
-<!-- V34: SOLO CARGA DE PDF. SIN RESUMENES, SIN VISOR INTERNO. -->
-<section class="pane" id="ficha">
- <div class="panel pdf-upload-only-v34">
-  <h2>7. Cargar PDF de póliza</h2>
-  <p class="hint">Selecciona una póliza ya guardada y vincula su archivo PDF. Para visualizarlo, entra en <strong>1. Parámetros</strong> y utiliza <strong>Ver PDF de la póliza</strong>.</p>
-  <div class="ficha-control">
-    <div><label for="fichaPolicySelect">PÓLIZA A LA QUE SE VINCULARÁ EL DOCUMENTO</label><select id="fichaPolicySelect"><option value="">Selecciona una póliza</option></select></div>
-    <div><label for="fichaSearch">BUSCAR PÓLIZA</label><input id="fichaSearch" placeholder="Número, descripción o emisor" autocomplete="off"></div>
-  </div>
-  <div class="ficha-upload-box">
-   <label for="fichaPdfUpload">AGREGAR DOCUMENTO PDF (HASTA 3 POR PÓLIZA)</label>
-   <input id="fichaPdfUpload" type="file" accept="application/pdf,.pdf" aria-describedby="fichaUploadHint">
-   <p class="hint" id="fichaUploadHint">El número de póliza y el anexo se leen del PDF, independientemente del nombre del archivo. Si ya existe el documento, se mostrará una alerta y no se duplicará. Conserva un respaldo del catálogo desde la pestaña 6.</p>
-   <p id="fichaUploadMessage" role="status" aria-live="polite" class="hint"></p><div id="fichaExistingV35" class="ficha-existing-v35"></div>
-  </div>
- </div>
- <!-- Compatibilidad interna con la V33: elementos ocultos, sin contenido visible -->
- <div hidden aria-hidden="true">
-   <button type="button" id="fichaSummaryTab"></button><button type="button" id="fichaOriginalTab"></button>
-   <div id="fichaSummaryPane"><div id="fichaBody"></div></div>
-   <div id="fichaOriginalPane"><span id="fichaOriginalName"></span><div id="fichaOriginalStatus"></div><div id="fichaPdfFrameWrap"><iframe id="fichaPdfFrame" title="Visor interno no utilizado"></iframe></div></div>
- </div>
-</section>
-<section class="pane" id="salidas"><div class="panel"><h2>Cédulas existentes únicamente en MES ANTERIOR</h2><p>Estos créditos no se incorporan artificialmente a la base actual, pero sus salidas sí afectan la conciliación global.</p><div class="tablewrap"><table><thead><tr><th>CÉDULA</th><th>NOMBRES COMPLETOS</th><th>TOTAL ANTERIOR</th></tr></thead><tbody id="missingBody"></tbody></table></div></div></section><p class="foot">Funciona sin conexión. No incluye un registro de aprobación de formularios o exámenes médicos: las alertas reflejan requisitos potenciales, no su cumplimiento. Recomendado: Microsoft Edge o Google Chrome actualizado.</p></main>
-<!-- SECCIÓN 8: BIBLIOTECA JSZIP INTEGRADA PARA FUNCIONAMIENTO SIN INTERNET: conservar licencia original -->
-
-<!-- SECCIÓN 9: APLICACIÓN: lectura, validación, cálculo, cuadre y exportación -->
-<footer class="app-footer">
-   &copy; Copyright 2026, Todos los derechos reservados
-   <br/>
-   <strong>
-    Mauricio Balseca
-   </strong>
-   &amp;
-   <strong>
-    Cristian Heredia
-   </strong>
-   &middot; Emisi&oacute;n Nacional
-  </footer>
-  <script src="public/js/vendor/jszip-3.10.1.min.js"></script>
-  <script src="public/js/modules/cruce_datos.js?v=20261126-36"></script>
- </body>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Conciliador de Créditos V36 | Local</title>
+    <link href="public/estilo/navigation.css?v=20261124-16" rel="stylesheet" />
+    <link
+      href="public/estilo/page-headers.css?v=20261124-16"
+      rel="stylesheet"
+    />
+    <script src="public/js/pages/theme.js?v=20261124-16"></script>
+    <script
+      defer=""
+      src="public/js/pages/navigation.js?v=20261125-1058"
+    ></script>
+    <!-- SECCIÓN 1: ESTILOS GENERALES Y APARIENCIA -->
+    <link
+      href="public/estilo/modules/cruce-datos/base.css?v=20261126-37"
+      rel="stylesheet"
+    />
+    <link
+      href="public/estilo/modules/cruce-datos/theme.css?v=20261126-37"
+      rel="stylesheet"
+    />
+    <link
+      href="public/estilo/modules/cruce-datos/data-input.css?v=20261126-37"
+      rel="stylesheet"
+    />
+    <link
+      href="public/estilo/modules/cruce-datos/policies.css?v=20261126-37"
+      rel="stylesheet"
+    />
+    <link
+      href="public/estilo/modules/cruce-datos/documents.css?v=20261126-37"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav aria-label="Herramientas principales" class="app-nav">
+      <a class="app-nav__brand" href="index.html"> Herramientas Vida </a>
+      <div class="app-nav__links">
+        <a class="app-nav__link" href="index.html"> Justificador </a>
+        <a aria-current="page" class="app-nav__link" href="cruce-datos.html">
+          Cruce de datos
+        </a>
+        <div class="app-nav__group">
+          <button
+            aria-controls="app-nav-cotizadores"
+            aria-expanded="false"
+            class="app-nav__group-toggle"
+            type="button"
+          >
+            <span class="app-nav__label"> Cotizadores </span>
+          </button>
+          <div class="app-nav__submenu" hidden="" id="app-nav-cotizadores">
+            <a class="app-nav__sublink" href="cotizador.html"> Cotizador RC </a>
+            <a
+              class="app-nav__sublink"
+              href="cotizador-productos-cerrados.html"
+            >
+              Productos Cerrados
+            </a>
+            <a class="app-nav__sublink" href="macro-pesados.html">
+              Macro Pesados
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <header class="top">
+      <div class="top__copy">
+        <h1>
+          CONCILIADOR DE CR&Eacute;DITOS
+          <span> V36 </span>
+        </h1>
+        <p>
+          Aplicaci&oacute;n local &middot; ACTUAL como base principal &middot;
+          Comparaci&oacute;n, asegurabilidad y conciliaci&oacute;n de totales
+        </p>
+      </div>
+      <span class="top__badge"> Parametrizaci&oacute;n protegida </span>
+    </header>
+    <!-- SECCIÓN 2: ENCABEZADO Y NAVEGACIÓN -->
+    <main class="wrap">
+      <div class="tabs">
+        <button class="active" data-tab="parametros">1. Parámetros</button>
+        <button data-tab="carga">2. Cargar bases</button>
+        <button data-tab="resumen">3. Control de totales</button>
+        <button data-tab="resultados">4. Resultados</button>
+        <button data-tab="salidas">5. Solo anterior</button>
+        <button data-tab="catalogo">
+          6. Catálogo <span aria-hidden="true">🔒</span>
+        </button>
+        <button data-tab="ficha">7. Cargar PDF</button>
+      </div>
+      <!-- SECCIÓN 4: PARÁMETROS EDITABLES Y REGLAS -->
+      <!-- 1. Configuración y catálogo de pólizas -->
+      <section class="pane active" id="parametros">
+        <!-- V16: CATÁLOGO DE PÓLIZAS. Cada póliza guarda toda su parametrización de manera independiente. -->
+        <div class="panel policy-panel" id="policyCatalog">
+          <h2>
+            <span aria-hidden="true">▣</span> Catálogo de pólizas y
+            configuraciones guardadas
+          </h2>
+          <p class="hint">
+            Selecciona una póliza para recuperar sus reglas. Guarda cada póliza
+            una sola vez y actualízala cuando cambien sus parámetros. Las bases
+            Excel no se almacenan aquí.
+          </p>
+          <!-- V28: búsqueda global por número o descripción, sin cambiar configuraciones -->
+          <div class="policy-search" id="policySearchPanel">
+            <label for="policySearchInput"
+              >BUSCAR PÓLIZA EN TODOS LOS EMISORES</label
+            >
+            <input
+              id="policySearchInput"
+              type="search"
+              placeholder="Ej.: 24-2879 o CAJA DE AHORRO"
+              autocomplete="off"
+            />
+            <div
+              id="policySearchResults"
+              class="policy-search-results"
+              role="status"
+              aria-live="polite"
+            >
+              Escribe un número o nombre para localizar su emisor.
+            </div>
+          </div>
+          <div class="policy-grid">
+            <div class="issuer-picker">
+              <label for="issuerSelect">EMISOR RESPONSABLE</label>
+              <select id="issuerSelect">
+                <option value="">Sin asignar / pólizas anteriores</option>
+                <option value="OCANIA CEVALLOS NAYELI ANAHI">
+                  OCANIA CEVALLOS NAYELI ANAHI
+                </option>
+                <option value="MORALES VARGAS SHARON NATALIA">
+                  MORALES VARGAS SHARON NATALIA
+                </option>
+                <option value="ACHIG DONOSO JHOSELYN PAMELA">
+                  ACHIG DONOSO JHOSELYN PAMELA
+                </option>
+                <option value="PAREDES YANEZ JAMILETH ALEJANDRA">
+                  PAREDES YANEZ JAMILETH ALEJANDRA
+                </option>
+                <option value="POZO ENCALADA ANDREA LIZETH">
+                  POZO ENCALADA ANDREA LIZETH
+                </option>
+                <option value="BALSECA CARDENAS EDWIN MAURICIO">
+                  BALSECA CARDENAS EDWIN MAURICIO
+                </option>
+              </select>
+              <p class="hint">
+                Cada emisor visualiza sus pólizas guardadas. Las pólizas
+                históricas indicadas se asignan automáticamente a BALSECA
+                CARDENAS EDWIN MAURICIO.
+              </p>
+            </div>
+            <div>
+              <label for="policyList">Pólizas guardadas</label>
+              <select id="policyList">
+                <option value="">+ Nueva póliza</option>
+              </select>
+            </div>
+            <div>
+              <label for="policyNumber">Número de póliza</label>
+              <input
+                id="policyNumber"
+                placeholder="Ej.: 24-3036"
+                maxlength="50"
+                autocomplete="off"
+              />
+            </div>
+            <div>
+              <label for="policyDescription">Descripción / nombre</label>
+              <input
+                id="policyDescription"
+                placeholder="Ej.: SUMAC LLACTA"
+                maxlength="120"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="actions policy-actions">
+            <button type="button" class="secondary" id="policyNew">
+              + Nueva póliza
+            </button>
+            <button type="button" class="secondary" id="policyDelete">
+              Eliminar póliza guardada
+            </button>
+          </div>
+          <div
+            id="policyMessage"
+            role="status"
+            class="policy-message"
+            aria-live="polite"
+          >
+            Los perfiles locales pertenecen a este navegador. Para otra PC,
+            descarga CATALOGO_POLIZAS.json y ábrelo allí. No se sincronizan
+            automáticamente.
+          </div>
+          <div class="pdf-link-param-v34">
+            <button
+              type="button"
+              id="policyOpenPdfV34"
+              class="secondary"
+              hidden
+            >
+              📄 Ver PDF de la póliza ↗
+            </button>
+            <span id="policyOpenPdfStatusV34" class="hint"
+              >Selecciona una póliza guardada para abrir su documento en otra
+              pestaña.</span
+            >
+          </div>
+          <div
+            id="policyPdfListV35"
+            class="policy-pdf-list-v35"
+            aria-live="polite"
+          ></div>
+        </div>
+        <div class="panel">
+          <h2>Parámetros generales</h2>
+          <div class="grid">
+            <!-- V20: el monto de crédito es el primer parámetro editable. -->
+            <div>
+              <label>Límite general crédito (USD)</label>
+              <input
+                type="text"
+                id="limite"
+                value="USD 60.000,00"
+                inputmode="decimal"
+                autocomplete="off"
+                title="Importe en USD, por ejemplo USD 40.000,01"
+              />
+            </div>
+            <div class="age-config">
+              <label>Edad mínima de ingreso</label>
+              <div class="age-parts">
+                <div>
+                  <small>AÑOS</small>
+                  <input type="number" id="min" value="18" min="0" step="1" />
+                </div>
+                <div>
+                  <small>MESES</small>
+                  <input
+                    type="number"
+                    id="minMes"
+                    value="0"
+                    min="0"
+                    max="11"
+                    step="1"
+                  />
+                </div>
+                <div>
+                  <small>DÍAS</small>
+                  <input
+                    type="number"
+                    id="minDia"
+                    value="0"
+                    min="0"
+                    max="30"
+                    step="1"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="age-config">
+              <label>Política de ingresos nuevos</label>
+              <select
+                id="allowNewEntries"
+                aria-label="Política de ingresos nuevos"
+              >
+                <option value="si">Permitir ingresos nuevos</option>
+                <option value="no">
+                  No permitir ingresos nuevos — solo permanencia
+                </option>
+              </select>
+              <div id="newAgePanel">
+                <label>Edad máxima nuevo ingreso</label>
+                <div class="age-parts">
+                  <div>
+                    <small>AÑOS</small>
+                    <input
+                      type="number"
+                      id="maxNuevo"
+                      value="70"
+                      min="0"
+                      step="1"
+                    />
+                  </div>
+                  <div>
+                    <small>MESES</small>
+                    <input
+                      type="number"
+                      id="maxNuevoMes"
+                      value="0"
+                      min="0"
+                      max="11"
+                      step="1"
+                    />
+                  </div>
+                  <div>
+                    <small>DÍAS</small>
+                    <input
+                      type="number"
+                      id="maxNuevoDia"
+                      value="0"
+                      min="0"
+                      max="30"
+                      step="1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="age-config">
+              <label>Edad máxima permanencia</label>
+              <div class="age-parts">
+                <div>
+                  <small>AÑOS</small>
+                  <input
+                    type="number"
+                    id="maxPerm"
+                    value="75"
+                    min="0"
+                    max="100"
+                    step="1"
+                  />
+                </div>
+                <div>
+                  <small>MESES</small>
+                  <input
+                    type="number"
+                    id="maxPermMes"
+                    value="0"
+                    min="0"
+                    max="11"
+                    step="1"
+                  />
+                </div>
+                <div>
+                  <small>DÍAS</small>
+                  <input
+                    type="number"
+                    id="maxPermDia"
+                    value="0"
+                    min="0"
+                    max="30"
+                    step="1"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sectiontitle">
+            Rangos especiales por edad exacta (años, meses y días; extremos
+            incluidos)
+          </div>
+          <p class="hint">
+            Los rangos especiales deben estar entre la edad mínima de ingreso y
+            la edad máxima de permanencia, con años, meses y días exactos.
+          </p>
+          <div id="ageRanges"></div>
+          <button class="secondary" id="addAge">+ Agregar rango de edad</button>
+          <div class="sectiontitle header-credit">
+            Requisitos por rango de crédito (se acumulan observaciones)
+          </div>
+          <div id="guaranteeRanges"></div>
+          <button class="secondary" id="addGuarantee">
+            + Agregar requisito
+          </button>
+          <div class="sectiontitle header-combined">
+            Requisitos combinados por edad exacta y suma global asegurada
+          </div>
+          <p class="hint">
+            Configura desde/hasta en años, meses y días; la condición se aplica
+            al TOTAL de la cédula, no a cada crédito. Si ya se exigía en el mes
+            anterior no se vuelve a solicitar.
+          </p>
+          <div id="combinedRanges"></div>
+          <button class="secondary" id="addCombined">
+            + Agregar condición por edad y monto
+          </button>
+          <!-- V14: REGLA ADICIONAL EXCLUSIVA PARA INGRESOS NUEVOS. No altera las reglas históricas. -->
+          <div class="sectiontitle header-health">
+            Declaración de Salud — únicamente INGRESOS NUEVOS
+          </div>
+          <p class="hint">
+            Se activa si la persona NO figura en MES ANTERIOR y su edad exacta y
+            suma global actual alcanzan los umbrales configurados. «Mayor de 70
+            años» comienza a los 70 años y 1 día. La prioridad de exclusión por
+            edad sigue vigente.
+          </p>
+          <div class="new-entry-config">
+            <label class="new-entry-check">
+              <input type="checkbox" id="newOnlyEnabled" checked /> Activar
+              requisito para ingresos nuevos</label
+            >
+            <div id="newOnlyDetails">
+              <div class="new-entry-grid">
+                <div class="age-config">
+                  <label>Edad desde (inclusive)</label>
+                  <div class="age-parts">
+                    <div>
+                      <small>AÑOS</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        id="newOnlyFromY"
+                        value="70"
+                      />
+                    </div>
+                    <div>
+                      <small>MESES</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="11"
+                        step="1"
+                        id="newOnlyFromM"
+                        value="0"
+                      />
+                    </div>
+                    <div>
+                      <small>DÍAS</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="30"
+                        step="1"
+                        id="newOnlyFromD"
+                        value="1"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="age-config">
+                  <label>Edad hasta (inclusive)</label>
+                  <div class="age-parts">
+                    <div>
+                      <small>AÑOS</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        id="newOnlyToY"
+                        value="100"
+                      />
+                    </div>
+                    <div>
+                      <small>MESES</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="11"
+                        step="1"
+                        id="newOnlyToM"
+                        value="0"
+                      />
+                    </div>
+                    <div>
+                      <small>DÍAS</small>
+                      <input
+                        type="number"
+                        min="0"
+                        max="30"
+                        step="1"
+                        id="newOnlyToD"
+                        value="0"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label>Monto desde (USD)</label>
+                  <input
+                    type="text"
+                    id="newOnlyAmount"
+                    inputmode="decimal"
+                    value="USD 20.000,00"
+                  />
+                </div>
+                <div>
+                  <label>Observación que se acumula</label>
+                  <input
+                    type="text"
+                    id="newOnlyObs"
+                    value="DECLARACIÓN DE SALUD EN FORMULARIO DE ASEGURABILIDAD"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="notice warn">
+            Reglas piloto editables. Un requisito por monto no significa
+            aprobación automática. El estado PENDIENTE indica que la exigencia
+            debe verificarse externamente. Los requisitos previamente exigibles
+            se presumen gestionados y no se solicitan de nuevo; esto NO
+            constituye prueba de recepción. Los límites y requisitos deben
+            confirmarse con las políticas vigentes antes de usar decisiones
+            operativas.
+          </div>
+          <div class="actions">
+            <button class="primary" id="policySave">
+              Guardar póliza y parámetros
+            </button>
+            <button class="primary" id="recalc">
+              Aplicar parámetros y recalcular
+            </button>
+            <button class="secondary" id="clearAllParams">Limpiar todo</button>
+          </div>
+        </div>
+      </section>
+      <!-- SECCIÓN 3: CARGA Y COMPARACIÓN DE BASES -->
+      <!-- 2. Carga de las bases para conciliación -->
+      <section class="pane" id="carga">
+        <div class="panel">
+          <h2>Seleccionar archivos Excel</h2>
+          <div class="twocol upload-separated">
+            <div class="upload-card upload-current">
+              <label>BASE ACTUAL (.xlsx)</label>
+              <input id="actualFile" type="file" accept=".xlsx" />
+              <div class="paste-area">
+                <label for="actualPaste"
+                  >O pegar BASE ACTUAL desde Excel (Ctrl+C → Ctrl+V)</label
+                >
+                <textarea
+                  id="actualPaste"
+                  placeholder="CÉDULA&#9;NOMBRES COMPLETOS&#9;FECHA DE NACIMIENTO&#9;MONTO ACTUAL&#10;0101234567&#9;NOMBRE APELLIDO&#9;13/09/2018&#9;USD 5.000,00"
+                  rows="6"
+                  spellcheck="false"
+                >
+                </textarea>
+                <p class="hint">
+                  Copia las cuatro columnas de Excel, con o sin títulos. Si
+                  pegas datos, se usarán en lugar del archivo seleccionado.
+                </p>
+              </div>
+              <p class="hint">
+                Debe contener CÉDULA, NOMBRES, FECHA DE NACIMIENTO y MONTO
+                ACTUAL. Se conservan todas las filas.
+              </p>
+              <a
+                class="secondary template-link"
+                id="templateActual"
+                download="PLANTILLA_ACTUAL_SIN_POLIZA.xlsx"
+                href="public/templates/Plantilla_ACTUAL.xlsx"
+                >⬇ Descargar plantilla ACTUAL (.xlsx)</a
+              >
+            </div>
+            <div class="upload-card upload-previous">
+              <label>MES ANTERIOR (.xlsx)</label>
+              <input id="anteriorFile" type="file" accept=".xlsx" />
+              <div class="paste-area">
+                <label for="anteriorPaste"
+                  >O pegar MES ANTERIOR desde Excel (Ctrl+C → Ctrl+V)</label
+                >
+                <textarea
+                  id="anteriorPaste"
+                  placeholder="CÉDULA&#9;NOMBRES COMPLETOS&#9;MONTO ANTERIOR&#10;0101234567&#9;NOMBRE APELLIDO&#9;USD 4.500,00"
+                  rows="6"
+                  spellcheck="false"
+                >
+                </textarea>
+                <p class="hint">
+                  Copia las tres columnas de Excel, con o sin títulos. Si pegas
+                  datos, se usarán en lugar del archivo seleccionado.
+                </p>
+              </div>
+              <p class="hint">
+                Debe contener CÉDULA, NOMBRES COMPLETOS y MONTO ANTERIOR. No
+                requiere fecha de nacimiento.
+              </p>
+              <a
+                class="secondary template-link"
+                id="templatePrevious"
+                download="PLANTILLA_MES_ANTERIOR_SIN_POLIZA.xlsx"
+                href="public/templates/Plantilla_MES_ANTERIOR.xlsx"
+                >⬇ Descargar plantilla MES ANTERIOR (.xlsx)</a
+              >
+            </div>
+          </div>
+          <input type="hidden" id="corte" value="" />
+          <div class="actions">
+            <button class="primary" id="process">
+              Procesar y conciliar bases
+            </button>
+            <button class="secondary" id="reset">Limpiar todo</button>
+          </div>
+          <div id="cutoffSummary" class="cutoff-summary" hidden></div>
+          <div id="status" class="notice">
+            Los archivos se procesan dentro de este navegador. No se envían a un
+            servidor.
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Reglas de integridad</h2>
+          <p>
+            La base ACTUAL es la única que define las filas exportadas en
+            RESULTADOS. Los totales por cédula se muestran solo en la primera
+            fila correspondiente y también en la hoja TOTALES POR CEDULA, para
+            evitar sumarlos varias veces. Las cédulas repetidas se conservan,
+            mientras que los límites y la comparación se calculan por suma
+            global de cédula.
+          </p>
+          <p>
+            El total de MONTO ACTUAL debe coincidir con la suma de RESULTADOS.
+            Los registros que desaparecieron se muestran por separado y se
+            incluyen en la conciliación de la variación global.
+          </p>
+        </div>
+      </section>
+      <!-- V23: Fecha de corte operativa por procesamiento, ajena a parámetros guardados -->
+      <dialog
+        id="cutoffDialog"
+        class="cutoff-modal"
+        aria-labelledby="cutoffTitle"
+      >
+        <form method="dialog" id="cutoffForm">
+          <div class="cutoff-icon">📅</div>
+          <h2 id="cutoffTitle">Fecha de corte de edad</h2>
+          <p>
+            Selecciona la fecha de corte correspondiente a las bases de este
+            mes. Se utilizará para calcular edades y validar los límites; no
+            modificará las reglas guardadas de la póliza.
+          </p>
+          <label for="cutoffInput">FECHA DE CORTE PARA ESTA CONCILIACIÓN</label>
+          <input type="date" id="cutoffInput" required />
+          <div class="actions">
+            <button type="button" class="secondary" id="cutoffCancel">
+              Cancelar
+            </button>
+            <button type="submit" class="primary" id="cutoffAccept">
+              Confirmar fecha y procesar
+            </button>
+          </div>
+        </form>
+      </dialog>
+      <!-- SECCIÓN 5: CONTROL DE TOTALES -->
+      <!-- 3. Resumen y controles de integridad -->
+      <section class="pane" id="resumen">
+        <div id="cutoffSummaryControl" class="cutoff-summary" hidden></div>
+        <div class="grid" id="cards"></div>
+        <div class="twocol">
+          <div class="panel">
+            <h2>Conciliación de movimiento</h2>
+            <div id="movement"></div>
+          </div>
+          <div class="panel">
+            <h2>Distribución de decisiones</h2>
+            <div id="decisions"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Controles de integridad</h2>
+          <div id="checks"></div>
+          <div class="actions">
+            <button class="primary" id="exportAll">
+              Descargar reporte Excel (.xlsx)
+            </button>
+            <button class="secondary" id="exportCSV">
+              Descargar RESULTADOS (.csv)
+            </button>
+            <button class="secondary" id="exportMass">
+              Descargar CARGA MASIVA (.txt)
+            </button>
+          </div>
+        </div>
+      </section>
+      <!-- SECCIÓN 6: RESULTADOS INDIVIDUALES -->
+      <!-- 4. Resultados detallados y filtros -->
+      <section class="pane" id="resultados">
+        <div class="panel">
+          <h2>Resultados por crédito individual</h2>
+          <div class="rowtools">
+            <div>
+              <label>Buscar cédula o nombre</label>
+              <input id="search" placeholder="Buscar..." />
+            </div>
+            <div>
+              <label>Estado de carga</label>
+              <select id="decisionFilter">
+                <option value="">Todos</option>
+                <option>APTO PARA CARGA</option>
+                <option>PENDIENTE DE REQUISITOS</option>
+                <option>SUPERA EL LÍMITE DE CRÉDITO</option>
+                <option>SUPERA LA EDAD MÁXIMA DE INGRESO</option>
+                <option>OTRAS VALIDACIONES / REVISAR</option>
+                <option value="INGRESOS NUEVOS">INGRESOS NUEVOS</option>
+                <option value="NO PERMITE INGRESOS NUEVOS">
+                  NO PERMITE INGRESOS NUEVOS
+                </option>
+              </select>
+            </div>
+            <button class="secondary" id="downloadFiltered">
+              Exportar resultados filtrados
+            </button>
+          </div>
+          <p class="hint">
+            Los motivos de exclusión se muestran por separado. Si coinciden
+            varias causas, todas permanecen en OBSERVACIONES y el registro
+            aparece en cada filtro correspondiente.
+          </p>
+          <p id="count" class="hint"></p>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>FILA</th>
+                  <th>CÉDULA</th>
+                  <th>ESTADO CÉDULA</th>
+                  <th>NOMBRES COMPLETOS</th>
+                  <th>FECHA NAC.</th>
+                  <th>EDAD A/M/D</th>
+                  <th>MONTO ACTUAL</th>
+                  <th>SUMA GLOBAL ACTUAL</th>
+                  <th>SUMA GLOBAL ANTERIOR</th>
+                  <th>DIFERENCIA GLOBAL</th>
+                  <th>VARIACIÓN</th>
+                  <th>OBSERVACIONES</th>
+                  <th>DECISIÓN</th>
+                </tr>
+              </thead>
+              <tbody id="resultBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <!-- SECCIÓN 7: REGISTROS QUE SOLO CONSTAN EN EL MES ANTERIOR -->
+      <!-- V26: CATÁLOGO PORTÁTIL EN PESTAÑA INDEPENDIENTE, PROTEGIDA CON CLAVE LOCAL -->
+      <!-- 5. Respaldo portátil del catálogo -->
+      <section class="pane" id="catalogo">
+        <div class="panel policy-panel">
+          <h2>6. Catálogo portátil de pólizas — acceso protegido</h2>
+          <div id="catalogLock" class="catalog-locked">
+            <div class="catalog-lock">
+              <label for="catalogPassword">Clave de acceso al catálogo</label>
+              <input
+                id="catalogPassword"
+                type="password"
+                autocomplete="off"
+                placeholder="Escribe tu clave"
+                minlength="6"
+              />
+              <div class="actions">
+                <button id="catalogUnlock" class="primary" type="button">
+                  Abrir catálogo
+                </button>
+              </div>
+              <p class="hint" id="catalogLockHelp">
+                En el primer acceso, elige una clave de al menos 6 caracteres.
+                Después úsala para entrar al catálogo.
+              </p>
+              <p id="catalogLockMessage" role="status" class="hint"></p>
+            </div>
+          </div>
+          <div id="catalogUnlocked" class="catalog-unlocked">
+            <div class="catalog-toolbar">
+              <button type="button" id="catalogRelock" class="secondary">
+                Cerrar catálogo 🔒
+              </button>
+              <button
+                type="button"
+                id="catalogChangePassword"
+                class="secondary"
+              >
+                Cambiar clave
+              </button>
+            </div>
+            <div
+              class="portable-catalog"
+              aria-label="Catálogo de pólizas portátil"
+            >
+              <div class="portable-heading">
+                <span aria-hidden="true">&#128193;</span>
+                <strong>CATÁLOGO PORTÁTIL DE PÓLIZAS</strong>
+                <span id="portableCount" class="portable-count">0 pólizas</span>
+              </div>
+              <p>
+                Guarda tus pólizas en un archivo
+                <strong>CATALOGO_POLIZAS.json</strong> para recuperarlas en otra
+                computadora. El archivo conserva números, descripciones,
+                parámetros, fichas documentales y PDF originales asociados;
+                <strong>no contiene las bases de asegurados</strong>. Puede ser
+                más grande cuando hay documentos PDF.
+              </p>
+              <div class="actions portable-actions">
+                <button type="button" class="primary" id="portableDownload">
+                  &#8595; Descargar catálogo portátil
+                </button>
+                <button type="button" class="secondary" id="portableOpen">
+                  &#8593; Abrir catálogo de otra PC
+                </button>
+              </div>
+              <label class="portable-auto">
+                <input type="checkbox" id="portableAuto" /> Descargar catálogo
+                al guardar una póliza (solo mientras la pestaña esté
+                desbloqueada)</label
+              >
+              <small
+                >Importante: cada nueva descarga reemplaza tu respaldo anterior
+                al conservar la versión más reciente. Si el navegador añade (1),
+                (2)... al nombre, identifica el archivo más reciente antes de
+                llevarlo a otra PC. La importación no se ejecuta sola.</small
+              >
+            </div>
+            <details class="policy-tools">
+              <summary>
+                Opciones avanzadas del catálogo (respaldo y recuperación)
+              </summary>
+              <p class="hint">
+                Exporta un respaldo JSON o recupera tus pólizas desde otro
+                equipo.
+              </p>
+              <div class="actions">
+                <button type="button" class="secondary" id="policyBackup">
+                  Respaldar catálogo (.json)
+                </button>
+                <button type="button" class="secondary" id="policyImportButton">
+                  Importar catálogo (.json)
+                </button>
+              </div>
+            </details>
+            <input
+              type="file"
+              id="policyImport"
+              accept=".json,application/json"
+              hidden
+            />
+            <p class="notice warn">
+              La clave limita el acceso a esta pestaña en este navegador. No
+              cifra el archivo JSON. Conserva los respaldos en una ubicación
+              segura. Si olvidas la clave local, no se puede recuperar desde el
+              programa.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- V34: SOLO CARGA DE PDF. SIN RESUMENES, SIN VISOR INTERNO. -->
+      <!-- 6. Consulta y carga de documentos PDF -->
+      <section class="pane" id="ficha">
+        <div class="panel pdf-upload-only-v34">
+          <h2>7. Cargar PDF de póliza</h2>
+          <p class="hint">
+            Selecciona una póliza ya guardada y vincula su archivo PDF. Para
+            visualizarlo, entra en <strong>1. Parámetros</strong> y utiliza
+            <strong>Ver PDF de la póliza</strong>.
+          </p>
+          <div class="ficha-control">
+            <div>
+              <label for="fichaPolicySelect"
+                >PÓLIZA A LA QUE SE VINCULARÁ EL DOCUMENTO</label
+              >
+              <select id="fichaPolicySelect">
+                <option value="">Selecciona una póliza</option>
+              </select>
+            </div>
+            <div>
+              <label for="fichaSearch">BUSCAR PÓLIZA</label>
+              <input
+                id="fichaSearch"
+                placeholder="Número, descripción o emisor"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="ficha-upload-box">
+            <label for="fichaPdfUpload"
+              >AGREGAR DOCUMENTO PDF (HASTA 3 POR PÓLIZA)</label
+            >
+            <input
+              id="fichaPdfUpload"
+              type="file"
+              accept="application/pdf,.pdf"
+              aria-describedby="fichaUploadHint"
+            />
+            <p class="hint" id="fichaUploadHint">
+              El número de póliza y el anexo se leen del PDF, independientemente
+              del nombre del archivo. Si ya existe el documento, se mostrará una
+              alerta y no se duplicará. Conserva un respaldo del catálogo desde
+              la pestaña 6.
+            </p>
+            <p
+              id="fichaUploadMessage"
+              role="status"
+              aria-live="polite"
+              class="hint"
+            ></p>
+            <div id="fichaExistingV35" class="ficha-existing-v35"></div>
+          </div>
+        </div>
+        <!-- Compatibilidad interna con la V33: elementos ocultos, sin contenido visible -->
+        <div hidden aria-hidden="true">
+          <button type="button" id="fichaSummaryTab"></button>
+          <button type="button" id="fichaOriginalTab"></button>
+          <div id="fichaSummaryPane">
+            <div id="fichaBody"></div>
+          </div>
+          <div id="fichaOriginalPane">
+            <span id="fichaOriginalName"> </span>
+            <div id="fichaOriginalStatus"></div>
+            <div id="fichaPdfFrameWrap">
+              <iframe id="fichaPdfFrame" title="Visor interno no utilizado">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- 7. Créditos presentes únicamente en el mes anterior -->
+      <section class="pane" id="salidas">
+        <div class="panel">
+          <h2>Cédulas existentes únicamente en MES ANTERIOR</h2>
+          <p>
+            Estos créditos no se incorporan artificialmente a la base actual,
+            pero sus salidas sí afectan la conciliación global.
+          </p>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>CÉDULA</th>
+                  <th>NOMBRES COMPLETOS</th>
+                  <th>TOTAL ANTERIOR</th>
+                </tr>
+              </thead>
+              <tbody id="missingBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <p class="foot">
+        Funciona sin conexión. No incluye un registro de aprobación de
+        formularios o exámenes médicos: las alertas reflejan requisitos
+        potenciales, no su cumplimiento. Recomendado: Microsoft Edge o Google
+        Chrome actualizado.
+      </p>
+    </main>
+    <!-- SECCIÓN 8: BIBLIOTECA JSZIP INTEGRADA PARA FUNCIONAMIENTO SIN INTERNET: conservar licencia original -->
+    <!-- SECCIÓN 9: APLICACIÓN: lectura, validación, cálculo, cuadre y exportación -->
+    <footer class="app-footer">
+      &copy; Copyright 2026, Todos los derechos reservados
+      <br />
+      <strong> Mauricio Balseca </strong>
+      &amp;
+      <strong> Cristian Heredia </strong>
+      &middot; Emisi&oacute;n Nacional
+    </footer>
+    <script src="public/js/vendor/jszip-3.10.1.min.js"></script>
+    <!-- Módulos del Conciliador: el orden conserva sus dependencias compartidas. -->
+    <script src="public/js/modules/cruce-datos/core.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/policies.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/parameters.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/data-input.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/reconciliation.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/exports-workspace.js?v=20261126-37"></script>
+    <script src="public/js/modules/cruce-datos/documents.js?v=20261126-37"></script>
+  </body>
 </html>
